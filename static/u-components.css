@@ -1,0 +1,15 @@
+div{
+  --card-bg-color: #FFFFFF;
+  --logo-size: 20vw;
+}
+
+.u-logo-bg{
+  background-color: var(--card-bg-color);
+  border-radius: 100%;
+  padding: 1%;
+  width: var(--logo-size);
+}
+
+.u-logo{
+  width: 100%;
+}
