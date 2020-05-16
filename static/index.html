@@ -27,8 +27,20 @@
         <div class="flex-column">
             <u-card>
                 <u-logo></u-logo>
-                <u-text-field id="username" placeholder="username"></u-text-field>
-                <u-text-field id="password" type="password" placeholder="password"></u-text-field>
+                <u-text-field id="name" placeholder="username"></u-text-field>
+                <u-label id="name-label1" hidden=true>username must be at least 5 characters</u-label>
+                <u-label id="name-label2" hidden=true>can't contain special characters other than</u-label>
+                <u-label id="name-label3" hidden=true>-=^+@,._</u-label>
+
+
+                <u-text-field id="pass" type="password" placeholder="password"></u-text-field>
+                <u-label id="pass-label1" hidden=true>password must be at least 5 characters</u-label>
+                <u-label id="pass-label2" hidden=true>can't contain special characters other than</u-label>
+                <u-label id="pass-label3" hidden=true>-=^+@,._</u-label>
+
+                <u-text-field id="confirm-pass" type="password" placeholder="confirm password" hidden=true>
+                </u-text-field>
+
                 <u-text-field id="email" placeholder="email address" hidden="true"></u-text-field>
                 <u-button id="login">Login</u-button>
                 <u-button id="new account">Sign Up</u-button>

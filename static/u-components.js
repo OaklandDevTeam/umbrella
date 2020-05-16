@@ -5,7 +5,7 @@ class Logo extends HTMLElement { //custom elements must extend HTMLElement
     var shadow = this.attachShadow({ mode: 'open' }); // add a shadow dom (this is where the custom element's html goes)
     shadow.innerHTML = `
     <link rel="stylesheet" type="text/css" href="u-components.css">
-    <div class="u-logo-bg u-shadowed mildly-responsive">
+    <div class="u-logo-bg shadowed mildly-responsive">
       <img src="images/umbrella-logo.png" class="u-logo"/>
     </div>
     `
@@ -21,7 +21,7 @@ class Button extends HTMLElement { //custom elements must extend HTMLElement
     var shadow = this.attachShadow({ mode: 'open' }); // add a shadow dom (this is where the custom element's html goes)
     shadow.innerHTML = `
     <link rel="stylesheet" type="text/css" href="u-components.css">
-    <div class="u-button u-shadowed responsive">
+    <div class="u-button shadowed responsive">
       <p class="u-button-label">
         <slot></slot>
       </p>
@@ -60,7 +60,7 @@ class TextField extends HTMLElement { //custom elements must extend HTMLElement
     var shadow = this.attachShadow({ mode: 'open' }); // add a shadow dom (this is where the custom element's html goes)
     shadow.innerHTML = `
     <link rel="stylesheet" type="text/css" href="u-components.css">
-    <input type="text" id="t-field" class="u-text-field u-shadowed mildly-responsive">
+    <input type="text" id="t-field" class="u-text-field shadowed mildly-responsive">
     `
   }
 
@@ -83,8 +83,24 @@ class Card extends HTMLElement { //custom elements must extend HTMLElement
   }
 
   connectedCallback() {
-    this.setAttribute('class', 'u-shadowed u-card slightly-responsive');
+    this.setAttribute('class', 'shadowed u-card slightly-responsive');
   }
 }
 
 window.customElements.define("u-card", Card);
+
+class Label extends HTMLElement { //custom elements must extend HTMLElement
+  constructor() {
+    super();
+
+    var shadow = this.attachShadow({ mode: 'open' }); // add a shadow dom (this is where the custom element's html goes)
+    shadow.innerHTML = `
+    <link rel="stylesheet" type="text/css" href="u-components.css">
+    <p class="u-label">
+    <slot></slot>
+    </p>
+    `
+  }
+}
+
+window.customElements.define('u-label', Label); //custom elements must be registered in this way, note the u-(element name) naming scheme.
