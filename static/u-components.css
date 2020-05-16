@@ -1,6 +1,6 @@
 div{
   --card-bg-color: #FFFFFF;
-  --logo-size: 20vh;
+  --logo-size: 30vh;
   --button-color: #FFFFFF;
   --font: roboto;
 }
@@ -20,7 +20,7 @@ div{
 }
 
 .u-button{
-  padding: 0.25vh 2vw 0.25vh 2vw;
+  padding: 0.25vh 1em;
   background-color: var(--button-color);
   border-radius: 25vh;
   display: inline-block;
@@ -30,6 +30,7 @@ div{
 .u-button-label{
   line-height: 0;
   text-align: justify;
+  font-size: 1em;
   font-family: var(--font);
   user-select: none;
 }
