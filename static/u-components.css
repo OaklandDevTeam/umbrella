@@ -11,6 +11,7 @@ div{
   padding: 1%;
   width: var(--logo-size);
   user-select: none;
+  margin: 0.5vh;
 }
 
 .u-logo{
@@ -19,11 +20,11 @@ div{
 }
 
 .u-button{
-  padding: 0.25vh 1vw 0.25vh 1vw;
+  padding: 0.25vh 2vw 0.25vh 2vw;
   background-color: var(--button-color);
-  border-radius: 50vh;
+  border-radius: 25vh;
   display: inline-block;
-  margin-top: 1vh;
+  margin: 0.5vh;
 }
 
 .u-button-label{
@@ -38,7 +39,7 @@ div{
   background-color: transparent;
   border-radius: 5px;
   display: inline-block;
-  margin-top: 1vh;
+  margin: 0.5vh;
 }
 
 .u-flat-button:active{
@@ -50,6 +51,19 @@ div{
   text-align: justify;
   font-family: var(--font);
   user-select: none;
+}
+
+.u-text-field{
+  border-width: 0;
+  outline-width: 0;
+  border-radius: 25vh;
+  padding: 7px;
+  font-size: 1em;
+  margin: 0.5vh;
+  /* The font family on this element doesn't like variables for some reason */
+  font-family: roboto; 
+  overflow: hidden;
+  text-align: center;
 }
 
 .responsive{
@@ -66,7 +80,7 @@ div{
 
 .responsive:active{
 
-  transform: scale(0.75);
+  transform: scale(0.9);
 
 }
 

@@ -51,3 +51,26 @@ class FlatButton extends HTMLElement { //custom elements must extend HTMLElement
 }
 
 window.customElements.define('u-flat-button', FlatButton); //custom elements must be registered in this way, note the u-(element name) naming scheme.
+
+class TextField extends HTMLElement { //custom elements must extend HTMLElement
+
+  constructor() {
+    super();
+
+    var shadow = this.attachShadow({ mode: 'open' }); // add a shadow dom (this is where the custom element's html goes)
+    shadow.innerHTML = `
+    <link rel="stylesheet" type="text/css" href="u-components.css">
+    <input type="text" id="t-field" class="u-text-field mildly-responsive">
+    `
+  }
+
+  connectedCallback() {
+    this.shadowRoot.getElementById("t-field").setAttribute("placeholder", this.getAttribute("placeholder"));
+  }
+
+  get value() {
+    return this.shadowRoot.getElementById("t-field").value;
+  }
+}
+
+window.customElements.define('u-text-field', TextField); //custom elements must be registered in this way, note the u-(element name) naming scheme.
