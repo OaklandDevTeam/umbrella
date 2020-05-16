@@ -5,7 +5,7 @@ class Logo extends HTMLElement { //custom elements must extend HTMLElement
     var shadow = this.attachShadow({ mode: 'open' }); // add a shadow dom (this is where the custom element's html goes)
     shadow.innerHTML = `
     <link rel="stylesheet" type="text/css" href="u-components.css">
-    <div class="u-logo-bg mildly-responsive">
+    <div class="u-logo-bg u-shadowed mildly-responsive">
       <img src="images/umbrella-logo.png" class="u-logo"/>
     </div>
     `
@@ -21,7 +21,7 @@ class Button extends HTMLElement { //custom elements must extend HTMLElement
     var shadow = this.attachShadow({ mode: 'open' }); // add a shadow dom (this is where the custom element's html goes)
     shadow.innerHTML = `
     <link rel="stylesheet" type="text/css" href="u-components.css">
-    <div class="u-button responsive">
+    <div class="u-button u-shadowed responsive">
       <p class="u-button-label">
         <slot></slot>
       </p>
@@ -60,12 +60,13 @@ class TextField extends HTMLElement { //custom elements must extend HTMLElement
     var shadow = this.attachShadow({ mode: 'open' }); // add a shadow dom (this is where the custom element's html goes)
     shadow.innerHTML = `
     <link rel="stylesheet" type="text/css" href="u-components.css">
-    <input type="text" id="t-field" class="u-text-field mildly-responsive">
+    <input type="text" id="t-field" class="u-text-field u-shadowed mildly-responsive">
     `
   }
 
   connectedCallback() {
     this.shadowRoot.getElementById("t-field").setAttribute("placeholder", this.getAttribute("placeholder"));
+    this.shadowRoot.getElementById("t-field").setAttribute("type", this.getAttribute("type"));
   }
 
   get value() {
@@ -74,3 +75,16 @@ class TextField extends HTMLElement { //custom elements must extend HTMLElement
 }
 
 window.customElements.define('u-text-field', TextField); //custom elements must be registered in this way, note the u-(element name) naming scheme.
+
+class Card extends HTMLElement { //custom elements must extend HTMLElement
+
+  constructor() {
+    super();
+  }
+
+  connectedCallback() {
+    this.setAttribute('class', 'u-shadowed u-card slightly-responsive');
+  }
+}
+
+window.customElements.define("u-card", Card);
