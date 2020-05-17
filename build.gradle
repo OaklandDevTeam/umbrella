@@ -12,15 +12,14 @@ repositories {
 dependencies {
     
     // main REST framework
-    compile "com.sparkjava:spark-core:2.8.0"
+    compile "com.sparkjava:spark-core:2.9.1"
 
     // This also imports Jackson, Jackson-databind, Jackson-annotations
     // and the mongo driver
     compile group: 'org.mongojack', name: 'mongojack', version: '4.0.0'
 
-    // security
-    compile group: 'org.pac4j', name: 'spark-pac4j', version: '3.0.0'
-    runtime group: 'org.pac4j', name: 'pac4j-mongo', version: '4.0.1'
+    // https://mvnrepository.com/artifact/org.mindrot/jbcrypt
+    compile group: 'org.mindrot', name: 'jbcrypt', version: '0.4'
 
     // logging
     compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
