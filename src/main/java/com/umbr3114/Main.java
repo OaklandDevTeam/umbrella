@@ -11,6 +11,12 @@ public class Main {
         services = ServiceLocator.getService();
 
         /*
+         * Set port and static HTML folder.
+         */
+        port(80);
+        staticFileLocation("/static");
+
+        /*
          * Protect any route with this before declaration and an AuthCheck object
          * just match the route in the before and Route declaration
          */
