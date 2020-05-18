@@ -1,10 +1,9 @@
 package com.umbr3114;
 
-import com.mongodb.ConnectionString;
-import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
+import com.umbr3114.common.DatabaseCredentials;
+import com.umbr3114.data.MongoClientFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,13 +28,20 @@ public class ServiceLocator {
     }
 
     private void initializeDbService() {
-        MongoClientSettings mongoSettings;
-        mongoSettings = MongoClientSettings.builder().
-                applyConnectionString(new ConnectionString("mongodb+srv://umbrella-dev:SeYYB0kZy7AmhoaG@cluster0-urisd.gcp.mongodb.net/test?retryWrites=true&w=majority"))
-                .retryWrites(true)
-                .build();
+        DatabaseCredentials mongoCredentials;
 
-        mongoClient = MongoClients.create(mongoSettings);
+        try {
+            mongoCredentials = DatabaseCredentials.fromEnvironment();
+        } catch (IllegalArgumentException e) {
+            // todo retry this with a file-based approach
+            log.error("Database credentials are missing - cannot continue!");
+            throw new IllegalStateException();
+        }
+
+        mongoClient = MongoClientFactory.create(
+                mongoCredentials.getUsername(),
+                mongoCredentials.getPassword()
+        );
 
         dbService = mongoClient.getDatabase("umbrella-data");
     }
