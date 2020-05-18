@@ -44,4 +44,8 @@ public class UserModel {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String getUserIdString() {
+        return _id.toString();
+    }
 }

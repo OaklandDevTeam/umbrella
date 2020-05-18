@@ -19,6 +19,15 @@ public class MongoUserManager extends AbstractUserManager {
         credentialVerifier = new MongoCollectionVerifier(userCollection, hasher);
     }
 
+    public MongoUserManager(JacksonMongoCollection<UserModel> userCollection,
+                            SessionManager sessionManager,
+                            PasswordHasher hasher,
+                            CredentialVerifier credentialVerifier) {
+        super(sessionManager, hasher);
+        this.userCollection = userCollection;
+        this.credentialVerifier = credentialVerifier;
+    }
+
     @Override
     public boolean login(String user, String password) {
         if (!credentialVerifier.verify(user, password)) {
@@ -26,7 +35,7 @@ public class MongoUserManager extends AbstractUserManager {
         }
 
         getSessionManager().startSession(
-                credentialVerifier.getUserModel()._id.toString(),
+                credentialVerifier.getUserModel().getUserIdString(),
                 credentialVerifier.getUserModel().getUsername()
         );
         return true;
