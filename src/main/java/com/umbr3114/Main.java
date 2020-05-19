@@ -16,6 +16,10 @@ public class Main {
         port(80);
         staticFileLocation("/static");
 
+        // allow API calls from any origin. This should be temporary until a proper strategy for production is implemented
+        before("/*", (request, response) -> response.header("Access-Control-Allow-Origin", "*"));
+
+
         /*
          * Protect any route with this before declaration and an AuthCheck object
          * just match the route in the before and Route declaration
