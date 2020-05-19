@@ -1,5 +1,7 @@
 package com.umbr3114.auth;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.bson.codecs.pojo.annotations.BsonIgnore;
 import org.bson.types.ObjectId;
 import org.mongojack.MongoCollection;
 
@@ -45,6 +47,8 @@ public class UserModel {
         this.password = password;
     }
 
+    @JsonIgnore
+    @BsonIgnore
     public String getUserIdString() {
         return _id.toString();
     }
