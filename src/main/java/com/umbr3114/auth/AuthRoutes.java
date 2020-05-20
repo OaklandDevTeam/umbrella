@@ -34,7 +34,14 @@ public class AuthRoutes {
         }
 
         user = new UserModel(userName.get(), email.get(), passwordRaw.get());
-        userManager.register(user);
+
+        try {
+            userManager.register(user);
+        } catch(DuplicateUserException e) {
+            halt(HttpStatus.BAD_REQUEST_400,
+                    new AuthResponseModel(HttpStatus.BAD_REQUEST_400, "duplicate username register attempt")
+                            .toJSON());
+        }
 
         return new AuthResponseModel(HttpStatus.OK_200, user.getUsername()).toJSON();
     });

@@ -1,6 +1,9 @@
 package com.umbr3114.auth;
 
+import com.mongodb.MongoWriteException;
 import org.mongojack.JacksonMongoCollection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class is responsible for logging in a user, registering a user, and logging a user out.
@@ -10,6 +13,7 @@ public class MongoUserManager extends AbstractUserManager {
 
     private CredentialVerifier credentialVerifier;
     private JacksonMongoCollection<UserModel> userCollection;
+    private Logger log = LoggerFactory.getLogger("MongoUserManager");
 
     public MongoUserManager(JacksonMongoCollection<UserModel> userCollection,
                             SessionManager sessionManager,
@@ -46,7 +50,13 @@ public class MongoUserManager extends AbstractUserManager {
         // TODO handle the case where there is another user of the same username here
         // hash it, send it
         registrationModel.setPassword(getHasher().hash(registrationModel.getPassword()));
-        userCollection.save(registrationModel);
+
+        try {
+            userCollection.save(registrationModel);
+        } catch(MongoWriteException e) {
+            log.error("User registration with duplicate username attempted");
+            throw new DuplicateUserException();
+        }
 
         return true;
     }
