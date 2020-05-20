@@ -33,6 +33,14 @@ public class AuthRoutes {
             );
         }
 
+        if (userName.get().contains(" ")) {
+            // should fail
+            halt(HttpStatus.BAD_REQUEST_400,
+                    new AuthResponseModel(HttpStatus.BAD_REQUEST_400, "username cannot contain spaces")
+                            .toJSON()
+            );
+        }
+
         user = new UserModel(userName.get(), email.get(), passwordRaw.get());
 
         try {
@@ -58,6 +66,14 @@ public class AuthRoutes {
             halt(HttpStatus.BAD_REQUEST_400,
                     new AuthResponseModel(HttpStatus.BAD_REQUEST_400, "Bad Credentials")
                             .toJSON());
+        }
+
+        if (username.get().contains(" ")) {
+            // should fail
+            halt(HttpStatus.BAD_REQUEST_400,
+                    new AuthResponseModel(HttpStatus.BAD_REQUEST_400, "username cannot contain spaces")
+                            .toJSON()
+            );
         }
 
         userManager = new MongoUserManager(createUserCollection(),
