@@ -13,7 +13,6 @@ div{
   margin: 1vh;
 
   padding: 1vh;
-
 }
 
 .u-logo{
@@ -99,8 +98,7 @@ div{
 }
 
 .responsive:hover{
-
-  transform: scale(1.1);
+  transform: scale(1.1); 
 
 }
 
@@ -119,6 +117,7 @@ div{
 .mildly-responsive:hover{
 
   transform: scale(1.025);
+
 }
 
 .mildly-responsive:active{

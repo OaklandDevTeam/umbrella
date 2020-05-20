@@ -104,3 +104,19 @@ class Label extends HTMLElement { //custom elements must extend HTMLElement
 }
 
 window.customElements.define('u-label', Label); //custom elements must be registered in this way, note the u-(element name) naming scheme.
+
+class DatePicker extends HTMLElement { //custom elements must extend HTMLElement
+  constructor() {
+    super();
+
+    var shadow = this.attachShadow({ mode: 'open' }); // add a shadow dom (this is where the custom element's html goes)
+    shadow.innerHTML = `
+    <link rel="stylesheet" type="text/css" href="u-components.css">
+    <p class="u-label">
+    <slot></slot>
+    </p>
+    `
+  }
+}
+
+window.customElements.define('u-date-picker', DatePicker); //custom elements must be registered in this way, note the u-(element name) naming scheme.

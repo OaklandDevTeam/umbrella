@@ -15,6 +15,7 @@
 
     <script src="u-components.js"></script>
     <script src="login.js"></script>
+    <script src="register.js"></script>
 
 
     <title>Umbrella</title>
@@ -31,26 +32,34 @@
             <u-card>
                 <u-logo></u-logo>
                 <u-text-field id="name" placeholder="username"></u-text-field>
-                <u-label id="name-label1" hidden=true>username must be at least 5 characters</u-label>
-                <u-label id="name-label2" hidden=true>can't contain special characters other than</u-label>
-                <u-label id="name-label3" hidden=true>-=^+@,._</u-label>
-                <u-label id="name-label4" hidden=true>enter username and password</u-label>
-                <u-label id="name-label5" hidden=true>Incorrect username and password</u-label>
-                <u-label id="name-label6" hidden=true>Login</u-label>
-
+                <u-label id="name-len-label" hidden=true>username must be at least 5 characters</u-label>
+                <u-label id="name-chars-label1" hidden=true>can't contain special characters other than</u-label>
+                <u-label id="name-chars-label2" hidden=true>-=^+@,._</u-label>
 
                 <u-text-field id="pass" type="password" placeholder="password"></u-text-field>
-                <u-label id="pass-label1" hidden=true>password must be at least 5 characters</u-label>
-                <u-label id="pass-label2" hidden=true>can't contain special characters other than</u-label>
-                <u-label id="pass-label3" hidden=true>-=^+@,._</u-label>
+                <u-label id="pass-len-label" hidden=true>password must be at least 5 characters</u-label>
+                <u-label id="pass-chars-label1" hidden=true>can't contain special characters other than</u-label>
+                <u-label id="pass-chars-label2" hidden=true>-=^+@,._</u-label>
+                <u-label id="pass-no-match-label" hidden=true>passwords do not match</u-label>
+                <u-label id="no-name-pass-label" hidden=true>enter a username and password</u-label>
+                <u-label id="signup-fail-label" hidden=true>sign up failed</u-label>
+                <u-label id="signup-success-label" hidden=true>successfully signed up</u-label>
+                <u-label id="login-fail-label" hidden=true>incorrect username and password</u-label>
+                <u-label id="login-success-label" hidden=true>successfully logged in</u-label>
 
                 <u-text-field id="confirm-pass" type="password" placeholder="confirm password" hidden=true>
                 </u-text-field>
 
                 <u-text-field id="email" placeholder="email address" hidden="true"></u-text-field>
+                <u-label id="no-email-label" hidden=true>please enter your email address</u-label>
+
                 <u-button id="login">Login</u-button>
                 <u-button id="new account">Sign Up</u-button>
-                <u-button id="register" hidden=true>Register</u-button>
+
+                <div class="flex-row">
+                    <u-button id="back" hidden="true">Back</u-button>
+                    <u-button id="register" hidden=true>Register</u-button>
+                </div>
             </u-card>
         </div>
     </div>
