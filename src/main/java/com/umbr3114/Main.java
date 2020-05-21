@@ -2,6 +2,7 @@ package com.umbr3114;
 
 import com.umbr3114.auth.AuthCheck;
 import com.umbr3114.auth.AuthRoutes;
+import com.umbr3114.controllers.DropController;
 
 import static spark.Spark.*;
 
@@ -34,5 +35,8 @@ public class Main {
         post("/register", AuthRoutes.registerUser);
         post("/login", AuthRoutes.loginUser);
         get("/logout", AuthRoutes.logoutUser);
+
+        post("/drops/create", DropController.addDrop);
+
     }
 }
