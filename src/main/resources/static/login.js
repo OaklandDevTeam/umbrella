@@ -17,10 +17,11 @@ function login() {
      //to get the feedback about if signing up is successful
      xhttp.onreadystatechange = function () {
           var status = xhttp.status;
+
           if (status === 403) {
-               document.getElementById("name-label5").removeAttribute("hidden");
+               document.getElementById("login-fail-label").removeAttribute("hidden");
           } else if (status === 200) {
-               document.getElementById("name-label6").removeAttribute("hidden");
+               document.getElementById("login-success-label").removeAttribute("hidden");
           }
      }
      xhttp.open('POST', url, true);

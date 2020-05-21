@@ -97,10 +97,15 @@ function register() {
 
     xhttp.onreadystatechange = function () {
         var status = xhttp.status;
+        var response = xhttp.response;
+
+        console.log(response);
+
         if (status === 403) {
-            document.getElementById("pass-label6").removeAttribute("hidden");
+            document.getElementById("signup-fail-label").removeAttribute("hidden");
         } else if (status === 200) {
-            document.getElementById("pass-label7").removeAttribute("hidden");
+            goBack();
+            document.getElementById("signup-success-label").removeAttribute("hidden");
         }
     }
     xhttp.open('POST', url, true);
