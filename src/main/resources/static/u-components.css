@@ -13,7 +13,6 @@ div{
   margin: 1vh;
 
   padding: 1vh;
-
 }
 
 .u-logo{
@@ -28,6 +27,7 @@ div{
   border-radius: 25vh;
   display: inline-block;
   margin: 0.5vh;
+  cursor: pointer;
 }
 
 .u-button-label{
@@ -44,6 +44,7 @@ div{
   border-radius: 5px;
   display: inline-block;
   margin: 0.5vh;
+  cursor: pointer;
 }
 
 .u-flat-button:active{
@@ -88,6 +89,36 @@ div{
   margin: 0.75vh;
 }
 
+.u-checkbox{
+  background-color: var(--component-primary);
+  border-radius: 5px;
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  user-select: none;
+  cursor: pointer;
+}
+
+.u-check{
+  max-width: 0.9em;
+  max-height: 0.9em;
+  user-select: none;
+}
+
+.u-checkbox-label{
+  font-size: 1em;
+  font-family: var(--font);
+  text-align: center;
+  line-height: 0.25em;
+  user-select: none;
+}
+
+.u-checkbox-container{
+  align-items: center;
+  margin: 0.75vh;
+  text-align: center;
+}
+
 .shadowed{
   box-shadow: 1px 1px 1px #a0a0a0;
 }
@@ -99,8 +130,7 @@ div{
 }
 
 .responsive:hover{
-
-  transform: scale(1.1);
+  transform: scale(1.1); 
 
 }
 
@@ -119,6 +149,7 @@ div{
 .mildly-responsive:hover{
 
   transform: scale(1.025);
+
 }
 
 .mildly-responsive:active{

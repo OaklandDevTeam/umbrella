@@ -2,6 +2,7 @@ package com.umbr3114;
 
 import com.umbr3114.auth.AuthCheck;
 import com.umbr3114.auth.AuthRoutes;
+import com.umbr3114.controllers.DropController;
 
 import static spark.Spark.*;
 
@@ -13,8 +14,17 @@ public class Main {
         /*
          * Set port and static HTML folder.
          */
-        port(80);
+
+        if(System.getenv("UMBRELLA_DEBUG") != null) {
+            port(8080);
+        } else {
+            port(80);
+        }
         staticFileLocation("/static");
+
+        // allow API calls from any origin. This should be temporary until a proper strategy for production is implemented
+        before("/*", (request, response) -> response.header("Access-Control-Allow-Origin", "*"));
+
 
         /*
          * Protect any route with this before declaration and an AuthCheck object
@@ -30,5 +40,8 @@ public class Main {
         post("/register", AuthRoutes.registerUser);
         post("/login", AuthRoutes.loginUser);
         get("/logout", AuthRoutes.logoutUser);
+
+        post("/drops/create", DropController.addDrop);
+
     }
 }

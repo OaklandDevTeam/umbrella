@@ -104,3 +104,31 @@ class Label extends HTMLElement { //custom elements must extend HTMLElement
 }
 
 window.customElements.define('u-label', Label); //custom elements must be registered in this way, note the u-(element name) naming scheme.
+
+class Checkbox extends HTMLElement { //custom elements must extend HTMLElement
+  constructor() {
+    super();
+
+    this.value = false;
+
+    var shadow = this.attachShadow({ mode: 'open' }); // add a shadow dom (this is where the custom element's html goes)
+    shadow.innerHTML = `
+    <link rel="stylesheet" type="text/css" href="u-components.css">
+    <div class="u-checkbox-container">
+      <slot class="u-checkbox-label"></slot>
+      <div type="checkbox" id="c-box" class="u-checkbox responsive shadowed">
+        <img class="u-check" hidden="true" id="c-mark" src = "images/check.svg"></img>
+      </div>
+    </div>
+    `
+
+    this.onclick = () => {
+      this.value = !this.value;
+      if (this.value) this.shadowRoot.getElementById("c-mark").removeAttribute("hidden");
+      else this.shadowRoot.getElementById("c-mark").setAttribute("hidden", "true");
+    }
+  }
+
+}
+
+window.customElements.define('u-checkbox', Checkbox); //custom elements must be registered in this way, note the u-(element name) naming scheme.
