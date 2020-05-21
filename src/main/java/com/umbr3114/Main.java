@@ -14,7 +14,12 @@ public class Main {
         /*
          * Set port and static HTML folder.
          */
-        port(80);
+
+        if(System.getenv("UMBRELLA_DEBUG") != null) {
+            port(8080);
+        } else {
+            port(80);
+        }
         staticFileLocation("/static");
 
         // allow API calls from any origin. This should be temporary until a proper strategy for production is implemented
