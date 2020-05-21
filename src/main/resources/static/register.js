@@ -6,6 +6,7 @@ function signUp() {
     document.getElementById("register").removeAttribute("hidden");
     document.getElementById("confirm-pass").removeAttribute("hidden");
     document.getElementById("email").removeAttribute("hidden");
+    document.getElementById("age-check").removeAttribute("hidden");
     document.getElementById("back").removeAttribute("hidden");
     $("u-label[id*='-label']").attr("hidden", "true");
 }
@@ -26,6 +27,7 @@ function goBack() {
     document.getElementById("register").setAttribute("hidden", "true");
     document.getElementById("confirm-pass").setAttribute("hidden", "true");
     document.getElementById("email").setAttribute("hidden", "true");
+    document.getElementById("age-check").setAttribute("hidden", "true");
     document.getElementById("back").setAttribute("hidden", "true");
     $("u-label[id*='-label']").attr("hidden", "true");
 }
@@ -40,36 +42,53 @@ function register() {
     var confirmPass = document.getElementById("confirm-pass").value;
     var passwordRegex = /^[a-zA-Z0-9=^+@,._ ]+$/;
     var validPassword = passwordRegex.exec(password);
-    var email = document.getElementById("email").value
+    var email = document.getElementById("email").value;
+    var err = false;
 
-    //check username and password. If it's not valid, show the message. otherwise, it stays hidden
+    //hide labels
     $("u-label[id*='-label']").attr("hidden", "true");
 
+    //check age
+    if (!document.getElementById("age-check").value) {
+        document.getElementById("age-label").removeAttribute("hidden");
+        err = true;
+    }
+
+    //check username and password. If it's not valid, show the message. otherwise, it stays hidden
     if (username.length < 5) {
         document.getElementById("name-len-label").removeAttribute("hidden");
+        err = true;
     }
 
     if (password.length < 5) {
         document.getElementById("pass-len-label").removeAttribute("hidden");
+        err = true;
     }
 
     if (!validUsername) {
         document.getElementById("name-chars-label1").removeAttribute("hidden");
         document.getElementById("name-chars-label2").removeAttribute("hidden");
+        err = true;
     }
+
     if (!validPassword) {
         document.getElementById("pass-chars-label1").removeAttribute("hidden");
         document.getElementById("pass-chars-label2").removeAttribute("hidden");
+        err = true;
     }
+
     //check if the two entries of password matches each other
     if (!(password.localeCompare(confirmPass) === 0)) {
         document.getElementById("pass-no-match-label").removeAttribute("hidden");
+        err = true;
     }
 
     if (email === "") {
         document.getElementById("no-email-label").removeAttribute("hidden");
-        return;
+        err = true;
     }
+
+    if (err) return;
 
     //sent data to the server and get the callback message
     var xhttp = new XMLHttpRequest();

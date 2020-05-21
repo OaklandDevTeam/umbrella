@@ -50,15 +50,20 @@
                 <u-text-field id="confirm-pass" type="password" placeholder="confirm password" hidden=true>
                 </u-text-field>
 
-                <u-text-field id="email" placeholder="email address" hidden="true"></u-text-field>
-                <u-label id="no-email-label" hidden=true>please enter your email address</u-label>
+                <div id="reg-stuff">
+                    <u-text-field id="email" placeholder="email address" hidden="true"></u-text-field>
+                    <u-label id="no-email-label" hidden=true>please enter your email address</u-label>
 
-                <u-button id="login">Login</u-button>
-                <u-button id="new account">Sign Up</u-button>
+                    <u-checkbox id="age-check" hidden="true">Are you over 13?</u-checkbox>
+                    <u-label id="age-label" hidden=true>You must be over 13 to register.</u-label>
 
-                <div class="flex-row">
-                    <u-button id="back" hidden="true">Back</u-button>
-                    <u-button id="register" hidden=true>Register</u-button>
+                    <u-button id="login">Login</u-button>
+                    <u-button id="new account">Sign Up</u-button>
+
+                    <div class="flex-row">
+                        <u-button id="back" hidden="true">Back</u-button>
+                        <u-button id="register" hidden=true>Register</u-button>
+                    </div>
                 </div>
             </u-card>
         </div>
