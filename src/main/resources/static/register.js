@@ -97,9 +97,6 @@ function register() {
 
     xhttp.onreadystatechange = function () {
         var status = xhttp.status;
-        var response = xhttp.response;
-
-        console.log(response);
 
         if (status === 403) {
             document.getElementById("signup-fail-label").removeAttribute("hidden");
