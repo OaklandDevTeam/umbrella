@@ -3,6 +3,7 @@ package com.umbr3114;
 import com.umbr3114.auth.AuthCheck;
 import com.umbr3114.auth.AuthRoutes;
 import com.umbr3114.controllers.DropController;
+import com.umbr3114.controllers.PostController;
 
 import static spark.Spark.*;
 
