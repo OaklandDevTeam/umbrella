@@ -7,9 +7,16 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Encapsulates logic that handles deserialization of JSON parameter string
+ */
 class JSONParamDeserializationStrategy implements ParamDeserializationStrategy {
     private String requestBody;
 
+    /**
+     * Default Constructor
+     * @param reqBody JSON String that is to be deserialized
+     */
     public JSONParamDeserializationStrategy(String reqBody) {
         this.requestBody = reqBody;
     }
