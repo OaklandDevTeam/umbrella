@@ -7,9 +7,6 @@ import spark.Request;
 import spark.Response;
 import spark.Session;
 
-import static org.mockito.Mockito.verify;
-
-
 public class SparkSessionTests {
 
     @Mock
