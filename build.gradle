@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'idea'
     id "com.github.node-gradle.node" version "2.2.4"
 }
 
@@ -66,6 +67,17 @@ task cleanNode(type: Delete){
     delete 'src/main/resources/static', 'node_modules', 'frontend/node_modules'
 }
 
+task copyDbProperties(type: Copy) {
+    from(file("${project.projectDir}/dbconnection.properties"))
+    into(file("${project.projectDir}/src/main/resources"))
+}
+
+task cleanDbProperties(type: Delete) {
+    delete "${project.projectDir}/src/main/resources/dbconnection.properties"
+}
+
 processResources.dependsOn buildWebpack
+processResources.dependsOn(copyDbProperties)
 
 clean.dependsOn cleanNode
+clean.dependsOn cleanDbProperties
