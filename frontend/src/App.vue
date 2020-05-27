@@ -1,19 +1,24 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <u-logo></u-logo>
+    <u-button>test</u-button>
+    <u-flat-button>flat test</u-flat-button>
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import Logo from "./components/Logo.vue";
+import Button from "./components/Button.vue";
+import FlatButton from "./components/FlatButton.vue";
+import Vue from 'vue';
 
 export default {
-  name: "App",
-  components: {
-    HelloWorld
-  }
+  name: "App"
 };
+
+Vue.component('u-logo', Logo);
+Vue.component('u-button', Button);
+Vue.component('u-flat-button', FlatButton);
 </script>
 
 <style>

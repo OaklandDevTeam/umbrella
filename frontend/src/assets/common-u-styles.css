@@ -1,0 +1,104 @@
+div{
+  --card-bg-color: #F9F9F9;
+  --component-primary: #FFFFFF;
+  --logo-size: 30vh;
+  --font: roboto;
+}
+
+.u-card{
+  background-color: var(--card-bg-color);
+  border-radius: 2vh;
+  padding: 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.u-label{
+  font-size: 1em;
+  font-family: var(--font);
+  text-align: center;
+  line-height: 0.25em;
+  margin: 0.75vh;
+}
+
+.u-checkbox{
+  background-color: var(--component-primary);
+  border-radius: 5px;
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  user-select: none;
+  cursor: pointer;
+}
+
+.u-check{
+  max-width: 0.9em;
+  max-height: 0.9em;
+  user-select: none;
+}
+
+.u-checkbox-label{
+  font-size: 1em;
+  font-family: var(--font);
+  text-align: center;
+  line-height: 0.25em;
+  user-select: none;
+}
+
+.u-checkbox-container{
+  align-items: center;
+  margin: 0.75vh;
+  text-align: center;
+}
+
+.shadowed{
+  box-shadow: 1px 1px 1px #a0a0a0;
+}
+
+.responsive{
+  transition: all 0.05s ease-in-out;
+
+  -webkit-font-smoothing: antialiased;
+}
+
+.responsive:hover{
+  transform: scale(1.1); 
+
+}
+
+.responsive:active{
+
+  transform: scale(0.9);
+
+}
+
+.mildly-responsive{
+  transition: all 0.05s ease-in-out;
+
+  -webkit-font-smoothing: antialiased;
+}
+
+.mildly-responsive:hover{
+
+  transform: scale(1.025);
+
+}
+
+.mildly-responsive:active{
+
+  transform: scale(0.975);
+
+}
+
+.slightly-responsive{
+  transition: all 0.05s ease-in-out;
+
+  -webkit-font-smoothing: antialiased;
+}
+
+.slightly-responsive:hover{
+
+  transform: scale(1.01);
+}
