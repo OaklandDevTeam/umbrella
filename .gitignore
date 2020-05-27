@@ -70,6 +70,7 @@ Temporary Items
 .idea/**/dynamic.xml
 .idea/**/uiDesigner.xml
 .idea/**/dbnavigator.xml
+.idea/inspectionProfiles/
 # Jetbrains Gradle specific
 .idea/**/gradle.xml
 .idea/**/libraries
