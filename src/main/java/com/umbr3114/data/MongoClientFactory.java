@@ -7,11 +7,12 @@ import com.mongodb.client.MongoClients;
 
 public class MongoClientFactory {
 
-    public static MongoClient create(String dbUser, String dbPassword) {
+    public static MongoClient create(String dbUser, String dbPassword, String dbHost) {
         String connectionString = String.format(
-                "mongodb+srv://%s:%s@cluster0-urisd.gcp.mongodb.net/umbrella-dev?retryWrites=true&w=majority",
+                "mongodb+srv://%s:%s@%s/umbrella-dev?retryWrites=true&w=majority",
                 dbUser,
-                dbPassword
+                dbPassword,
+                dbHost
         );
         MongoClientSettings mongoSettings;
         mongoSettings = MongoClientSettings.builder().
