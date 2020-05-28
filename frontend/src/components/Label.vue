@@ -1,7 +1,7 @@
 <template>
-    <p class="u-label">
+    <pre class="u-label">
       <slot></slot>
-    </p>
+    </pre>
 </template>
 
 <script>
@@ -15,8 +15,8 @@
     font-size: 1em;
     font-family: var(--font);
     text-align: center;
-    line-height: 0.25em;
-    margin: 0.75vh;
+    line-height: 1em;
+    margin: 0;
   }
 </style>
 

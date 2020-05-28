@@ -22,8 +22,8 @@
                 <u-label id="no-name-pass-label" hidden=true>enter a username and password</u-label>
 
                 <u-label id="signup-success-label" hidden=true>Sign-up successful!</u-label>
-                <u-label id="login-fail-label" hidden=true>incorrect username and password</u-label>
-                <u-label id="login-success-label" hidden=true>successfully logged in</u-label>
+                <u-label v-if="loginErrors != ''" hidden=true>{{loginErrors}}</u-label>
+                <u-label v-if="signupSuccess">Signup successful!</u-label>
 
                 <div id="login-stuff" class="stuff-container" v-if="state == 'login'">
                     <div class="flex-row">
@@ -81,7 +81,9 @@ export default {
       usernameErrors: "",
       passwordErrors: "",
       emailErrors: "",
-      ageErrors: ""
+      ageErrors: "",
+      loginErrors: "",
+      signupSuccess: false
     }
   },
   methods: {
@@ -90,19 +92,50 @@ export default {
       this.passwordErrors="";
       this.emailErrors="";
       this.ageErrors="";
+      this.loginErrors = "";
     },
     setState(e){
       this.clearErrors();
       this.state = e;
     },
     register(){
-      //var usernameRegex = /^[a-zA-Z0-9=^+@,._]+$/;
-      //var passwordRegex = /^[a-zA-Z0-9=^+@,._ ]+$/;
-
       this.clearErrors();
-      if(!this.ageCheck) this.ageErrors += "You must be over 13 to register.\n";
-      if(this.username.length < 5) this.usernameErrors += "username must be at least 5 characters\n";
-      if(this.password.length < 5) this.passwordErrors += "password must be at least 5 characters\n";
+
+      var usernameRegex = new RegExp(/^[a-zA-Z0-9=^+@,._]+$/);
+      var validUsername = usernameRegex.test(this.username);
+      var passwordRegex = new RegExp(/^[a-zA-Z0-9=^+@,._ ]+$/);
+      var validPassword = passwordRegex.test(this.password);
+      var emailRegex = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+      var validEmail = emailRegex.test(this.email);
+
+      if(!this.ageCheck) this.ageErrors += "\nYou must be over 13 to register.";
+      if(this.username.length < 5) this.usernameErrors += "\nusername must be at least 5 characters";
+      if(this.password.length < 5) this.passwordErrors += "\npassword must be at least 5 characters";
+      if(!validUsername) this.usernameErrors += "\ncan't contain special characters other than\n-=^+@,._";
+      if(!validPassword) this.passwordErrors += "\ncan't contain special characters other than\n-=^+@,._";
+      if(this.password != this.confirmPassword) this.passwordErrors += "\npasswords don't match!"
+      if(!validEmail) this.emailErrors += "\nInvalid email!"; 
+
+      if(this.usernameErrors+this.passwordErrors+this.emailErrors+this.ageErrors == ""){
+        this.axios.post('/register', `username=${this.username}&password=${this.password}&email=${this.email}`)
+        .then(function (response) {
+        
+          if(response.status == 400){
+            this.usernameErrors += "\nUsername is already in use!"
+          }else if(response.status == 200){
+            this.setState('login');
+            this.signupSuccess = true;
+          }
+        
+        }.bind(this));
+
+      this.usernameErrors = this.usernameErrors.trim();
+      this.passwordErrors = this.passwordErrors.trim();
+      this.emailErrors = this.emailErrors.trim();
+      this.ageErrors = this.ageErrors.trim();
+
+      }
+    
     }
   }
 };
