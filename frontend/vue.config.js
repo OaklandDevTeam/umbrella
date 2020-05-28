@@ -1,6 +1,6 @@
 const path = require("path");
 
 module.exports = {
-  outputDir: path.resolve(__dirname, "../src/main/resources/static"),
+  outputDir: path.resolve(__dirname, "build/frontend/static"),
   assetsDir: "./assets"
 }

@@ -2,7 +2,12 @@ FROM gradle:6.4.1-jdk8 AS build
 USER root
 COPY --chown=gradle:gradle . /home/gradle/src
 WORKDIR /home/gradle/src
+<<<<<<< HEAD
+
+RUN gradle build --no-daemon --stacktrace
+=======
 RUN gradle build --no-daemon
+>>>>>>> gradle-node-fixes
 
 FROM java:8-jdk-alpine
 WORKDIR /usr/app
