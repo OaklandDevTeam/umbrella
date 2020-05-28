@@ -4,8 +4,6 @@ plugins {
     id "com.github.node-gradle.node" version "2.2.4"
 }
 
-apply plugin: "com.github.node-gradle.node"
-
 group 'com.umbr3ll4'
 version '1.0-SNAPSHOT'
 
@@ -44,29 +42,6 @@ dependencies {
 
 }
 
-node {
-    version = '12.16.2'
-    npmVersion = '6.14.4'
-    download = true
-    workDir = file("${project.projectDir}/.gradle/nodejs")
-    npmWorkDir = file("${project.projectDir}/.gradle/npm")
-}
-
-task vueSetup(type: NpmTask, dependsOn: 'npmInstall') {
-    workingDir = file("${project.projectDir}/frontend")
-    args = ['install', '@vue/cli']
-}
-
-
-task buildWebpack(type: NpmTask, dependsOn: 'vueSetup') {
-    workingDir = file("${project.projectDir}/frontend")
-    args = ['run', 'build']
-}
-
-task cleanNode(type: Delete){
-    delete 'src/main/resources/static', 'node_modules', 'frontend/node_modules'
-}
-
 task copyDbProperties(type: Copy) {
     from(file("${project.projectDir}/dbconnection.properties"))
     into(file("${project.projectDir}/src/main/resources"))
@@ -76,8 +51,6 @@ task cleanDbProperties(type: Delete) {
     delete "${project.projectDir}/src/main/resources/dbconnection.properties"
 }
 
-processResources.dependsOn buildWebpack
-processResources.dependsOn(copyDbProperties)
+processResources.dependsOn copyDbProperties
 
-clean.dependsOn cleanNode
 clean.dependsOn cleanDbProperties
