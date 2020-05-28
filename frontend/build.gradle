@@ -10,6 +10,7 @@ node {
 }
 
 task cleanFrontend(type: Delete){
+    
     delete 'build', 'node_modules', 'package-lock.json'
 }
 
@@ -32,7 +33,7 @@ task buildWebpack(type: NpmTask, dependsOn: 'vueSetup') {
     outputs.dir('build/frontend')
 
     workingDir = file(project.projectDir)
-    args = ['run', 'build', '--verbose']
+    args = ['run', 'build']
 }
 
 clean.dependsOn cleanFrontend
