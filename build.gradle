@@ -47,16 +47,3 @@ dependencies {
     testImplementation group: 'org.mockito', name: 'mockito-core', version: '3.3.3'
 
 }
-
-task copyDbProperties(type: Copy) {
-    from(file("${project.projectDir}/dbconnection.properties"))
-    into(file("${project.projectDir}/src/main/resources"))
-}
-
-task cleanDbProperties(type: Delete) {
-    delete "${project.projectDir}/src/main/resources/dbconnection.properties"
-}
-
-//processResources.dependsOn copyDbProperties
-
-clean.dependsOn cleanDbProperties
