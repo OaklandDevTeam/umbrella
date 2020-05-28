@@ -1,27 +1,24 @@
 <template>
   <div>
-    <landing-page v-if="state=='landing'"></landing-page>
+    <landing-page v-if="page == 'landing'"></landing-page>
   </div>
 </template>
 
 <script>
+import store from "./store";
 
 export default {
-
   name: "App",
   data() {
-    return{
-      state: "landing",
-    }
+    return {};
   },
-  methods: {
-   
-    }
+  computed: {
+    page() {
+      return store.state.page;
+    },
+  },
+  methods: {},
 };
-
 </script>
 
-<style>
-</style>
-
-
+<style></style>
