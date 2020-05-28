@@ -132,8 +132,5 @@ frontend/node_modules
 #     PROJECT SPECIFIC
 # =======================================
 
-# This directory will be generated on Vue build, so it will cause churn in the repo
-src/main/resources/static
-
 # DB Connection file. A template will be checked into VCS.
 dbconnection.properties
