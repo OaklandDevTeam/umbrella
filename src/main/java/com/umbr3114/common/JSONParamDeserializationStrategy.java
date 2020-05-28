@@ -1,5 +1,6 @@
 package com.umbr3114.common;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -34,8 +35,8 @@ class JSONParamDeserializationStrategy implements ParamDeserializationStrategy {
         try {
             paramMap = mapper.readValue(requestBody, typeReference);
         } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+            // return an empty param map
+            return new HashMap<>();
         }
 
         return paramMap;

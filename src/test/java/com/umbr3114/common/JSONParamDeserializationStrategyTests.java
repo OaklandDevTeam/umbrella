@@ -41,7 +41,18 @@ public class JSONParamDeserializationStrategyTests {
         resultMap = strategy.deserializeToMap();
 
         Assert.assertEquals(testMap, resultMap);
-
-
     }
+
+    @Test
+    public void test_deserializeToMap_malformedJSONReturnsEmptyMap() {
+        Map<String, String> testMap = new HashMap<>();
+        Map<String, String> resultMap;
+        JSONParamDeserializationStrategy strategy;
+        String basicJsonString = "{param1:\"val1\", \"param2\":\"val2\", \"param3\":\"val3\"}";
+
+        strategy = new JSONParamDeserializationStrategy(basicJsonString);
+        resultMap = strategy.deserializeToMap();
+        Assert.assertEquals(testMap, resultMap);
+    }
+
 }
