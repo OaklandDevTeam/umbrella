@@ -11,7 +11,7 @@ node {
 
 task cleanFrontend(type: Delete){
     
-    delete 'build', 'node_modules', 'package-lock.json'
+    delete 'build', 'node_modules'
 }
 
 task vueSetup(type: NpmTask, dependsOn: 'npmInstall') {
