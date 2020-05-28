@@ -1,0 +1,56 @@
+div{
+  --card-bg-color: #F9F9F9;
+  --component-primary: #FFFFFF;
+  --logo-size: 30vh;
+  --font: roboto;
+}
+
+.shadowed{
+  box-shadow: 1px 1px 3px #a0a0a0;
+}
+
+.responsive{
+  transition: all 0.05s ease-in-out;
+
+  -webkit-font-smoothing: antialiased;
+}
+
+.responsive:hover{
+  transform: scale(1.1); 
+
+}
+
+.responsive:active{
+
+  transform: scale(0.9);
+
+}
+
+.mildly-responsive{
+  transition: all 0.05s ease-in-out;
+
+  -webkit-font-smoothing: antialiased;
+}
+
+.mildly-responsive:hover{
+
+  transform: scale(1.025);
+
+}
+
+.mildly-responsive:active{
+
+  transform: scale(0.975);
+
+}
+
+.slightly-responsive{
+  transition: all 0.05s ease-in-out;
+
+  -webkit-font-smoothing: antialiased;
+}
+
+.slightly-responsive:hover{
+
+  transform: scale(1.01);
+}

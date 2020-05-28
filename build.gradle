@@ -1,5 +1,7 @@
 plugins {
     id 'java'
+    id 'idea'
+    id "com.github.node-gradle.node" version "2.2.4"
 }
 
 group 'com.umbr3ll4'
@@ -16,6 +18,12 @@ jar {
     }
 }
 
+processResources {
+    dependsOn(":frontend:buildWebpack")
+    from(file("${project.projectDir}/frontend/build/frontend/"))
+    from(file("${project.projectDir}/dbconnection.properties"))
+}
+
 repositories {
     mavenCentral()
 }
@@ -23,19 +31,19 @@ repositories {
 dependencies {
     
     // main REST framework
-    compile "com.sparkjava:spark-core:2.9.1"
+    implementation "com.sparkjava:spark-core:2.9.1"
 
     // This also imports Jackson, Jackson-databind, Jackson-annotations
     // and the mongo driver
-    compile group: 'org.mongojack', name: 'mongojack', version: '4.0.0'
+    implementation group: 'org.mongojack', name: 'mongojack', version: '4.0.0'
 
     // https://mvnrepository.com/artifact/org.mindrot/jbcrypt
-    compile group: 'org.mindrot', name: 'jbcrypt', version: '0.4'
+    implementation group: 'org.mindrot', name: 'jbcrypt', version: '0.4'
 
     // logging
-    compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
+    implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
 
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    testCompile group: 'org.mockito', name: 'mockito-core', version: '3.3.3'
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
+    testImplementation group: 'org.mockito', name: 'mockito-core', version: '3.3.3'
 
 }
