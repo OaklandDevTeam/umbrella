@@ -1,0 +1,30 @@
+.flex-row{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.flex-column{
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+body{
+  overflow-y: hidden;
+}
+
+.stuff-container{
+  overflow: hidden;
+  width: min-content;
+
+  transition: all 5.5s ease-in-out;
+}
+.stuff-container[closed]{
+  /* width: 0%; */
+}
+.stuff-container[closed]>*{
+  display: none;
+}

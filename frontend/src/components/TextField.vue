@@ -1,13 +1,24 @@
 <template>
-  <input type="text" id="t-field" class="u-text-field shadowed mildly-responsive">
+  <input type="text" :placeholder="placeholder" v-model="value" id="t-field" @input="handleInput" class="u-text-field shadowed mildly-responsive">
 </template>
 
 <script>
   export default {
-    name: "TextField"
+    name: "TextField",
+    prop: ['value', 'placeholder'],
+    data () {
+      return{
+        value: "",
+        placeholder: ""
+      }
+    },
+    methods: {
+      handleInput() {
+        this.$emit('input', this.value);
+      }
+    }
+    
   }
-
-  
 
 </script>
 
