@@ -50,11 +50,10 @@ public class AuthRoutes {
             userManager.register(user);
         } catch(DuplicateUserException e) {
             halt(HttpStatus.BAD_REQUEST_400,
-                    new AuthResponseModel(HttpStatus.BAD_REQUEST_400, "duplicate username registration attempt")
-                            .toJSON());
+                    new AuthResponseModel(HttpStatus.BAD_REQUEST_400, "duplicate username registration attempt").toJSON());
         }
 
-        return new AuthResponseModel(HttpStatus.OK_200, user.getUsername()).toJSON();
+        return new AuthResponseModel(HttpStatus.OK_200, user.getUsername());
     });
 
     public static Route loginUser = ((request, response) -> {
@@ -82,15 +81,14 @@ public class AuthRoutes {
                     .toJSON());
         }
 
-        return new AuthResponseModel(HttpStatus.OK_200, username)
-                .toJSON();
+        return new AuthResponseModel(HttpStatus.OK_200, username);
     });
 
 
     public static Route logoutUser = ((request, response) -> {
         SessionManager sessionManager = new SparkSessionManager(request, response);
         sessionManager.invalidateSession();
-        return new AuthResponseModel(HttpStatus.OK_200, "successful").toJSON();
+        return new AuthResponseModel(HttpStatus.OK_200, "successful");
     });
 
 

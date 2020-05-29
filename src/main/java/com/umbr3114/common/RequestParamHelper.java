@@ -82,7 +82,6 @@ public class RequestParamHelper {
      */
     private void createDeserializationStrategy() {
         String contentType = sparkRequest.contentType();
-
         if (contentType == null) {
             contentType = "bad";
         }
@@ -92,7 +91,7 @@ public class RequestParamHelper {
                 deserializationStrategy = new URLFormDeserializationStrategy(sparkRequest);
                 break;
             case REQUEST_JSON_POST:
-                deserializationStrategy = new JSONParamDeserializationStrategy(sparkRequest.body());
+                deserializationStrategy = new JSONParamDeserializationStrategy(sparkRequest);
                 break;
             default:
                 log.debug("unsupported content type for request");

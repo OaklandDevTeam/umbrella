@@ -2,6 +2,8 @@ package com.umbr3114.auth;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.umbr3114.Main;
+import com.umbr3114.ServiceLocator;
 
 public class AuthResponseModel {
 
@@ -14,11 +16,12 @@ public class AuthResponseModel {
     }
 
     public String toJSON() {
+        String jsonMessage;
         try {
-            return new ObjectMapper().writeValueAsString(this);
+            jsonMessage =  Main.services.jsonMapper().writeValueAsString(this);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            jsonMessage = "";
         }
-        return "";
+        return jsonMessage;
     }
 }
