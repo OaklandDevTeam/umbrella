@@ -4,6 +4,8 @@ import com.umbr3114.auth.AuthCheck;
 import com.umbr3114.auth.AuthRoutes;
 import com.umbr3114.controllers.DropController;
 import com.umbr3114.controllers.PostController;
+import com.umbr3114.controllers.SubscriptionController;
+import com.umbr3114.models.SubscriptionModel;
 
 import static spark.Spark.*;
 
@@ -43,6 +45,20 @@ public class Main {
         get("/logout", AuthRoutes.logoutUser);
 
         post("/drops/create", DropController.addDrop);
+
+        /*
+         * to protect the subscription routes
+         */
+        before("/user/subscribe", new AuthCheck());
+        before("/user/unsubscribe", new AuthCheck());
+        before("/user/subscribed", new AuthCheck());
+
+        /*
+         * subscription endpoints
+         */
+        post("/user/subscribe", SubscriptionController.subscribe);
+        post("/user/unsubscribe", SubscriptionController.unsubscribe);
+        get("/user/subscribed", SubscriptionController.subscribed);
 
     }
 }
