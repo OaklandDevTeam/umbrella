@@ -1,16 +1,14 @@
-package com.umbr3114.auth;
+package com.umbr3114.common;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.umbr3114.Main;
-import com.umbr3114.ServiceLocator;
 
-public class AuthResponseModel {
+public class GeneralResponse {
 
     public String message;
     public int status;
 
-    public AuthResponseModel(int status, String message) {
+    public GeneralResponse(int status, String message) {
         this.status = status;
         this.message = message;
     }
