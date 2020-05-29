@@ -33,6 +33,9 @@ dependencies {
     // main REST framework
     implementation "com.sparkjava:spark-core:2.9.1"
 
+    // utility libraries
+    implementation group: 'org.apache.commons', name: 'commons-pool2', version: '2.8.0'
+
     // This also imports Jackson, Jackson-databind, Jackson-annotations
     // and the mongo driver
     implementation group: 'org.mongojack', name: 'mongojack', version: '4.0.0'

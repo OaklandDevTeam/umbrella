@@ -2,6 +2,7 @@ package com.umbr3114.auth;
 
 import com.mongodb.client.MongoDatabase;
 import com.umbr3114.ServiceLocator;
+import com.umbr3114.common.GeneralResponse;
 import com.umbr3114.common.RequestParamHelper;
 import com.umbr3114.data.CollectionFactory;
 import org.eclipse.jetty.http.HttpStatus;
@@ -39,7 +40,7 @@ public class AuthRoutes {
                 validateRawPassword(passwordRaw) &&
                 validateEmail(email))) {
             halt(HttpStatus.BAD_REQUEST_400,
-                    new AuthResponseModel(HttpStatus.BAD_REQUEST_400, "invalid registration form")
+                    new GeneralResponse(HttpStatus.BAD_REQUEST_400, "invalid registration form")
                             .toJSON()
             );
         }
@@ -50,11 +51,10 @@ public class AuthRoutes {
             userManager.register(user);
         } catch(DuplicateUserException e) {
             halt(HttpStatus.BAD_REQUEST_400,
-                    new AuthResponseModel(HttpStatus.BAD_REQUEST_400, "duplicate username registration attempt")
-                            .toJSON());
+                    new GeneralResponse(HttpStatus.BAD_REQUEST_400, "duplicate username registration attempt").toJSON());
         }
 
-        return new AuthResponseModel(HttpStatus.OK_200, user.getUsername()).toJSON();
+        return new GeneralResponse(HttpStatus.OK_200, user.getUsername());
     });
 
     public static Route loginUser = ((request, response) -> {
@@ -67,7 +67,7 @@ public class AuthRoutes {
         if (!(validateUsername(username) && validateRawPassword(rawPassword))) {
             // error out
             halt(HttpStatus.BAD_REQUEST_400,
-                    new AuthResponseModel(HttpStatus.BAD_REQUEST_400, "bad credentials")
+                    new GeneralResponse(HttpStatus.BAD_REQUEST_400, "bad credentials")
                             .toJSON());
         }
 
@@ -78,19 +78,18 @@ public class AuthRoutes {
         if (!userManager.login(username, rawPassword)) {
             log.info(String.format("Login failed for user: %s", username));
             halt(HttpStatus.FORBIDDEN_403,
-                    new AuthResponseModel(HttpStatus.FORBIDDEN_403, "cannot authenticate")
+                    new GeneralResponse(HttpStatus.FORBIDDEN_403, "cannot authenticate")
                     .toJSON());
         }
 
-        return new AuthResponseModel(HttpStatus.OK_200, username)
-                .toJSON();
+        return new GeneralResponse(HttpStatus.OK_200, username);
     });
 
 
     public static Route logoutUser = ((request, response) -> {
         SessionManager sessionManager = new SparkSessionManager(request, response);
         sessionManager.invalidateSession();
-        return new AuthResponseModel(HttpStatus.OK_200, "successful").toJSON();
+        return new GeneralResponse(HttpStatus.OK_200, "successful");
     });
 
 

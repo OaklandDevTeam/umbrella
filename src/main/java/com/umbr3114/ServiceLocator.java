@@ -1,5 +1,6 @@
 package com.umbr3114;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.MongoSecurityException;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
@@ -16,11 +17,12 @@ public class ServiceLocator {
     private static Logger log;
 
     private MongoClient mongoClient;
-
     private MongoDatabase dbService;
+    private ObjectMapper jsonMapper;
 
     private ServiceLocator(){
         initializeDbService();
+        initJsonMapper();
     }
 
     public static ServiceLocator getService() {
@@ -42,15 +44,17 @@ public class ServiceLocator {
                 mongoConnectionDetails.getHost()
         );
 
-        dbService = mongoClient.getDatabase("umbrella-data");
-
         try {
             // perform read operation on database to ensure we have a connection
-            dbService.listCollectionNames().first();
+            dbService().listCollectionNames().first();
         } catch (MongoSecurityException e) {
             log.error("Failed to establish database connection with provided credentials");
             throw new DatabaseConnectionException("Failed to establish database connection with provided credentials");
         }
+    }
+
+    private void initJsonMapper() {
+        jsonMapper = new ObjectMapper();
     }
 
     public MongoClient mongoClient() {
@@ -58,6 +62,10 @@ public class ServiceLocator {
     }
 
     public MongoDatabase dbService() {
-        return dbService;
+        return mongoClient.getDatabase("umbrella-data");
+    }
+
+    public ObjectMapper jsonMapper() {
+        return jsonMapper;
     }
 }

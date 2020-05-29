@@ -2,6 +2,7 @@ package com.umbr3114;
 
 import com.umbr3114.auth.AuthCheck;
 import com.umbr3114.auth.AuthRoutes;
+import com.umbr3114.common.JsonResponse;
 import com.umbr3114.controllers.DropController;
 import com.umbr3114.controllers.PostController;
 import com.umbr3114.controllers.SubscriptionController;
@@ -40,9 +41,9 @@ public class Main {
         /*
          * Auth endpoints
          */
-        post("/register", AuthRoutes.registerUser);
-        post("/login", AuthRoutes.loginUser);
-        get("/logout", AuthRoutes.logoutUser);
+        post("/register", AuthRoutes.registerUser, new JsonResponse());
+        post("/login", AuthRoutes.loginUser, new JsonResponse());
+        get("/logout", AuthRoutes.logoutUser, new JsonResponse());
 
         post("/drops/create", DropController.addDrop);
 
