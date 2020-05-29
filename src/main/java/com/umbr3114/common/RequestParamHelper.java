@@ -81,8 +81,13 @@ public class RequestParamHelper {
      * This also allows this class to easily support other Content-Types in the future (or deal with GET params)
      */
     private void createDeserializationStrategy() {
+        String contentType = sparkRequest.contentType();
 
-        switch (sparkRequest.headers("Content-Type")) {
+        if (contentType == null) {
+            contentType = "bad";
+        }
+
+        switch (contentType) {
             case REQUEST_FORM_ENCODED:
                 deserializationStrategy = new URLFormDeserializationStrategy(sparkRequest);
                 break;
@@ -90,7 +95,7 @@ public class RequestParamHelper {
                 deserializationStrategy = new JSONParamDeserializationStrategy(sparkRequest.body());
                 break;
             default:
-                log.error("Unsupported request Content-Type");
+                log.debug("unsupported content type for request");
                 throw new UnsupportedContentTypeException();
         }
     }
