@@ -32,7 +32,7 @@ public class RequestParamHelperTests {
     public void test_choosesCorrectStrategy_JSON() {
         RequestParamHelper helper;
         // mocks
-        when(fakeSparkRequest.headers("Content-Type")).thenReturn(RequestParamHelper.REQUEST_JSON_POST);
+        when(fakeSparkRequest.contentType()).thenReturn(RequestParamHelper.REQUEST_JSON_POST);
         when(fakeSparkRequest.body()).thenReturn("{}");
         
         helper = new RequestParamHelper(fakeSparkRequest);
@@ -44,7 +44,7 @@ public class RequestParamHelperTests {
     public void test_choosesCorrectStrategy_FORM() {
         RequestParamHelper helper;
         // mocks
-        when(fakeSparkRequest.headers("Content-Type")).thenReturn(RequestParamHelper.REQUEST_FORM_ENCODED);
+        when(fakeSparkRequest.contentType()).thenReturn(RequestParamHelper.REQUEST_FORM_ENCODED);
 
         helper = new RequestParamHelper(fakeSparkRequest);
 
@@ -56,7 +56,22 @@ public class RequestParamHelperTests {
         boolean throwsException = false;
         RequestParamHelper helper;
 
-        when(fakeSparkRequest.headers("Content-Type")).thenReturn("WRONG");
+        when(fakeSparkRequest.contentType()).thenReturn("WRONG");
+
+        try {
+            helper = new RequestParamHelper(fakeSparkRequest);
+        } catch (UnsupportedContentTypeException e) {
+            throwsException = true;
+        }
+        Assert.assertTrue(throwsException);
+    }
+
+    @Test
+    public void test_something_nullContentTypeThrowsException() {
+        boolean throwsException = false;
+        RequestParamHelper helper;
+
+        when(fakeSparkRequest.contentType()).thenReturn(null);
 
         try {
             helper = new RequestParamHelper(fakeSparkRequest);
@@ -167,7 +182,6 @@ public class RequestParamHelperTests {
 
         Assert.assertNull(result);
     }
-
 
     // Nice template method for other tests in this class
     @Ignore

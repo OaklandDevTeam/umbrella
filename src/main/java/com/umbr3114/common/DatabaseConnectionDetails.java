@@ -1,5 +1,6 @@
 package com.umbr3114.common;
 
+import com.umbr3114.errors.DatabaseConnectionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,7 +40,7 @@ public class DatabaseConnectionDetails {
     private void fromJarProperties() throws IOException {
         Properties dbProperties = getPropertiesFromJar();
         String dbUserKey = "mongo.user";
-        String dbPassKey = "mongo.pass";
+        String dbPassKey = "mongo.password";
         String dbHostKey = "mongo.host";
 
         // set everything
@@ -61,7 +62,7 @@ public class DatabaseConnectionDetails {
 
     private void credentialSanityCheck() {
         if (dbHost == null || dbHost.isEmpty() || dbHost.equals("<MONGOHOST>")) {
-            log.warn("Passed bad host, attempting default");
+            log.warn("Configured with bad host, attempting default");
             dbHost = DEFAULT_HOST;
         }
 
@@ -69,8 +70,8 @@ public class DatabaseConnectionDetails {
                 (dbUsername == null || dbUsername.isEmpty() || dbUsername.equals("<MONGOUSER>"))
                         && (dbPassword == null || dbPassword.isEmpty() || dbPassword.equals("<MONGOPASS>"))
         ) {
-            log.error("Passed bad database credentials. Application will not be able to connect");
-            throw new IllegalArgumentException();
+            log.error("Application configured with bad database credentials");
+            throw new DatabaseConnectionException("Application configured with bad credentials");
         }
     }
 
