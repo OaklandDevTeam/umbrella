@@ -7,11 +7,15 @@ import com.umbr3114.controllers.DropController;
 import com.umbr3114.controllers.PostController;
 import com.umbr3114.controllers.SubscriptionController;
 import com.umbr3114.models.SubscriptionModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static spark.Spark.*;
 
 public class Main {
     public static ServiceLocator services;
+    public static Logger log = LoggerFactory.getLogger("ApplicationMain");
+
     public static void main(String[] args) {
         services = ServiceLocator.getService();
 
@@ -57,9 +61,25 @@ public class Main {
         /*
          * subscription endpoints
          */
-        post("/user/subscribe", SubscriptionController.subscribe);
-        post("/user/unsubscribe", SubscriptionController.unsubscribe);
-        get("/user/subscribed", SubscriptionController.subscribed);
+        post("/user/subscribe", SubscriptionController.subscribe, new JsonResponse());
+        post("/user/unsubscribe", SubscriptionController.unsubscribe, new JsonResponse());
+        get("/user/subscribed", SubscriptionController.subscribed, new JsonResponse());
 
+
+        /*
+         * Application should be running now
+         */
+        log.info(
+                "\n\n\n========================================================================================\n"
+                + "\n" +
+                "   __  __                __                       __   __        \n" +
+                "  / / / /  ____ ___     / /_     _____   ___     / /  / /  ____ _\n" +
+                " / / / /  / __ `__ \\   / __ \\   / ___/  / _ \\   / /  / /  / __ `/\n" +
+                "/ /_/ /  / / / / / /  / /_/ /  / /     /  __/  / /  / /  / /_/ / \n" +
+                "\\____/  /_/ /_/ /_/  /_.___/  /_/      \\___/  /_/  /_/   \\__,_/  \n" +
+                "                                                                 \n" +
+                "\n========================================================================================\n"
+        );
+        log.info("Application started\n\n");
     }
 }

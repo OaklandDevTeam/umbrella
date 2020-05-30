@@ -94,8 +94,7 @@ public class RequestParamHelper {
                 deserializationStrategy = new JSONParamDeserializationStrategy(sparkRequest);
                 break;
             default:
-                log.debug("unsupported content type for request");
-                throw new UnsupportedContentTypeException();
+                deserializationStrategy = new UnsupportedDeserializationStrategy();
         }
     }
 
