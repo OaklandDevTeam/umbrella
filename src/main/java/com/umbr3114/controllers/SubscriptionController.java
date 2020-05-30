@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.result.DeleteResult;
 import com.umbr3114.ServiceLocator;
+import com.umbr3114.common.GeneralResponse;
 import com.umbr3114.common.RequestParamHelper;
 import com.umbr3114.data.CollectionFactory;
 import com.umbr3114.models.SubscriptionModel;
@@ -37,7 +38,9 @@ public class SubscriptionController {
         dropID = params.valueOf("dropId");
 
         if(dropID == null || userID == null){
-            halt(HttpStatus.BAD_REQUEST_400,"Drop doesn't exist or already subscribed.");
+            halt(HttpStatus.FORBIDDEN_403,
+                    new GeneralResponse(HttpStatus.FORBIDDEN_403, "drop_id or user_id missing.")
+                            .toJSON());
         }
         //save the userId and dropId to the collection
         subscription = new SubscriptionModel();
@@ -45,7 +48,7 @@ public class SubscriptionController {
         subscription.dropid = dropID;
         collection.save(subscription);
 
-        return "Successfully subscribed to the drop!";
+        return new GeneralResponse(HttpStatus.OK_200, "subscribed").toJSON();
     });
 
     /**
@@ -64,9 +67,11 @@ public class SubscriptionController {
 
         result = removeDropCollection.deleteOne(and(eq("userid",userID),eq("dropid",dropID)));
         if(result.getDeletedCount() == 0){
-            halt(HttpStatus.BAD_REQUEST_400,"Drop does't exist.");
+            halt(HttpStatus.FORBIDDEN_403,
+                    new GeneralResponse(HttpStatus.FORBIDDEN_403, "drop_id doesn't exist.")
+                            .toJSON());
         }
-        return "Successfully unsubscribed!";
+        return new GeneralResponse(HttpStatus.OK_200,"Unsubscribed").toJSON();
     });
     /**
      * to list the Drops that subscribed by the user
@@ -80,10 +85,12 @@ public class SubscriptionController {
           //to assign the result to a list and show the subscription info
           List<SubscriptionModel> list = new ArrayList<>();
           if(userID == null){
-              halt(HttpStatus.BAD_REQUEST_400,"No subscription record was found!");
+              halt(HttpStatus.FORBIDDEN_403,
+                      new GeneralResponse(HttpStatus.FORBIDDEN_403, "No subscription record was found.")
+                              .toJSON());
           }
           dropCollection.find(eq("userid",userID)).into(list);
 
-          return new ObjectMapper().writeValueAsString(list);
+          return list;
     });
 }
