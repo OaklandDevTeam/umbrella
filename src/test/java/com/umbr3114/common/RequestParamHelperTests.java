@@ -53,33 +53,14 @@ public class RequestParamHelperTests {
     }
 
     @Test
-    public void test_choosesCorrectStrategy_unsupportedContentType_throwsException() {
-        boolean throwsException = false;
+    public void test_choosesCorrectStrategy_contentTypeNull_choosesUnsupportedStrategy() {
         RequestParamHelper helper;
-
-        when(fakeSparkRequest.contentType()).thenReturn("WRONG");
-
-        try {
-            helper = new RequestParamHelper(fakeSparkRequest);
-        } catch (UnsupportedContentTypeException e) {
-            throwsException = true;
-        }
-        Assert.assertTrue(throwsException);
-    }
-
-    @Test
-    public void test_something_nullContentTypeThrowsException() {
-        boolean throwsException = false;
-        RequestParamHelper helper;
-
+        // mocks
         when(fakeSparkRequest.contentType()).thenReturn(null);
 
-        try {
-            helper = new RequestParamHelper(fakeSparkRequest);
-        } catch (UnsupportedContentTypeException e) {
-            throwsException = true;
-        }
-        Assert.assertTrue(throwsException);
+        helper = new RequestParamHelper(fakeSparkRequest);
+
+        Assert.assertTrue(helper.getDeserializationStrategy() instanceof UnsupportedDeserializationStrategy);
     }
 
     @Test

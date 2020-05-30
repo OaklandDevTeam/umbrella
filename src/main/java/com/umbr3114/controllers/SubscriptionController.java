@@ -48,7 +48,7 @@ public class SubscriptionController {
         subscription.dropid = dropID;
         collection.save(subscription);
 
-        return new GeneralResponse(HttpStatus.OK_200, "subscribed").toJSON();
+        return new GeneralResponse(HttpStatus.OK_200, "subscribed");
     });
 
     /**
@@ -71,7 +71,7 @@ public class SubscriptionController {
                     new GeneralResponse(HttpStatus.FORBIDDEN_403, "drop_id doesn't exist.")
                             .toJSON());
         }
-        return new GeneralResponse(HttpStatus.OK_200,"Unsubscribed").toJSON();
+        return new GeneralResponse(HttpStatus.OK_200,"Unsubscribed");
     });
     /**
      * to list the Drops that subscribed by the user
