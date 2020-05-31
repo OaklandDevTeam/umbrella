@@ -5,6 +5,8 @@ import org.bson.codecs.pojo.annotations.BsonIgnore;
 import org.bson.types.ObjectId;
 import org.mongojack.MongoCollection;
 
+import java.util.List;
+
 @MongoCollection(name = "users")
 public class UserModel {
 
@@ -12,6 +14,7 @@ public class UserModel {
     private String username;
     private String email;
     private String password;
+    private List<UserRole> roles;
 
     public UserModel(String username, String email, String password) {
         this.username = username;
@@ -51,5 +54,9 @@ public class UserModel {
     @BsonIgnore
     public String getUserIdString() {
         return _id.toString();
+    }
+
+    class UserRole {
+
     }
 }
