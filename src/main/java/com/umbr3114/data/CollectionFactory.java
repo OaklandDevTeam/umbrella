@@ -34,7 +34,6 @@ public class CollectionFactory<T> {
 
         return (JacksonMongoCollection<T>) JacksonMongoCollection
                 .builder()
-                .withObjectMapper(Main.services.jsonMapper())
                 .build(database, modelClass, UuidRepresentation.STANDARD);
     }
 }
