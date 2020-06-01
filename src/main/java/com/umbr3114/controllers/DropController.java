@@ -122,7 +122,6 @@ public class DropController {
     static void addModerator(JacksonMongoCollection<DropModel> collection, String userId, String username, String dropId) {
         DropModel.ModeratorModel modModel = new DropModel.ModeratorModel(username, userId);
         DropModel dropModel;
-        PermissionChecker permissionChecker;
 
         dropModel = collection.findOne(Filters.eq("_id", new ObjectId(dropId)));
 
