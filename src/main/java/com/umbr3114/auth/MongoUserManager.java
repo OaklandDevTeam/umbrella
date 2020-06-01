@@ -38,13 +38,9 @@ public class MongoUserManager extends AbstractUserManager {
             return false;
         }
 
-        getSessionManager().startSession(
-                credentialVerifier.getUserModel().getUserIdString(),
-                credentialVerifier.getUserModel().getUsername()
-        );
+        getSessionManager().startSession(credentialVerifier.getUserModel());
         return true;
     }
-
     @Override
     public boolean register(UserModel registrationModel) {
         // TODO handle the case where there is another user of the same username here

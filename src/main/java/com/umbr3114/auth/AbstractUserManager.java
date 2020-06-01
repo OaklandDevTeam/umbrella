@@ -15,6 +15,7 @@ public class AbstractUserManager implements UserManager{
         return false;
     }
 
+
     @Override
     public boolean register(UserModel registrationModel) {
         return false;

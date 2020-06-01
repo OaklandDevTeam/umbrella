@@ -51,6 +51,8 @@ public class Main {
         get("/logout", AuthRoutes.logoutUser, new JsonResponse());
 
         post("/drops/create", DropController.addDrop);
+
+        before("/drops/managemod", new AuthCheck());
         post("/drops/managemod", DropController.manageModerator, new JsonResponse());
         delete("/drops/managemod", DropController.manageModerator, new JsonResponse());
 

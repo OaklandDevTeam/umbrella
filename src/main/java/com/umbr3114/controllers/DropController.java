@@ -3,6 +3,8 @@ package com.umbr3114.controllers;
 import com.mongodb.client.model.Filters;
 import com.umbr3114.Main;
 import com.umbr3114.ServiceLocator;
+import com.umbr3114.auth.PermissionChecker;
+import com.umbr3114.auth.PermissionCheckProvider;
 import com.umbr3114.common.GeneralResponse;
 import com.umbr3114.common.RequestParamHelper;
 import com.umbr3114.data.CollectionFactory;
@@ -64,6 +66,7 @@ public class DropController {
         String dropId;
         String requestType = request.requestMethod();
 
+        PermissionChecker permissionChecker;
         JacksonMongoCollection<DropModel> collection;
         RequestParamHelper params = new RequestParamHelper(request);
         collection = new CollectionFactory<DropModel>(Main.services.dbService(), DropModel.class).getCollection();
@@ -76,6 +79,13 @@ public class DropController {
         if (targetUserId == null || dropId == null) {
             halt(HttpStatus.BAD_REQUEST_400, new GeneralResponse(HttpStatus.BAD_REQUEST_400,
                     "incorrect params").toJSON());
+        }
+
+        // check we have permission
+        permissionChecker = new PermissionChecker(request, new DropPermissionCheckProvider(collection, dropId));
+        if (!permissionChecker.verify()) {
+            halt(HttpStatus.FORBIDDEN_403, new GeneralResponse(HttpStatus.FORBIDDEN_403,
+                    "incorrect permissions").toJSON());
         }
 
         if (requestType.equals("POST") && targetUserName == null) {
@@ -112,6 +122,7 @@ public class DropController {
     static void addModerator(JacksonMongoCollection<DropModel> collection, String userId, String username, String dropId) {
         DropModel.ModeratorModel modModel = new DropModel.ModeratorModel(username, userId);
         DropModel dropModel;
+        PermissionChecker permissionChecker;
 
         dropModel = collection.findOne(Filters.eq("_id", new ObjectId(dropId)));
 
@@ -159,4 +170,27 @@ public class DropController {
         collection.findOneAndReplace(Filters.eq("_id", new ObjectId(dropId)), dropModel);
     }
 
+    public static class DropPermissionCheckProvider extends PermissionCheckProvider {
+        private DropModel model;
+
+        public DropPermissionCheckProvider(JacksonMongoCollection<DropModel> collection, String dropId) {
+            model = collection.findOne(Filters.eq("_id", new ObjectId(dropId)));
+        }
+
+        public DropPermissionCheckProvider(DropModel model) {
+            this.model = model;
+        }
+
+        @Override
+        public DropModel provideDropModel() {
+            return model;
+        }
+
+        @Override
+        public String provideOwnerId() {
+            if (model == null)
+                return null;
+            return model.owner;
+        }
+    }
 }
