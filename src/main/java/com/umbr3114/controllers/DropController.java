@@ -1,12 +1,20 @@
 package com.umbr3114.controllers;
 
+import com.mongodb.client.model.Filters;
+import com.umbr3114.Main;
 import com.umbr3114.ServiceLocator;
+import com.umbr3114.common.GeneralResponse;
 import com.umbr3114.common.RequestParamHelper;
 import com.umbr3114.data.CollectionFactory;
 import com.umbr3114.models.DropModel;
+import org.bson.types.ObjectId;
 import org.eclipse.jetty.http.HttpStatus;
 import org.mongojack.JacksonMongoCollection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import spark.Route;
+
+import java.util.ArrayList;
 
 import static spark.Spark.halt;
 
@@ -18,10 +26,11 @@ public class DropController {
         String topic;
         JacksonMongoCollection<DropModel> dropCollection;
         DropModel drop;
+        RequestParamHelper params = new RequestParamHelper(request);
 
-        user = request.queryParams("owner");
-        title = request.queryParams("title");
-        topic = request.queryParams("topic");
+        user = params.valueOf("owner");
+        title = params.valueOf("title");
+        topic = params.valueOf("topic");
 
 
         if (user == null || user.isEmpty() || user.contains(" "))
@@ -48,5 +57,106 @@ public class DropController {
 
 
     });
+
+    public static Route manageModerator = ((request, response) -> {
+        String targetUserId; // ID of the user being blessed to moderator
+        String targetUserName; // name of the user being blessed to moderator
+        String dropId;
+        String requestType = request.requestMethod();
+
+        JacksonMongoCollection<DropModel> collection;
+        RequestParamHelper params = new RequestParamHelper(request);
+        collection = new CollectionFactory<DropModel>(Main.services.dbService(), DropModel.class).getCollection();
+
+        targetUserId = params.valueOf("user_id");
+        targetUserName = params.valueOf("username");
+        dropId = params.valueOf("drop_id");
+
+        // null checks
+        if (targetUserId == null || dropId == null) {
+            halt(HttpStatus.BAD_REQUEST_400, new GeneralResponse(HttpStatus.BAD_REQUEST_400,
+                    "incorrect params").toJSON());
+        }
+
+        if (requestType.equals("POST") && targetUserName == null) {
+            halt(HttpStatus.BAD_REQUEST_400, new GeneralResponse(HttpStatus.BAD_REQUEST_400,
+                    "incorrect params").toJSON());
+        }
+
+        try {
+            switch (requestType) {
+                case "POST":
+                    addModerator(collection, targetUserId, targetUserName, dropId);
+                    break;
+                case "DELETE":
+                    removeModerator(collection, targetUserId, dropId);
+                    break;
+                default:
+                    halt(HttpStatus.BAD_REQUEST_400, new GeneralResponse(HttpStatus.BAD_REQUEST_400, "unsupported request").toJSON());
+            }
+        } catch(IllegalArgumentException e) {
+            halt(HttpStatus.BAD_REQUEST_400, new GeneralResponse(HttpStatus.BAD_REQUEST_400,
+                    e.getMessage()).toJSON());
+        }
+
+        return new GeneralResponse(HttpStatus.OK_200, "successful");
+    });
+
+    /**
+     * This method adds a moderator to a specific drop record
+     * @param collection The collection object for this request
+     * @param userId The target userId
+     * @param username The target username
+     * @param dropId The target drop
+     */
+    static void addModerator(JacksonMongoCollection<DropModel> collection, String userId, String username, String dropId) {
+        DropModel.ModeratorModel modModel = new DropModel.ModeratorModel(username, userId);
+        DropModel dropModel;
+
+        dropModel = collection.findOne(Filters.eq("_id", new ObjectId(dropId)));
+
+        if (dropModel == null) {
+            throw new IllegalArgumentException("drop does not exist");
+        }
+
+        if (dropModel.moderators == null) {
+            dropModel.moderators = new ArrayList<>();
+        } else {
+            // check for duplicate
+            if (dropModel.moderators.contains(modModel))
+                throw new IllegalArgumentException("moderator already in list");
+        }
+        dropModel.moderators.add(modModel);
+
+        collection.findOneAndReplace(Filters.eq("_id", new ObjectId(dropId)), dropModel);
+    }
+
+    /**
+     * This method removes a moderator to a specific drop record
+     * @param collection The collection object for this request
+     * @param userId The target userId
+     * @param dropId The target username
+     */
+    static void removeModerator(JacksonMongoCollection<DropModel> collection, String userId, String dropId) {
+        Logger log = LoggerFactory.getLogger("ModManager");
+        DropModel.ModeratorModel modModel;
+        DropModel dropModel;
+
+        // here a username is not required since it is not compared
+        modModel = new DropModel.ModeratorModel(null, userId);
+
+        dropModel = collection.findOne(Filters.eq("_id", new ObjectId(dropId)));
+
+        if (dropModel == null)
+            throw new IllegalArgumentException("drop does not exist");
+
+        if (dropModel.moderators == null)
+            return;
+
+        if (!dropModel.moderators.remove(modModel)) {
+            log.info("Moderator not in list of moderators");
+        }
+        collection.findOneAndReplace(Filters.eq("_id", new ObjectId(dropId)), dropModel);
+    }
 
 }

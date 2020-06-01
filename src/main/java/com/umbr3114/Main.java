@@ -6,6 +6,7 @@ import com.umbr3114.common.JsonResponse;
 import com.umbr3114.controllers.DropController;
 import com.umbr3114.controllers.PostController;
 import com.umbr3114.controllers.SubscriptionController;
+import com.umbr3114.models.DropModel;
 import com.umbr3114.models.SubscriptionModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +51,8 @@ public class Main {
         get("/logout", AuthRoutes.logoutUser, new JsonResponse());
 
         post("/drops/create", DropController.addDrop);
+        post("/drops/managemod", DropController.manageModerator, new JsonResponse());
+        delete("/drops/managemod", DropController.manageModerator, new JsonResponse());
 
         /*
          * to protect the subscription routes

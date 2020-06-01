@@ -5,8 +5,6 @@ import org.bson.codecs.pojo.annotations.BsonIgnore;
 import org.bson.types.ObjectId;
 import org.mongojack.MongoCollection;
 
-import java.util.List;
-
 @MongoCollection(name = "users")
 public class UserModel {
 
@@ -14,12 +12,13 @@ public class UserModel {
     private String username;
     private String email;
     private String password;
-    private List<UserRole> roles;
+    private boolean isAdmin;
 
-    public UserModel(String username, String email, String password) {
+    public UserModel(String username, String email, String password, boolean admin) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.isAdmin = admin;
     }
 
     public UserModel() {
@@ -50,13 +49,17 @@ public class UserModel {
         this.password = password;
     }
 
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
+    }
+
     @JsonIgnore
     @BsonIgnore
     public String getUserIdString() {
         return _id.toString();
-    }
-
-    class UserRole {
-
     }
 }
