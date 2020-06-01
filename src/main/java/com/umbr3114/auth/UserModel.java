@@ -12,11 +12,13 @@ public class UserModel {
     private String username;
     private String email;
     private String password;
+    private boolean isAdmin;
 
-    public UserModel(String username, String email, String password) {
+    public UserModel(String username, String email, String password, boolean admin) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.isAdmin = admin;
     }
 
     public UserModel() {
@@ -45,6 +47,14 @@ public class UserModel {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
 
     @JsonIgnore

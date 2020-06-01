@@ -44,7 +44,7 @@ public class AuthRoutes {
             );
         }
 
-        user = new UserModel(userName, email, passwordRaw);
+        user = new UserModel(userName, email, passwordRaw, false);
 
         try {
             userManager.register(user);

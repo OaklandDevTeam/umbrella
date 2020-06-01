@@ -10,12 +10,14 @@ public class PostModel {
     public String title;
     public String bodyText;
     public String authorId; // anonymous?
+    public String dropId;
     //public List<CommentModel> comments;
 
-    public PostModel(String theTitle, String text, String user) {
+    public PostModel(String theTitle, String text, String user, String dropId) {
         this.title = theTitle;
         this.bodyText = text;
         this.authorId = user;
+        this.dropId = dropId;
     }
 
     public String getTitle() {
