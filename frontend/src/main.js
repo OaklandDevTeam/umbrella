@@ -12,6 +12,8 @@ import CheckBox from "./components/CheckBox.vue";
 import Label from "./components/Label.vue";
 import VideoBG from "./components/VideoBG.vue";
 import LandingPage from "./components/LandingPage.vue";
+import FrontPage from "./components/FrontPage.vue";
+import Sidebar from "./components/Sidebar.vue";
 
 Vue.component('u-logo', Logo);
 Vue.component('u-button', Button);
@@ -21,7 +23,9 @@ Vue.component('u-card', Card);
 Vue.component('u-check-box', CheckBox);
 Vue.component('u-label', Label);
 Vue.component('u-video-bg', VideoBG);
+Vue.component('u-sidebar', Sidebar);
 Vue.component('landing-page', LandingPage);
+Vue.component('front-page', FrontPage);
 
 Vue.use(VueAxios, axios);
 
