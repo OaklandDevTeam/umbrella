@@ -70,6 +70,12 @@ public class Main {
         post("/user/unsubscribe", SubscriptionController.unsubscribe, new JsonResponse());
         get("/user/subscribed", SubscriptionController.subscribed, new JsonResponse());
 
+        /*
+         * Post management routes
+         */
+        post("/posts/create", PostController.savePosts);
+        get("/posts/:drop/list", PostController.listPosts);
+
 
         /*
          * Application should be running now
