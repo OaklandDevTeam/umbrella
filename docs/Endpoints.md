@@ -94,6 +94,17 @@
 }
 ```
 
+### GET `/drops/list`
+> Returns JSON
+```json
+[
+  {
+    "drop_id": "<dropId>",
+    "drop_title": "<Title>"
+  },
+]
+```
+
 # Drop Subscriptions
 ### POST `/user/subscribe`
 > Accepts JSON

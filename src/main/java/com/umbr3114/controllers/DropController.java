@@ -8,6 +8,7 @@ import com.umbr3114.auth.PermissionCheckProvider;
 import com.umbr3114.common.GeneralResponse;
 import com.umbr3114.common.RequestParamHelper;
 import com.umbr3114.data.CollectionFactory;
+import com.umbr3114.models.DropListingModel;
 import com.umbr3114.models.DropModel;
 import org.bson.types.ObjectId;
 import org.eclipse.jetty.http.HttpStatus;
@@ -17,6 +18,8 @@ import org.slf4j.LoggerFactory;
 import spark.Route;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
 
 import static spark.Spark.halt;
 
@@ -109,6 +112,18 @@ public class DropController {
         }
 
         return new GeneralResponse(HttpStatus.OK_200, "successful");
+    });
+
+    public static Route listDrops = ((request, response) -> {
+
+        JacksonMongoCollection<DropModel> collection = new CollectionFactory<DropModel>(Main.services.dbService(), DropModel.class)
+                .getCollection();
+        List<DropListingModel> dropModels = new ArrayList<>();
+        collection.find().forEach(model -> {
+            dropModels.add(new DropListingModel(model._id.toString(), model.title));
+        });
+
+        return dropModels;
     });
 
     /**
