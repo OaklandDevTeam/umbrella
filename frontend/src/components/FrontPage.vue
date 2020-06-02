@@ -1,5 +1,7 @@
 <template>
-  <div></div>
+  <div>
+    <u-drop-card></u-drop-card>
+  </div>
 </template>
 
 <script>
@@ -13,8 +15,8 @@ export default {
   methods: {
     setState(e) {
       this.state = e;
-    },
-  },
+    }
+  }
 };
 </script>
 
