@@ -36,17 +36,8 @@ public class ServiceLocator {
     private void initializeDbService() {
         DatabaseConnectionDetails mongoConnectionDetails;
 
-<<<<<<< HEAD
-        try {
-             mongoConnectionDetails = new DatabaseConnectionDetails();
-        } catch (IllegalArgumentException e) {
-            log.error("Database credentials are missing - cannot continue!");
-            throw new IllegalStateException();
-        }
-=======
         mongoConnectionDetails = new DatabaseConnectionDetails();
 
->>>>>>> master
         mongoClient = MongoClientFactory.create(
                 mongoConnectionDetails.getUsername(),
                 mongoConnectionDetails.getPassword(),
