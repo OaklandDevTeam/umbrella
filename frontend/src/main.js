@@ -16,6 +16,8 @@ import FrontPage from "./components/FrontPage.vue";
 import Sidebar from "./components/Sidebar.vue";
 import UserCard from "./components/UserCard.vue";
 import DropCard from "./components/DropCard.vue";
+import TextBox from "./components/TextBox";
+import DebugPage from "./components/DebugPage";
 
 Vue.component('u-logo', Logo);
 Vue.component('u-button', Button);
@@ -28,9 +30,11 @@ Vue.component('u-video-bg', VideoBG);
 Vue.component('u-sidebar', Sidebar);
 Vue.component('u-user-card', UserCard);
 Vue.component('u-drop-card', DropCard);
+Vue.component('u-text-box', TextBox)
 
 Vue.component('landing-page', LandingPage);
 Vue.component('front-page', FrontPage);
+Vue.component('debug-page', DebugPage)
 
 Vue.use(VueAxios, axios);
 

@@ -33,7 +33,12 @@ task buildWebpack(type: NpmTask, dependsOn: 'vueSetup') {
     outputs.dir('build/frontend')
 
     workingDir = file(project.projectDir)
-    args = ['run', 'build']
+
+    if (project.hasProperty("dev")) {
+        args = ['run', 'buildDev']
+    } else {
+        args = ['run', 'build']
+    }
 }
 
 clean.dependsOn cleanFrontend
