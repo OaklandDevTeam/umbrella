@@ -3,7 +3,7 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
     <u-video-bg src="http://d33ys4trmuj47l.cloudfront.net/rain-bg.mp4"></u-video-bg>
     <div class="flex-row">
-      <div class="flex-column">
+      <div class="flex-column" style="height: 100vh;">
         <u-card>
           <u-logo></u-logo>
           <u-text-field id="name" v-model="username" placeholder="username"></u-text-field>
