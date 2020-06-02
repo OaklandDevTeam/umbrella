@@ -73,8 +73,9 @@ public class Main {
         /*
          * Post management routes
          */
-        post("/posts/create", PostController.savePosts);
-        get("/posts/:drop/list", PostController.listPosts);
+        before("/posts/create", new AuthCheck());
+        post("/posts/create", PostController.savePosts, new JsonResponse());
+        get("/posts/:drop/list", PostController.listPosts, new JsonResponse());
 
 
         /*
