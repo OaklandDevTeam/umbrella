@@ -18,7 +18,10 @@ public class PostController {
         if((title.isEmpty() || title == null) && (bodyText.isEmpty() || bodyText == null) && (authorId.isEmpty() || authorId == null)){
             return "bad";
         }
-        postModel = new PostModel(title, bodyText, authorId);
+        postModel = new PostModel();
+        postModel.setAuthorId(authorId);
+        postModel.setBodyText(bodyText);
+        postModel.setTitle(title);
         mongoCollection.save(postModel);
 
         return "ok";
