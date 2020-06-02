@@ -50,8 +50,8 @@ public class Main {
         post("/login", AuthRoutes.loginUser, new JsonResponse());
         get("/logout", AuthRoutes.logoutUser, new JsonResponse());
 
-        post("/drops/create", DropController.addDrop);
-
+        post("/drops/create", DropController.addDrop, new JsonResponse());
+        get("/drops/list", DropController.listDrops, new JsonResponse());
         before("/drops/managemod", new AuthCheck());
         post("/drops/managemod", DropController.manageModerator, new JsonResponse());
         delete("/drops/managemod", DropController.manageModerator, new JsonResponse());

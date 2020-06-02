@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.result.DeleteResult;
 import com.umbr3114.ServiceLocator;
+import com.umbr3114.auth.SessionManager;
+import com.umbr3114.auth.SparkSessionManager;
 import com.umbr3114.common.GeneralResponse;
 import com.umbr3114.common.RequestParamHelper;
 import com.umbr3114.data.CollectionFactory;
@@ -26,6 +28,7 @@ public class SubscriptionController {
 
         //to get the userId and dropId
         RequestParamHelper params = new RequestParamHelper(request);
+        SessionManager session = new SparkSessionManager(request);
         String userID;
         String dropID;
         //create a collection used to save the userId and dropId later on
@@ -34,8 +37,8 @@ public class SubscriptionController {
 
         SubscriptionModel subscription = null;
         //retrieve userId and dropId from the database
-        userID = request.session().attribute("username");
-        dropID = params.valueOf("dropId");
+        userID = session.getCurrentUserId();
+        dropID = params.valueOf("drop_id");
 
         if(dropID == null || userID == null){
             halt(HttpStatus.FORBIDDEN_403,
@@ -57,7 +60,8 @@ public class SubscriptionController {
     public static Route unsubscribe = ((request, response) -> {
 
         RequestParamHelper params = new RequestParamHelper(request);
-        String userID = request.session().attribute("username");
+        SessionManager session = new SparkSessionManager(request);
+        String userID = session.getCurrentUserId();
         String dropID =  params.valueOf("dropid");
         DeleteResult result;   //to see how many Drops have been unsubscribed
 
