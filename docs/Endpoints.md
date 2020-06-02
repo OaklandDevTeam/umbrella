@@ -100,7 +100,8 @@
 [
   {
     "drop_id": "<dropId>",
-    "drop_title": "<Title>"
+    "title": "<Title>",
+    "topic":"<drop title>"
   },
 ]
 ```
