@@ -6,6 +6,7 @@ import com.umbr3114.common.JsonResponse;
 import com.umbr3114.controllers.DropController;
 import com.umbr3114.controllers.PostController;
 import com.umbr3114.controllers.SubscriptionController;
+import com.umbr3114.models.DropModel;
 import com.umbr3114.models.SubscriptionModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +33,7 @@ public class Main {
 
         // allow API calls from any origin. This should be temporary until a proper strategy for production is implemented
         before("/*", (request, response) -> response.header("Access-Control-Allow-Origin", "*"));
+        after("/*", (request, response) -> response.type("application/json"));
 
 
         /*
@@ -49,7 +51,11 @@ public class Main {
         post("/login", AuthRoutes.loginUser, new JsonResponse());
         get("/logout", AuthRoutes.logoutUser, new JsonResponse());
 
-        post("/drops/create", DropController.addDrop);
+        post("/drops/create", DropController.addDrop, new JsonResponse());
+        get("/drops/list", DropController.listDrops, new JsonResponse());
+        before("/drops/managemod", new AuthCheck());
+        post("/drops/managemod", DropController.manageModerator, new JsonResponse());
+        delete("/drops/managemod", DropController.manageModerator, new JsonResponse());
 
         /*
          * to protect the subscription routes
@@ -64,6 +70,13 @@ public class Main {
         post("/user/subscribe", SubscriptionController.subscribe, new JsonResponse());
         post("/user/unsubscribe", SubscriptionController.unsubscribe, new JsonResponse());
         get("/user/subscribed", SubscriptionController.subscribed, new JsonResponse());
+
+        /*
+         * Post management routes
+         */
+        before("/posts/create", new AuthCheck());
+        post("/posts/create", PostController.savePosts, new JsonResponse());
+        get("/posts/:drop/list", PostController.listPosts, new JsonResponse());
 
 
         /*

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.bson.codecs.pojo.annotations.BsonIgnore;
 import org.bson.types.ObjectId;
 import org.mongojack.MongoCollection;
 import java.util.List;
@@ -11,12 +12,24 @@ import java.util.List;
 @MongoCollection(name = "posts")
 public class PostModel {
     //@JsonProperty("post_id")
-    public ObjectId postId;
+    public ObjectId _id;
     public String title;
     public String bodyText;
     public String authorId; // anonymous?
+    public String author;
+    public String dropId;
+    public String idString;
     //public List<CommentModel> comments;
     public int startAfter;
+
+    public PostModel(String theTitle, String text, String user, String dropId) {
+        this.title = theTitle;
+        this.bodyText = text;
+        this.authorId = user;
+        this.dropId = dropId;
+    }
+
+    public PostModel() {}
 
     public String getTitle() {
         return title;
@@ -47,7 +60,9 @@ public class PostModel {
     //}
     @JsonIgnore
     public String getIdString() {
-        return postId.toString();
+        return _id.toString();
     }
+
+    public void setIdString() { /*dummy method*/}
 }
 

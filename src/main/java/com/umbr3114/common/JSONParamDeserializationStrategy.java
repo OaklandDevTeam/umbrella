@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.umbr3114.Main;
-import jdk.nashorn.internal.ir.RuntimeNode;
 import spark.Request;
 
 import java.io.IOException;

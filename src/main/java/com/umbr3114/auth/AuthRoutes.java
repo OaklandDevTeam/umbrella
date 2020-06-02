@@ -44,7 +44,7 @@ public class AuthRoutes {
             );
         }
 
-        user = new UserModel(userName, email, passwordRaw);
+        user = new UserModel(userName, email, passwordRaw, false);
 
         try {
             userManager.register(user);
@@ -62,6 +62,7 @@ public class AuthRoutes {
         String username = params.valueOf("username");
         String rawPassword = params.valueOf("password");
         UserManager userManager;
+        SessionManager session;
 
         if (!(validateUsername(username) && validateRawPassword(rawPassword))) {
             // error out
@@ -80,8 +81,8 @@ public class AuthRoutes {
                     new GeneralResponse(HttpStatus.FORBIDDEN_403, "cannot authenticate")
                     .toJSON());
         }
-
-        return new GeneralResponse(HttpStatus.OK_200, username);
+        session = new SparkSessionManager(request);
+        return new GeneralResponse(HttpStatus.OK_200, session.getCurrentUserId());
     });
 
 
