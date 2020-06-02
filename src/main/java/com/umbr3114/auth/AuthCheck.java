@@ -1,5 +1,6 @@
 package com.umbr3114.auth;
 
+import com.umbr3114.common.GeneralResponse;
 import org.eclipse.jetty.http.HttpStatus;
 import spark.Filter;
 import spark.Request;
@@ -13,7 +14,7 @@ public class AuthCheck implements Filter {
     public void handle(Request request, Response response) throws Exception {
         SessionManager sessionManager = new SparkSessionManager(request, response);
         if (!sessionManager.isAuthorized()) {
-            halt(HttpStatus.FORBIDDEN_403, new AuthResponseModel(HttpStatus.FORBIDDEN_403, "Unauthorized").toJSON());
+            halt(HttpStatus.FORBIDDEN_403, new GeneralResponse(HttpStatus.FORBIDDEN_403, "Unauthorized").toJSON());
         }
     }
 }

@@ -1,6 +1,10 @@
 <template>
   <div>
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
+<<<<<<< HEAD
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto"
+      rel="stylesheet"
+    />
     <landing-page v-if="page == 'landing'"></landing-page>
     <div class="bg" v-if="page != 'landing'">
       <div class="flex-row">
@@ -8,6 +12,9 @@
         <front-page v-if="page == 'front'"></front-page>
       </div>
     </div>
+=======
+    <landing-page v-if="page == 'landing'"></landing-page>
+>>>>>>> master
   </div>
 </template>
 
@@ -22,10 +29,14 @@ export default {
   computed: {
     page() {
       return store.state.page;
-    }
+    },
   },
-  methods: {}
+  methods: {},
 };
 </script>
 
+<<<<<<< HEAD
 <style src="./assets/stylesheet.css"></style>
+=======
+<style></style>
+>>>>>>> master

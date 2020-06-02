@@ -1,6 +1,8 @@
 package com.umbr3114.data;
 
+import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
+import com.umbr3114.Main;
 import org.bson.UuidRepresentation;
 import org.mongojack.JacksonMongoCollection;
 

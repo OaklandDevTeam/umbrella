@@ -61,24 +61,6 @@ public class MongoUserManagerTests {
         Assert.assertTrue(result);
     }
 
-    @Test
-    public void test_login_startsSession() {
-
-        String fakeUserId = "fakeID";
-        String fakeUserName = "fakeName";
-        MongoUserManager manager = createMongoUserManager();
-        FakeUserModel fakeUser = new FakeUserModel(fakeUserName, "", "");
-        fakeUser.setFakeIdString(fakeUserId);
-
-        when(verifier.verify("test", "")).thenReturn(true);
-        when(verifier.getUserModel()).thenReturn(fakeUser);
-
-        manager.login("test", "");
-
-        verify(sessionManager).startSession(fakeUserId, fakeUserName);
-
-    }
-
     private MongoUserManager createMongoUserManager() {
         return new MongoUserManager(mockUserModelCollection, sessionManager, mockHasher, verifier);
     }
@@ -87,7 +69,7 @@ public class MongoUserManagerTests {
         private String fakeIdString;
 
         public FakeUserModel(String user, String email, String pass) {
-            super(user, pass, email);
+            super(user, pass, email, false);
         }
 
         public void setFakeIdString(String fakeIdString) {
