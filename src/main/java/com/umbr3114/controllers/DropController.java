@@ -36,13 +36,13 @@ public class DropController {
 
 
         if (user == null || user.isEmpty() || user.contains(" "))
-             halt(HttpStatus.BAD_REQUEST_400,"Try Again");
+            halt(HttpStatus.BAD_REQUEST_400, new GeneralResponse(HttpStatus.OK_200, "invalid parameters").toJSON());
 
         if(title == null || title.isEmpty() || title.contains(" "))
-             halt(HttpStatus.BAD_REQUEST_400,"Try Again");
+            halt(HttpStatus.BAD_REQUEST_400, new GeneralResponse(HttpStatus.OK_200, "invalid parameters").toJSON());
 
         if(topic == null || topic.isEmpty())
-       halt(HttpStatus.BAD_REQUEST_400,"Try Again");
+            halt(HttpStatus.BAD_REQUEST_400, new GeneralResponse(HttpStatus.OK_200, "invalid parameters").toJSON());
 
 
         drop = new DropModel();
@@ -50,12 +50,11 @@ public class DropController {
         drop.title = title;
         drop.topic = topic;
 
+        // todo enforce index on title
         dropCollection = new CollectionFactory<DropModel>(ServiceLocator.getService().dbService(), DropModel.class).getCollection();
         dropCollection.save(drop);
 
-
-
-        return "okay";
+        return new GeneralResponse(HttpStatus.OK_200, "successful");
 
 
     });
