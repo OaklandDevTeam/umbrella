@@ -30,7 +30,7 @@ export default {
   },
   methods: {
     open() {
-      store.commit("setDrop", this.drop.title);
+      store.commit("setDrop", this.drop);
       store.commit("setPage", "drop");
     }
   }

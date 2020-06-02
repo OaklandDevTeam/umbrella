@@ -7,7 +7,7 @@ export default new Vuex.Store({
   state: {
     page: "landing",
     user: "anon",
-    drop: ""
+    drop: {}
   },
   mutations: {
     setPage(state, page) {
@@ -16,6 +16,9 @@ export default new Vuex.Store({
     setUser(state, user) {
       state.user = user;
     },
+    setDrop(state, drop) {
+      state.drop = drop;
+    }
   },
   actions: {},
   modules: {},

@@ -17,11 +17,8 @@ export default {
     return { drops: {} };
   },
   methods: {
-    load() {
-      this.drops = this.axios.get("/drops/list");
-    },
     newDrop() {
-      store.commit("setPage", "drop");
+      store.commit("setPage", "newDrop");
     }
   },
   created: function() {

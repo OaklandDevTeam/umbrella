@@ -1,6 +1,7 @@
 <template>
-  <div class="flex-column unspaced">
-    <u-logo></u-logo>
+  <div class="flex-column unspaced" style="
+    justify-content: flex-start;">
+    <u-logo @click.native="goHome()"></u-logo>
     <u-card>
       <u-user-card></u-user-card>
       <div style="margin: 2vh;">
@@ -22,12 +23,17 @@
 </template>
 
 <script>
-// import store from "../store";
+import store from "../store";
 
 export default {
   name: "Sidebar",
   data() {
     return {};
+  },
+  methods: {
+    goHome() {
+      store.commit("setPage", "front");
+    }
   }
 };
 </script>
