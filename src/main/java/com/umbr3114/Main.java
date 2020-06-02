@@ -33,6 +33,7 @@ public class Main {
 
         // allow API calls from any origin. This should be temporary until a proper strategy for production is implemented
         before("/*", (request, response) -> response.header("Access-Control-Allow-Origin", "*"));
+        after("/*", (request, response) -> response.type("application/json"));
 
 
         /*
@@ -69,6 +70,13 @@ public class Main {
         post("/user/subscribe", SubscriptionController.subscribe, new JsonResponse());
         post("/user/unsubscribe", SubscriptionController.unsubscribe, new JsonResponse());
         get("/user/subscribed", SubscriptionController.subscribed, new JsonResponse());
+
+        /*
+         * Post management routes
+         */
+        before("/posts/create", new AuthCheck());
+        post("/posts/create", PostController.savePosts, new JsonResponse());
+        get("/posts/:drop/list", PostController.listPosts, new JsonResponse());
 
 
         /*

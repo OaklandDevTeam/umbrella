@@ -19,7 +19,6 @@ import spark.Route;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 import static spark.Spark.halt;
 
@@ -120,7 +119,7 @@ public class DropController {
                 .getCollection();
         List<DropListingModel> dropModels = new ArrayList<>();
         collection.find().forEach(model -> {
-            dropModels.add(new DropListingModel(model._id.toString(), model.title));
+            dropModels.add(new DropListingModel(model._id.toString(), model.title, model.topic));
         });
 
         return dropModels;

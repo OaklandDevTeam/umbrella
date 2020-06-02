@@ -10,7 +10,6 @@ import com.umbr3114.errors.DatabaseConnectionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.naming.NameNotFoundException;
 
 public class ServiceLocator {
     private static ServiceLocator instance;

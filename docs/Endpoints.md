@@ -100,7 +100,8 @@
 [
   {
     "drop_id": "<dropId>",
-    "drop_title": "<Title>"
+    "title": "<Title>",
+    "topic":"<drop title>"
   },
 ]
 ```
@@ -143,6 +144,42 @@
         "dropid":"<dropid>"
     },
 ]
+```
+
+# Posts
+### GET `/posts/<droptitle>/list`
+
+| Query Param |                                                                                         Description                                                                                         |
+| :---------- | :-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+| limit       |                                     Maximum number of posts to fetch in this call. ***OPTIONAL:*** there is a default limit of 25 and a maximum of 100                                      |
+| startAfter  | The Post ID that this call will start after. **NOTE** This post will not come in the listing. ***OPTIONAL:*** If this is not specified, an initial list is retrieved starting from the top. |
+
+Examples: 
+* `/posts/<droptitle>/list`
+* `/posts/<droptitle>/list?limit=50`
+* `/posts/<droptitle>/list?startAfter=5ed668f949c2aa25778c8080`
+* `/posts/<droptitle>/list?startAfter=5ed668f949c2aa25778c8080&limit=50`
+
+> Returns JSON
+```json
+{
+    "drop_id":"<dropId>",
+    "count":0000,
+    "last_id":"<id of last post in listing>",
+    "posts": {
+        // Post models
+    }
+}
+```
+
+### `POST /posts/create`
+> Accepts JSON
+```json
+{
+	"title":"post title",
+	"body":"post body text",
+	"drop_id":"<dropid>"
+}
 ```
 
 # General Response
