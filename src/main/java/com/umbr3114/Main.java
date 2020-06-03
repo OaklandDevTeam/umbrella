@@ -50,6 +50,8 @@ public class Main {
         post("/register", AuthRoutes.registerUser, new JsonResponse());
         post("/login", AuthRoutes.loginUser, new JsonResponse());
         get("/logout", AuthRoutes.logoutUser, new JsonResponse());
+        before("/user/info", new AuthCheck());
+        get("/user/info", AuthRoutes.userInfo, new JsonResponse());
 
         post("/drops/create", DropController.addDrop, new JsonResponse());
         get("/drops/list", DropController.listDrops, new JsonResponse());

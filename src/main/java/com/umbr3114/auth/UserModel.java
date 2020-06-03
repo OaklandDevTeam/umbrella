@@ -5,6 +5,8 @@ import org.bson.codecs.pojo.annotations.BsonIgnore;
 import org.bson.types.ObjectId;
 import org.mongojack.MongoCollection;
 
+import java.util.Date;
+
 @MongoCollection(name = "users")
 public class UserModel {
 
@@ -13,6 +15,7 @@ public class UserModel {
     private String email;
     private String password;
     private boolean isAdmin;
+    private Date registrationDate;
 
     public UserModel(String username, String email, String password, boolean admin) {
         this.username = username;
@@ -55,6 +58,14 @@ public class UserModel {
 
     public void setAdmin(boolean admin) {
         isAdmin = admin;
+    }
+
+    public Date getRegistrationDate() {
+        return registrationDate;
+    }
+
+    public void setRegistrationDate(Date registrationDate) {
+        this.registrationDate = registrationDate;
     }
 
     @JsonIgnore

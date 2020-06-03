@@ -1,10 +1,14 @@
 package com.umbr3114.auth;
 
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
+import com.umbr3114.Main;
 import com.umbr3114.ServiceLocator;
 import com.umbr3114.common.GeneralResponse;
 import com.umbr3114.common.RequestParamHelper;
 import com.umbr3114.data.CollectionFactory;
+import com.umbr3114.models.PostModel;
+import org.bson.types.ObjectId;
 import org.eclipse.jetty.http.HttpStatus;
 import org.mongojack.JacksonMongoCollection;
 import org.slf4j.Logger;
@@ -83,6 +87,33 @@ public class AuthRoutes {
         }
         session = new SparkSessionManager(request);
         return new GeneralResponse(HttpStatus.OK_200, session.getCurrentUserId());
+    });
+    
+    public static Route userInfo = ((request, response) -> {
+        SessionManager sessionManager = new SparkSessionManager(request);
+        String userId = sessionManager.getCurrentUserId();
+        long postCount;
+        UserModel userModel;
+        UserViewModel userVm;
+        JacksonMongoCollection<UserModel> collection = new CollectionFactory<UserModel>(Main.services.dbService(), UserModel.class).getCollection();
+        JacksonMongoCollection<PostModel> postCollections = new CollectionFactory<PostModel>(Main.services.dbService(), PostModel.class).getCollection();
+
+        userModel = collection.findOne(Filters.eq("_id", new ObjectId(userId)));
+
+        if (userModel == null) {
+            halt(HttpStatus.NOT_FOUND_404,
+                    new GeneralResponse(HttpStatus.NOT_FOUND_404, "user not found")
+                            .toJSON());
+        }
+
+        postCount = postCollections.countDocuments(Filters.eq("authorId", userModel.getUserIdString()));
+
+        userVm = new UserViewModel();
+        userVm.username = userModel.getUsername();
+        userVm.registrationDate = userModel.getRegistrationDate();
+        userVm.postCount = postCount;
+
+        return userVm;
     });
 
 

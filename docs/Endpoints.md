@@ -40,6 +40,16 @@
 }
 ```
 
+### GET `/user/info`
+> Returns JSON
+```json
+{
+  "username": "<currentUsername>",
+  "registration_date": 1591161563968, // note time is in seconds
+  "post_count": 0
+}
+```
+
 * POST `/user/subscribe`
 * GET `/user/subscribed`
 * POST `/user/unsubscribe`

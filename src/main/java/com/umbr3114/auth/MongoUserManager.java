@@ -5,6 +5,9 @@ import org.mongojack.JacksonMongoCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.Date;
+import java.time.Instant;
+
 /**
  * This class is responsible for logging in a user, registering a user, and logging a user out.
  * It depends on a MongoCollection, SessionManager and PasswordHasher
@@ -43,9 +46,9 @@ public class MongoUserManager extends AbstractUserManager {
     }
     @Override
     public boolean register(UserModel registrationModel) {
-        // TODO handle the case where there is another user of the same username here
         // hash it, send it
         registrationModel.setPassword(getHasher().hash(registrationModel.getPassword()));
+        registrationModel.setRegistrationDate(Date.from(Instant.now()));
 
         try {
             userCollection.save(registrationModel);
