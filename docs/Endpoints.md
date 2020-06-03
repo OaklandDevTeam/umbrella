@@ -182,6 +182,23 @@ Examples:
 }
 ```
 
+### `PUT /posts/modify`
+> Accepts JSON
+```json
+{
+	"post_id":"<idString>",
+	"body":"modified post body text"
+	
+}
+```
+### `DELETE /posts/delete`
+> Accepts JSON
+```json
+{
+	"post_id":"<idString>"
+}
+```
+
 # General Response
 ```json
 {
