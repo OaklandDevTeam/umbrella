@@ -20,6 +20,7 @@ import TextBox from "./components/TextBox";
 import DebugPage from "./components/DebugPage";
 import DropPage from "./components/DropPage.vue";
 import PostCard from "./components/PostCard.vue";
+import Modal from "./components/Modal.vue";
 
 Vue.component('u-logo', Logo);
 Vue.component('u-button', Button);
@@ -37,6 +38,7 @@ Vue.component('landing-page', LandingPage);
 Vue.component('front-page', FrontPage);
 Vue.component('debug-page', DebugPage)
 Vue.component('u-post-card', PostCard);
+Vue.component('u-modal', Modal);
 
 Vue.component('landing-page', LandingPage);
 Vue.component('front-page', FrontPage);

@@ -26,8 +26,7 @@ export default {
     page() {
       return store.state.page;
     }
-  },
-  methods: {}
+  }
 };
 </script>
 
