@@ -1,18 +1,18 @@
 <template>
-    <div class="u-logo-bg shadowed mildly-responsive">
-      <img src="../assets/umbrella-logo.png" class="u-logo"/>
-    </div>
+  <div class="u-logo-bg shadowed mildly-responsive">
+    <img src="../assets/umbrella-logo.png" class="u-logo" />
+  </div>
 </template>
 
 <script>
-  export default {
-    name: "Logo"
-  }
+export default {
+  name: "Logo",
+  methods: {}
+};
 </script>
 
 <style>
-
-.u-logo-bg{
+.u-logo-bg {
   background-color: var(--component-primary);
   border-radius: 100%;
   width: var(--logo-size);
@@ -22,7 +22,7 @@
   padding: 1vh;
 }
 
-.u-logo{
+.u-logo {
   width: 100%;
   user-select: none;
   display: inline-block;

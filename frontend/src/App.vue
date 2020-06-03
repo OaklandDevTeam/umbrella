@@ -5,8 +5,10 @@
     <div class="bg" v-if="page != 'landing'">
       <div class="flex-row">
         <u-sidebar></u-sidebar>
-        <front-page v-if="page == 'front'"></front-page>
-        <debug-page v-if="page === 'debug'"></debug-page>
+        <div style="flex-basis: 100%; margin-left: 5%;">
+          <front-page v-if="page == 'front'"></front-page>
+          <drop-page v-if="page == 'drop'"></drop-page>
+        </div>
       </div>
     </div>
   </div>

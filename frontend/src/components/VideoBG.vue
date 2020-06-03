@@ -20,6 +20,7 @@ export default {
 .v-bg {
   min-width: 100%;
   min-height: 100%;
+  overflow-y: hidden;
   position: fixed;
   right: 0;
   bottom: 0;

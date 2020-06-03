@@ -1,69 +1,80 @@
 <template>
   <div>
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
-    <u-video-bg src="http://d33ys4trmuj47l.cloudfront.net/rain-bg.mp4"></u-video-bg>
-    <div class="flex-row">
-      <div class="flex-column" style="height: 100vh;">
-        <u-card>
-          <u-logo></u-logo>
-          <u-text-field id="name" v-model="username" placeholder="username"></u-text-field>
-          <u-label
-            id="username-errors"
-            class="error-box"
-            v-if="usernameErrors != ''"
-          >{{ usernameErrors }}</u-label>
-          <u-label id="signup-fail-label" hidden="true">This username is taken!</u-label>
-          <u-label id="name-len-label" hidden="true">username must be at least 5 characters</u-label>
-          <u-label id="name-chars-label1" hidden="true">can't contain special characters other than</u-label>
-          <u-label id="name-chars-label2" hidden="true">-=^+@,._</u-label>
+    <u-video-bg :sources="['http://d33ys4trmuj47l.cloudfront.net/rain-bg.mp4']">
+      <div class="flex-row">
+        <div class="flex-column" style="height: 100vh;">
+          <u-card>
+            <u-logo></u-logo>
+            <u-text-field id="name" v-model="username" placeholder="username"></u-text-field>
+            <u-label
+              id="username-errors"
+              class="error-box"
+              v-if="usernameErrors != ''"
+            >{{ usernameErrors }}</u-label>
+            <u-label id="signup-fail-label" hidden="true">This username is taken!</u-label>
+            <u-label id="name-len-label" hidden="true">username must be at least 5 characters</u-label>
+            <u-label
+              id="name-chars-label1"
+              hidden="true"
+            >can't contain special characters other than</u-label>
+            <u-label id="name-chars-label2" hidden="true">-=^+@,._</u-label>
 
-          <u-text-field id="pass" type="password" v-model="password" placeholder="password"></u-text-field>
-          <u-label
-            id="password-errors"
-            class="error-box"
-            v-if="passwordErrors != ''"
-          >{{ passwordErrors }}</u-label>
-          <u-label id="pass-len-label" hidden="true">password must be at least 5 characters</u-label>
-          <u-label id="pass-chars-label1" hidden="true">can't contain special characters other than</u-label>
-          <u-label id="pass-chars-label2" hidden="true">-=^+@,._</u-label>
-          <u-label id="pass-no-match-label" hidden="true">passwords do not match</u-label>
-          <u-label id="no-name-pass-label" hidden="true">enter a username and password</u-label>
+            <u-text-field id="pass" type="password" v-model="password" placeholder="password"></u-text-field>
+            <u-label
+              id="password-errors"
+              class="error-box"
+              v-if="passwordErrors != ''"
+            >{{ passwordErrors }}</u-label>
+            <u-label id="pass-len-label" hidden="true">password must be at least 5 characters</u-label>
+            <u-label
+              id="pass-chars-label1"
+              hidden="true"
+            >can't contain special characters other than</u-label>
+            <u-label id="pass-chars-label2" hidden="true">-=^+@,._</u-label>
+            <u-label id="pass-no-match-label" hidden="true">passwords do not match</u-label>
+            <u-label id="no-name-pass-label" hidden="true">enter a username and password</u-label>
 
-          <u-label id="signup-success-label" hidden="true">Sign-up successful!</u-label>
-          <u-label v-if="loginErrors != ''" hidden="true">{{ loginErrors }}</u-label>
-          <u-label v-if="signupSuccess">Signup successful!</u-label>
+            <u-label id="signup-success-label" hidden="true">Sign-up successful!</u-label>
+            <u-label v-if="loginErrors != ''" hidden="true">{{ loginErrors }}</u-label>
+            <u-label v-if="signupSuccess">Signup successful!</u-label>
 
-          <div id="login-stuff" class="stuff-container" v-if="state == 'login'">
-            <div class="flex-row">
-              <u-button id="login" @click.native="login()">Login</u-button>
-              <u-button id="new account" @click.native="setState('register')">sign up</u-button>
+            <div id="login-stuff" class="stuff-container" v-if="state == 'login'">
+              <div class="flex-row">
+                <u-button id="login" @click.native="login()">Login</u-button>
+                <u-button id="new account" @click.native="setState('register')">sign up</u-button>
+              </div>
             </div>
-          </div>
 
-          <div id="reg-stuff" class="stuff-container" v-if="state == 'register'">
-            <u-text-field
-              id="confirm-pass"
-              type="password"
-              v-model="confirmPassword"
-              placeholder="confirm password"
-            ></u-text-field>
+            <div id="reg-stuff" class="stuff-container" v-if="state == 'register'">
+              <u-text-field
+                id="confirm-pass"
+                type="password"
+                v-model="confirmPassword"
+                placeholder="confirm password"
+              ></u-text-field>
 
-            <u-text-field id="email" v-model="email" placeholder="email address"></u-text-field>
-            <u-label id="email-errors" class="error-box" v-if="emailErrors != ''">{{ emailErrors }}</u-label>
-            <u-label id="no-email-label" hidden="true">please enter your email address</u-label>
+              <u-text-field id="email" v-model="email" placeholder="email address"></u-text-field>
+              <u-label
+                id="email-errors"
+                class="error-box"
+                v-if="emailErrors != ''"
+              >{{ emailErrors }}</u-label>
+              <u-label id="no-email-label" hidden="true">please enter your email address</u-label>
 
-            <u-check-box id="age-check" v-model="ageCheck">Are you over 13?</u-check-box>
-            <u-label id="age-errors" class="error-box" v-if="ageErrors != ''">{{ ageErrors }}</u-label>
-            <u-label id="age-label" hidden="true">You must be over 13 to register.</u-label>
+              <u-check-box id="age-check" v-model="ageCheck">Are you over 13?</u-check-box>
+              <u-label id="age-errors" class="error-box" v-if="ageErrors != ''">{{ ageErrors }}</u-label>
+              <u-label id="age-label" hidden="true">You must be over 13 to register.</u-label>
 
-            <div class="flex-row">
-              <u-button id="back" @click.native="setState('login')">Back</u-button>
-              <u-button id="register" @click.native="register()">Register</u-button>
+              <div class="flex-row">
+                <u-button id="back" @click.native="setState('login')">Back</u-button>
+                <u-button id="register" @click.native="register()">Register</u-button>
+              </div>
             </div>
-          </div>
-        </u-card>
+          </u-card>
+        </div>
       </div>
-    </div>
+    </u-video-bg>
   </div>
 </template>
 
@@ -113,7 +124,8 @@ export default {
         .then(
           function(response) {
             if (response.status == 200) {
-              store.commit("setPage", "frontpage");
+              store.commit("setUser", this.username);
+              store.commit("setPage", "front");
             }
           }.bind(this)
         )
@@ -139,8 +151,12 @@ export default {
         this.ageErrors += "\nYou must be over 13 to register.";
       if (this.username.length < 5)
         this.usernameErrors += "\nusername must be at least 5 characters";
+      if (this.username.length > 20)
+        this.usernameErrors += "\nusername must be under 20 characters";
       if (this.password.length < 5)
         this.passwordErrors += "\npassword must be at least 5 characters";
+      if (this.password.length > 30)
+        this.passwordErrors += "\npassword must be under 30 characters";
       if (!validUsername)
         this.usernameErrors +=
           "\ncan't contain special characters other than\n-=^+@,._";
