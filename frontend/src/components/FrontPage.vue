@@ -45,7 +45,7 @@ export default {
           {
             title: this.newDropTitle,
             topic: this.newDropTopic,
-            owner: this.user
+            owner: this.user //won't be needed in the future
           },
           { headers: { "Content-Type": "application/json" } }
         )
