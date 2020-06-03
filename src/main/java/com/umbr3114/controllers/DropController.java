@@ -1,5 +1,6 @@
 package com.umbr3114.controllers;
 
+import com.mongodb.MongoWriteException;
 import com.mongodb.client.model.Filters;
 import com.umbr3114.Main;
 import com.umbr3114.ServiceLocator;
@@ -52,9 +53,13 @@ public class DropController {
         drop.title = title;
         drop.topic = topic;
 
-        // todo enforce index on title
         dropCollection = new CollectionFactory<DropModel>(ServiceLocator.getService().dbService(), DropModel.class).getCollection();
-        dropCollection.save(drop);
+
+        try {
+            dropCollection.save(drop);
+        } catch (MongoWriteException e) {
+            halt(HttpStatus.BAD_REQUEST_400, new GeneralResponse(HttpStatus.BAD_REQUEST_400, "drop already exists").toJSON());
+        }
 
         return new GeneralResponse(HttpStatus.OK_200, "successful");
 
