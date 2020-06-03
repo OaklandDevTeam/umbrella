@@ -78,6 +78,11 @@ public class Main {
         post("/posts/create", PostController.savePosts, new JsonResponse());
         get("/posts/:drop/list", PostController.listPosts, new JsonResponse());
 
+        /*
+         * endpoints to modify/delete posts
+         */
+        put("/posts/modify",PostController.modifyPosts,new JsonResponse());
+        delete("/posts/delete",PostController.deletePosts,new JsonResponse());
 
         /*
          * Application should be running now
