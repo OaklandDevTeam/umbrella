@@ -81,6 +81,8 @@ public class Main {
         /*
          * endpoints to modify/delete posts
          */
+        before("/posts/modify", new AuthCheck());
+        before("/posts/delete", new AuthCheck());
         put("/posts/modify",PostController.modifyPosts,new JsonResponse());
         delete("/posts/delete",PostController.deletePosts,new JsonResponse());
 
