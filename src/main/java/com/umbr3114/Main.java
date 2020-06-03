@@ -53,6 +53,7 @@ public class Main {
         before("/user/info", new AuthCheck());
         get("/user/info", AuthRoutes.userInfo, new JsonResponse());
 
+        before("/drops/create", new AuthCheck());
         post("/drops/create", DropController.addDrop, new JsonResponse());
         get("/drops/list", DropController.listDrops, new JsonResponse());
         before("/drops/managemod", new AuthCheck());

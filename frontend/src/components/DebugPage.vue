@@ -1,7 +1,9 @@
 <template>
     <div>
         <h1>This is the debug page</h1>
-        <u-text-box></u-text-box>
+        <div class="textbox-wrapper">
+            <u-text-box></u-text-box>
+        </div>
     </div>
 </template>
 
@@ -21,4 +23,11 @@
     };
 </script>
 
-<style></style>
+<style>
+    .textbox-wrapper {
+        width: 50%;
+        height: 20vh;
+        margin: auto;
+    }
+
+</style>

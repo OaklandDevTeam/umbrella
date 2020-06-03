@@ -1,6 +1,7 @@
 <template>
   <div>
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
+    <debug-page v-if="page =='debug'"></debug-page>
     <landing-page v-if="page == 'landing'"></landing-page>
     <div class="bg" v-if="page != 'landing'">
       <div class="flex-row">

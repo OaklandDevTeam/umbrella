@@ -6,6 +6,8 @@ import com.umbr3114.Main;
 import com.umbr3114.ServiceLocator;
 import com.umbr3114.auth.PermissionChecker;
 import com.umbr3114.auth.PermissionCheckProvider;
+import com.umbr3114.auth.SessionManager;
+import com.umbr3114.auth.SparkSessionManager;
 import com.umbr3114.common.GeneralResponse;
 import com.umbr3114.common.RequestParamHelper;
 import com.umbr3114.data.CollectionFactory;
@@ -29,16 +31,20 @@ public class DropController {
         String user;
         String title;
         String topic;
+        String userName;
+
         JacksonMongoCollection<DropModel> dropCollection;
         DropModel drop;
         RequestParamHelper params = new RequestParamHelper(request);
+        SessionManager sessionManager = new SparkSessionManager(request);
 
-        user = params.valueOf("owner");
+        user = sessionManager.getCurrentUserId();
+        userName = sessionManager.getCurrentUsername();
         title = params.valueOf("title");
         topic = params.valueOf("topic");
 
 
-        if (user == null || user.isEmpty() || user.contains(" "))
+        if (user == null)
             halt(HttpStatus.BAD_REQUEST_400, new GeneralResponse(HttpStatus.OK_200, "invalid parameters").toJSON());
 
         if(title == null || title.isEmpty() || title.contains(" "))
@@ -52,6 +58,7 @@ public class DropController {
         drop.owner = user;
         drop.title = title;
         drop.topic = topic;
+        drop.ownerName = userName;
 
         dropCollection = new CollectionFactory<DropModel>(ServiceLocator.getService().dbService(), DropModel.class).getCollection();
 
