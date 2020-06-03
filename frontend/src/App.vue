@@ -6,6 +6,7 @@
       <div class="flex-row">
         <u-sidebar></u-sidebar>
         <front-page v-if="page == 'front'"></front-page>
+        <debug-page v-if="page === 'debug'"></debug-page>
       </div>
     </div>
   </div>

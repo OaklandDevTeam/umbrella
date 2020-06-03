@@ -1,5 +1,6 @@
 <template>
     <div>
+        <h1>This is the debug page</h1>
         <u-text-box></u-text-box>
     </div>
 </template>
