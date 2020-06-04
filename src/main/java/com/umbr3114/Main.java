@@ -3,6 +3,7 @@ package com.umbr3114;
 import com.umbr3114.auth.AuthCheck;
 import com.umbr3114.auth.AuthRoutes;
 import com.umbr3114.common.JsonResponse;
+import com.umbr3114.controllers.CommentController;
 import com.umbr3114.controllers.DropController;
 import com.umbr3114.controllers.PostController;
 import com.umbr3114.controllers.SubscriptionController;
@@ -78,6 +79,13 @@ public class Main {
         post("/posts/create", PostController.savePosts, new JsonResponse());
         get("/posts/:drop/list", PostController.listPosts, new JsonResponse());
 
+        /*
+         * comments
+         */
+        post("/comments/create", CommentController.saveComments, new JsonResponse());
+        get("/comments/list", CommentController.getComments, new JsonResponse());
+        put("/comments/update", CommentController.updateComments, new JsonResponse());
+        delete("/comments/delete", CommentController.destroyComments, new JsonResponse());
 
         /*
          * Application should be running now

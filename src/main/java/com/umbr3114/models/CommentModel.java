@@ -11,7 +11,12 @@ public class CommentModel {
     public String bodyText;
     public String authorId;
     @JsonProperty("post_id")
-    public ObjectId postId;
+    public String postId;
+/*    public boolean isEdited;
+
+    public CommentModel(){
+        isEdited = false;
+    }*/
 
     public String getBodyText() {
         return bodyText;
@@ -28,10 +33,19 @@ public class CommentModel {
     public void setAuthorId(String authorId) {
         this.authorId = authorId;
     }
+
+/*    public boolean isEdited() {
+        return isEdited;
+    }
+
+    public void setEdited(boolean edited) {
+        isEdited = edited;
+    }*/
+
     @JsonIgnore
     public String getIdString(){
         return _id.toString();
     }
     @JsonIgnore
-    public String getPostIdString() { return postId.toString(); }
+    public String getPostIdString() { return postId; }
 }
