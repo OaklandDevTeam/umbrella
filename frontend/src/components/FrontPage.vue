@@ -45,6 +45,10 @@ export default {
       });
     },
     createDrop() {
+      if (this.newDropTitle == "" || this.newDropTopic == "") {
+        this.error = "Please add a title and topic to your drop.";
+        return;
+      }
       this.axios
         .post(
           "/drops/create",
@@ -55,15 +59,19 @@ export default {
           { headers: { "Content-Type": "application/json" } }
         )
         .then(response => {
-          if (response.status == 200 || response.status == 400) {
+          if (response.status == 200) {
             this.error = "";
             this.refresh();
             this.newDrop = false;
-          } else {
+          }
+        })
+        .catch(() => {
+          {
             this.error =
               "Invalid or already used title (titles cannot contain spaces).";
           }
-        });
+        })
+        .bind(this);
     }
   },
   computed: {

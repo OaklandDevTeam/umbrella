@@ -18,6 +18,9 @@ export default new Vuex.Store({
     },
     setDrop(state, drop) {
       state.drop = drop;
+    },
+    iteratePostCount(state) {
+      state.user.post_count++;
     }
   },
   actions: {},

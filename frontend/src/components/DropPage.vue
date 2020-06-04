@@ -56,6 +56,10 @@ export default {
       });
     },
     createPost() {
+      if (this.newPostTitle == "" || this.newPostContent == "") {
+        this.error = "Please add a title and content to your post.";
+        return;
+      }
       this.axios
         .post(
           "/posts/create",
@@ -70,11 +74,14 @@ export default {
           if (response.status == 200) {
             this.error = "";
             this.refresh();
+            store.commit("iteratePostCount");
             this.newPost = false;
-          } else {
-            this.error = "error creating post";
           }
-        });
+        })
+        .catch(() => {
+          this.error = "error creating post";
+        })
+        .bind(this);
     }
   },
   created: function() {
