@@ -6,6 +6,8 @@ import com.umbr3114.Main;
 import com.umbr3114.ServiceLocator;
 import com.umbr3114.auth.PermissionChecker;
 import com.umbr3114.auth.PermissionCheckProvider;
+import com.umbr3114.auth.SessionManager;
+import com.umbr3114.auth.SparkSessionManager;
 import com.umbr3114.common.GeneralResponse;
 import com.umbr3114.common.RequestParamHelper;
 import com.umbr3114.data.CollectionFactory;
@@ -14,10 +16,10 @@ import com.umbr3114.models.DropModel;
 import org.bson.types.ObjectId;
 import org.eclipse.jetty.http.HttpStatus;
 import org.mongojack.JacksonMongoCollection;
+import spark.Route;
+import static com.mongodb.client.model.Filters.eq;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import spark.Route;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,16 +31,20 @@ public class DropController {
         String user;
         String title;
         String topic;
+        String userName;
+
         JacksonMongoCollection<DropModel> dropCollection;
         DropModel drop;
         RequestParamHelper params = new RequestParamHelper(request);
+        SessionManager sessionManager = new SparkSessionManager(request);
 
-        user = params.valueOf("owner");
+        user = sessionManager.getCurrentUserId();
+        userName = sessionManager.getCurrentUsername();
         title = params.valueOf("title");
         topic = params.valueOf("topic");
 
 
-        if (user == null || user.isEmpty() || user.contains(" "))
+        if (user == null)
             halt(HttpStatus.BAD_REQUEST_400, new GeneralResponse(HttpStatus.OK_200, "invalid parameters").toJSON());
 
         if(title == null || title.isEmpty() || title.contains(" "))
@@ -52,6 +58,7 @@ public class DropController {
         drop.owner = user;
         drop.title = title;
         drop.topic = topic;
+        drop.ownerName = userName;
 
         dropCollection = new CollectionFactory<DropModel>(ServiceLocator.getService().dbService(), DropModel.class).getCollection();
 
@@ -61,8 +68,62 @@ public class DropController {
             halt(HttpStatus.BAD_REQUEST_400, new GeneralResponse(HttpStatus.BAD_REQUEST_400, "drop already exists").toJSON());
         }
 
-        return new GeneralResponse(HttpStatus.OK_200, "successful");
+        try {
+            dropCollection.save(drop);
+        } catch (MongoWriteException e) {
+            halt(HttpStatus.BAD_REQUEST_400, new GeneralResponse(HttpStatus.BAD_REQUEST_400, "drop already exists").toJSON());
+        }
 
+        return "okay";
+    });
+
+    public static Route updateDrop = ((request, response) -> {
+        String drop_Id;
+        String topic;
+        DropModel dropmodel;
+        PermissionChecker checker;
+
+        RequestParamHelper helper = new RequestParamHelper(request);
+        drop_Id = helper.valueOf("drop_id");
+        topic = helper.valueOf("topic");
+
+
+        JacksonMongoCollection<DropModel> update;
+        update = new CollectionFactory<DropModel>(ServiceLocator.getService().dbService(), DropModel.class).getCollection();
+
+
+        if (drop_Id == null){
+            halt(HttpStatus.NOT_FOUND_404, new GeneralResponse(HttpStatus.NOT_FOUND_404, "Drop not found").toJSON());}
+        if (topic == null){
+            halt(HttpStatus.NOT_FOUND_404, new GeneralResponse(HttpStatus.NOT_FOUND_404, "Drop not found").toJSON());}
+
+
+        dropmodel = update.findOne(eq("_id", new ObjectId(drop_Id)));
+        if (dropmodel == null){
+          halt(HttpStatus.NOT_FOUND_404, new GeneralResponse(HttpStatus.NOT_FOUND_404,"Drop not found").toJSON());}
+
+
+        checker = new PermissionChecker(request, new DropPermissionCheckProvider(dropmodel));
+        if(!checker.verify()){
+            halt(HttpStatus.NOT_FOUND_404, new GeneralResponse(HttpStatus.NOT_FOUND_404,"Not authorized").toJSON());}
+
+
+        dropmodel.topic = topic;
+        update.findOneAndReplace(eq("_id", new ObjectId(drop_Id)), dropmodel);
+        return new GeneralResponse(HttpStatus.OK_200, "okay update it");
+
+
+    });
+
+    public static Route deleteDrop = ((request, response) -> {
+        String drop_Id;
+        RequestParamHelper helper = new RequestParamHelper(request);
+        JacksonMongoCollection<DropModel> delete;
+        drop_Id = helper.valueOf("drop_id");
+       delete = new CollectionFactory<DropModel>(ServiceLocator.getService().dbService(), DropModel.class).getCollection();
+       delete.deleteOne(eq("_id", new ObjectId(drop_Id)));
+
+       return "something";
 
     });
 

@@ -6,8 +6,6 @@ import com.umbr3114.common.JsonResponse;
 import com.umbr3114.controllers.DropController;
 import com.umbr3114.controllers.PostController;
 import com.umbr3114.controllers.SubscriptionController;
-import com.umbr3114.models.DropModel;
-import com.umbr3114.models.SubscriptionModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,12 +45,16 @@ public class Main {
         /*
          * Auth endpoints
          */
+
         post("/register", AuthRoutes.registerUser, new JsonResponse());
         post("/login", AuthRoutes.loginUser, new JsonResponse());
         get("/logout", AuthRoutes.logoutUser, new JsonResponse());
         before("/user/info", new AuthCheck());
         get("/user/info", AuthRoutes.userInfo, new JsonResponse());
 
+        put("/drops/:dbname/update", DropController.updateDrop);
+        delete("/drops/:dropName/delete", DropController.deleteDrop);
+        before("/drops/create", new AuthCheck());
         post("/drops/create", DropController.addDrop, new JsonResponse());
         get("/drops/list", DropController.listDrops, new JsonResponse());
         before("/drops/managemod", new AuthCheck());

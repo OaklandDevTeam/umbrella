@@ -12,6 +12,7 @@ public class DropModel {
     public String topic;
     public ObjectId _id;
     public String owner;
+    public String ownerName;
     public List<ModeratorModel> moderators;
 
     public static class ModeratorModel {
