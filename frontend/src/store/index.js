@@ -6,7 +6,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     page: "landing",
-    user: "anon",
+    user: {},
     drop: {}
   },
   mutations: {

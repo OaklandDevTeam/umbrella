@@ -1,18 +1,24 @@
 <template>
   <div>
     <u-modal v-if="newPost">
-      <u-label style="font-size: 2em; line-height: 1.5em;">New Post</u-label>
-      <u-label>{{this.error}}</u-label>
-      <u-text-field placeholder="Title" v-model="newPostTitle"></u-text-field>
-      <u-text-field placeholder="Content" v-model="newPostContent"></u-text-field>
-      <div class="flex-row">
-        <u-button @click.native="createPost();">Post</u-button>
-        <u-button @click.native="newPost=false">Cancel</u-button>
+      <div class="drop-modal-wrapper">
+        <u-label style="font-size: 2em; line-height: 1.5em;">New Post</u-label>
+        <u-label>{{this.error}}</u-label>
+        <u-text-field placeholder="Title" v-model="newPostTitle"></u-text-field>
+        <text-box
+          class="shadowed slightly-responsive input-textbox"
+          placeholder="Enter your post text here!"
+          v-model="newPostContent"
+        ></text-box>
+        <div class="flex-row">
+          <u-button @click.native="createPost()">Post</u-button>
+          <u-button @click.native="newPost=false">Cancel</u-button>
+        </div>
       </div>
     </u-modal>
     <u-card>
       <u-label style="font-size: 2.5em; line-height: 1.5em;">{{drop.title}}</u-label>
-      <u-label>{{drop.topic}}</u-label>
+      <div v-html="drop.topic"></div>
       <div class="flex-row">
         <u-button @click.native="goBack()">Go Back</u-button>
         <u-button @click.native="newPost = true">newPost</u-button>
@@ -84,4 +90,22 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.drop-modal-wrapper {
+  width: 50vw;
+  padding-left: 3vw;
+  padding-right: 3vw;
+  padding-top: 3vh;
+  padding-bottom: 3vh;
+}
+
+.drop-modal-wrapper > * {
+  box-sizing: border-box;
+  width: inherit;
+}
+
+.input-textbox {
+  height: 30vh;
+  padding: 0.5vh 0.5vw 0.5vh 0.5vw;
+}
+</style>

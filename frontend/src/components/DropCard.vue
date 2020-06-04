@@ -4,7 +4,7 @@
       <div class="flex-row">
         <div class="flex-column">
           <u-label style="font-size: 2em;">{{drop.title}}</u-label>
-          <p style="word-wrap: break-word;">{{drop.topic}}</p>
+          <span style="word-wrap: break-word;" v-html="drop.topic"></span>
         </div>
         <!-- <div class="flex-column" style="margin-left: 75%;"> -->
         <!-- <u-button>Subscribe</u-button> -->

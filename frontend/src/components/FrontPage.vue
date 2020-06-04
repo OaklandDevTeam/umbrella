@@ -1,13 +1,19 @@
 <template>
   <div>
     <u-modal v-if="newDrop">
-      <u-label style="font-size: 2em; line-height: 1.5em;">New Drop</u-label>
-      <u-label>{{this.error}}</u-label>
-      <u-text-field placeholder="Title" v-model="newDropTitle"></u-text-field>
-      <u-text-field placeholder="Topic" v-model="newDropTopic"></u-text-field>
-      <div class="flex-row">
-        <u-button @click.native="createDrop();">Submit</u-button>
-        <u-button @click.native="newDrop=false">Cancel</u-button>
+      <div class="new-modal-wrapper">
+        <u-label style="font-size: 2em; line-height: 1.5em;">New Drop</u-label>
+        <u-label>{{this.error}}</u-label>
+        <u-text-field placeholder="Title" v-model="newDropTitle"></u-text-field>
+        <text-box
+          class="shadowed slightly-responsive input-textbox"
+          placeholder="Topic"
+          v-model="newDropTopic"
+        ></text-box>
+        <div class="flex-row">
+          <u-button @click.native="createDrop();">Submit</u-button>
+          <u-button @click.native="newDrop=false">Cancel</u-button>
+        </div>
       </div>
     </u-modal>
     <u-card>
@@ -44,18 +50,18 @@ export default {
           "/drops/create",
           {
             title: this.newDropTitle,
-            topic: this.newDropTopic,
-            owner: this.user //won't be needed in the future
+            topic: this.newDropTopic
           },
           { headers: { "Content-Type": "application/json" } }
         )
         .then(response => {
-          if (response.status == 200) {
+          if (response.status == 200 || response.status == 400) {
             this.error = "";
             this.refresh();
             this.newDrop = false;
           } else {
-            this.error = "Title already in use.";
+            this.error =
+              "Invalid or already used title (titles cannot contain spaces).";
           }
         });
     }
@@ -73,4 +79,22 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.new-modal-wrapper {
+  width: 50vw;
+  padding-left: 3vw;
+  padding-right: 3vw;
+  padding-top: 3vh;
+  padding-bottom: 3vh;
+}
+
+.new-modal-wrapper > * {
+  box-sizing: border-box;
+  width: inherit;
+}
+
+.input-textbox {
+  height: 30vh;
+  padding: 0.5vh 0.5vw 0.5vh 0.5vw;
+}
+</style>
