@@ -1,5 +1,6 @@
 package com.umbr3114;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.MongoSecurityException;
 import com.mongodb.client.MongoClient;
@@ -54,6 +55,7 @@ public class ServiceLocator {
 
     private void initJsonMapper() {
         jsonMapper = new ObjectMapper();
+        jsonMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
     public MongoClient mongoClient() {

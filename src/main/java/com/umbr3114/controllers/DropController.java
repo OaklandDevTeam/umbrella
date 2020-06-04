@@ -68,6 +68,12 @@ public class DropController {
             halt(HttpStatus.BAD_REQUEST_400, new GeneralResponse(HttpStatus.BAD_REQUEST_400, "drop already exists").toJSON());
         }
 
+        try {
+            dropCollection.save(drop);
+        } catch (MongoWriteException e) {
+            halt(HttpStatus.BAD_REQUEST_400, new GeneralResponse(HttpStatus.BAD_REQUEST_400, "drop already exists").toJSON());
+        }
+
         return "okay";
     });
 
