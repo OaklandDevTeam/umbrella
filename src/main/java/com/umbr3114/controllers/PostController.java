@@ -47,7 +47,7 @@ public class PostController {
         String author = session.getCurrentUsername();
         String dropId = params.valueOf("drop_id");
 
-        if(title == null || bodyText == null || authorId == null || dropId == null || author == null){
+        if (title == null || bodyText == null || authorId == null || dropId == null || author == null) {
             halt(HttpStatus.BAD_REQUEST_400, new GeneralResponse(HttpStatus.OK_200, "invalid request").toJSON());
         }
         postModel = new PostModel(title, bodyText, authorId, dropId);
@@ -139,6 +139,7 @@ public class PostController {
 
         return models;
     }
+
     /*
      * to modify posts
      */
@@ -154,20 +155,20 @@ public class PostController {
         String post_Id = params.valueOf("post_id");
         String body_text = params.valueOf("body");
 
-        postModel = updateCollection.findOne(eq("_id",new ObjectId(post_Id)));
-        if(postModel == null) {
+        postModel = updateCollection.findOne(eq("_id", new ObjectId(post_Id)));
+        if (postModel == null) {
             halt(HttpStatus.FORBIDDEN_403,
                     new GeneralResponse(HttpStatus.FORBIDDEN_403, "Post doesn't exist or can't be modified")
                             .toJSON());
         }
-        myPermissionChecker = new PermissionChecker(request,new PostPermissionCheckProvider(postModel));
-        if(!myPermissionChecker.verify()){
+        myPermissionChecker = new PermissionChecker(request, new PostPermissionCheckProvider(postModel));
+        if (!myPermissionChecker.verify()) {
             halt(HttpStatus.FORBIDDEN_403,
                     new GeneralResponse(HttpStatus.FORBIDDEN_403, "unauthorized")
                             .toJSON());
         }
         //check if the post_id exists in the database
-        if(post_Id == null){
+        if (post_Id == null) {
             halt(HttpStatus.FORBIDDEN_403,
                     new GeneralResponse(HttpStatus.FORBIDDEN_403, "Post doesn't exist")
                             .toJSON());
@@ -175,7 +176,7 @@ public class PostController {
         //modify the body
         postModel.bodyText = body_text;
         //find the post by its id and update the body of the post
-        updateCollection.findOneAndReplace(eq("_id",new ObjectId(post_Id)),postModel);
+        updateCollection.findOneAndReplace(eq("_id", new ObjectId(post_Id)), postModel);
         return new GeneralResponse(HttpStatus.OK_200, "modified");
     });
     /*
@@ -192,10 +193,10 @@ public class PostController {
                 (ServiceLocator.getService().dbService(), PostModel.class).getCollection();
 
         //check if the post exist
-        postModel = deleteCollection.findOne(eq("_id",new ObjectId(post_Id)));
+        postModel = deleteCollection.findOne(eq("_id", new ObjectId(post_Id)));
         //check the user's permission
         permissionChecker = new PermissionChecker(request, new PostPermissionCheckProvider(postModel));
-        if(!permissionChecker.verify()){
+        if (!permissionChecker.verify()) {
             halt(HttpStatus.FORBIDDEN_403,
                     new GeneralResponse(HttpStatus.FORBIDDEN_403, "unauthorized.")
                             .toJSON());
@@ -209,6 +210,7 @@ public class PostController {
         }
         return new GeneralResponse(HttpStatus.OK_200, "deleted");
     });
+
     /*
      * permission check for the endpoints to modify/delete posts
      */
@@ -243,4 +245,29 @@ public class PostController {
         }
     }
 
-    }
+    /*
+     * to view the data about a single post
+     */
+    public static Route viewAPost = ((request, response) -> {
+
+        String postId;
+        PostModel postModel;
+
+        postId = request.params("postid");
+        if (postId == null) {
+            halt(HttpStatus.FORBIDDEN_403, new GeneralResponse(HttpStatus.FORBIDDEN_403,
+                    "post doesn't exist.").toJSON());
+        }
+        JacksonMongoCollection<PostModel> postModelCollection = new CollectionFactory<PostModel>(Main.services.dbService(),
+                PostModel.class).getCollection();
+
+        //retrieve data from the PostModel
+        postModel = postModelCollection.findOne(eq("_id", new ObjectId(postId)));
+        if (postModel == null) {
+            halt(HttpStatus.FORBIDDEN_403, new GeneralResponse(HttpStatus.FORBIDDEN_403,
+                    "post doesn't exist").toJSON());
+        }
+        return postModel;
+    });
+}
+

@@ -13,6 +13,8 @@ import com.umbr3114.common.RequestParamHelper;
 import com.umbr3114.data.CollectionFactory;
 import com.umbr3114.models.DropListingModel;
 import com.umbr3114.models.DropModel;
+import com.umbr3114.models.DropViewModel;
+import com.umbr3114.models.PostModel;
 import org.bson.types.ObjectId;
 import org.eclipse.jetty.http.HttpStatus;
 import org.mongojack.JacksonMongoCollection;
@@ -271,4 +273,43 @@ public class DropController {
             return model.owner;
         }
     }
+    /*
+     * retrieve data about a specific drop
+     */
+    public static Route viewADrop = ((request, response) -> {
+
+        String dropId;
+        long numPosts;
+        DropModel drop = null;
+        DropViewModel dropViewModel = null;
+
+        dropId = request.params("dropid");
+        if(dropId ==  null){
+            halt(HttpStatus.FORBIDDEN_403, new GeneralResponse(HttpStatus.FORBIDDEN_403,
+                    "drop doesn't exist.").toJSON());
+        }
+        //to get the number of posts in the drop
+        JacksonMongoCollection<PostModel> postCollection = new CollectionFactory<PostModel>
+                (ServiceLocator.getService().dbService(), PostModel.class).getCollection();
+        numPosts = postCollection.countDocuments(eq("drop_id",dropId));
+
+        //to get info about the drop from the DropModel
+        JacksonMongoCollection<DropModel> collection = new CollectionFactory<DropModel>(Main.services.dbService(),
+                DropModel.class).getCollection();
+
+        drop = collection.findOne(eq("_id", new ObjectId(dropId)));
+        if(drop ==  null){
+            halt(HttpStatus.FORBIDDEN_403, new GeneralResponse(HttpStatus.FORBIDDEN_403,
+                    "drop doesn't exist").toJSON());
+        }
+        dropViewModel = new DropViewModel();
+        dropViewModel.number_posts = numPosts;
+        dropViewModel.drop_title = drop.title;
+        dropViewModel.drop_topic = drop.topic;
+        dropViewModel.drop_id = dropId;
+        dropViewModel.owner_id = drop.owner;
+        dropViewModel.owner_name = drop.ownerName;
+
+        return dropViewModel;
+    });
 }

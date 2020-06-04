@@ -61,6 +61,10 @@ public class Main {
         post("/drops/managemod", DropController.manageModerator, new JsonResponse());
         delete("/drops/managemod", DropController.manageModerator, new JsonResponse());
 
+        //endpoint to show the data for a specific drop
+        get("/drops/:dropid", DropController.viewADrop, new JsonResponse());
+
+
         /*
          * to protect the subscription routes
          */
@@ -89,6 +93,9 @@ public class Main {
         before("/posts/delete", new AuthCheck());
         put("/posts/modify",PostController.modifyPosts,new JsonResponse());
         delete("/posts/delete",PostController.deletePosts,new JsonResponse());
+
+        //endpoint to show the data for a specific post
+        get("/posts/:postid", PostController.viewAPost, new JsonResponse());
 
         /*
          * Application should be running now
