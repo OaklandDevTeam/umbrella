@@ -6,6 +6,7 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoIterable;
 import com.mongodb.client.model.*;
 import com.umbr3114.ServiceLocator;
+import com.umbr3114.auth.PermissionChecker;
 import com.umbr3114.auth.SessionManager;
 import com.umbr3114.auth.SparkSessionManager;
 import com.umbr3114.auth.UserModel;
@@ -87,6 +88,7 @@ public class CommentController {
         JacksonMongoCollection<CommentModel> mongoCollection =
                 new CollectionFactory<CommentModel>(ServiceLocator.getService().dbService(), CommentModel.class).getCollection();
         SessionManager sessionManager = new SparkSessionManager(request);
+        PermissionChecker permissionChecker;
         String commentId = request.queryParams("_id");
         String bodyText = request.queryParams("bodyText");
         if(sessionManager.getCurrentUserId().equals(mongoCollection.findOneById(commentId).getAuthorId())){
