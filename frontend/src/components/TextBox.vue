@@ -1,6 +1,6 @@
 <!--Lots of help from here https://tiptap.scrumpy.io/docs/-->
 <template>
-    <div class="text-box">
+    <div class="text-box-wrapper shadowed">
         <editor-menu-bar :editor="textBoxEditor" v-slot="{commands, isActive}">
             <div class="text-box-menubar">
                 <button style="font-weight: bolder" class="slightly-responsive textbox-menubar-button" :class="{'is-active': isActive.bold() }" @click="commands.bold">B</button>
@@ -8,7 +8,7 @@
                 <button style="text-decoration: underline" class="slightly-responsive textbox-menubar-button" :class="{'is-active': isActive.underline() }" @click="commands.underline">U</button>
             </div>
         </editor-menu-bar>
-        <editor-content @input="handleInput" :editor="textBoxEditor"/>
+        <editor-content class="editor-content" :editor="textBoxEditor"/>
     </div>
 </template>
 
@@ -24,30 +24,44 @@
 
     export default {
         name: "TextBox",
-        prop: ['placeholder'],
+        props: ["value", "placeholder"],
         components: {
             EditorContent,
             EditorMenuBar
         },
         data() {
             return {
-                textBoxEditor: new Editor({
-                    content: '<p>Type here !</p>',
+                textBoxEditor: null,
+            }
+        },
+        mounted() {
+            this.textBoxEditor = new Editor({
+                    content: this.validatePlaceholder(),
                     extensions: [
                         new Bold(),
                         new Italic(),
                         new Underline()
-                    ]
-                }),
-            }
+                    ],
+                    onUpdate: ({getHTML}) => {
+                        this.handleInput(getHTML())
+                    }
+                })
         },
         beforeDestroy() {
             this.textBoxEditor.destroy()
         },
         methods: {
-            handleInput() {
-                // todo textBoxEditor.value() might be the wrong method to call, the docs aren't strait-forward.
-                this.$emit('input', this.textBoxEditor.value())
+            handleInput(val) {
+                if(val) {
+                    this.$emit("input", val)
+                }
+            },
+            validatePlaceholder() {
+                if(this.placeholder) {
+                    return `<p>${this.placeholder}</p>`
+                } else {
+                    return "<p>Type here!</p>"
+                }
             }
         }
     }
@@ -57,11 +71,12 @@
     * {
         box-sizing: border-box;
     }
-    .text-box {
+    .text-box-wrapper {
         height: inherit;
         width: inherit;
-        padding: 5px;
-        margin: 0;
+        border-radius: 10px;
+        font-size: 1.5em;
+        font-family: roboto;
     }
     .text-box-menubar {
         width: 100%;
@@ -73,5 +88,9 @@
         font-weight: bold;
         background-color: transparent;
         border: none;
+    }
+
+    .editor-content {
+        outline: 0;
     }
 </style>

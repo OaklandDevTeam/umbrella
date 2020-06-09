@@ -39,6 +39,7 @@ Vue.component('front-page', FrontPage);
 Vue.component('debug-page', DebugPage)
 Vue.component('u-post-card', PostCard);
 Vue.component('u-modal', Modal);
+Vue.component('text-box', TextBox);
 
 Vue.component('landing-page', LandingPage);
 Vue.component('front-page', FrontPage);

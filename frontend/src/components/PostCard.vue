@@ -5,16 +5,10 @@
         <div class="flex-column">
           <u-label style="font-size: 2em; line-height: 1.5em;">{{post.title}}</u-label>
           <u-label>author: {{post.author}}</u-label>
-          <p
-            v-if="post.bodyText.length <= 100 || active"
-            style="word-wrap: break-word;"
-          >{{post.bodyText}}</p>
-          <p
-            v-if="post.bodyText.length > 100 && !active"
-            style="word-wrap: break-word;"
-          >{{post.bodyText.substring(0, 100)}}...</p>
 
-          <u-flat-button @click.native="active=!active" v-if="post.bodyText.length > 100">
+          <div class="postBody" v-bind:class="{closed: !active}" v-html="post.bodyText"></div>
+
+          <u-flat-button @click.native="active=!active">
             <pre v-if="!active">read more</pre>
             <pre v-if="active">less</pre>
           </u-flat-button>
@@ -40,4 +34,12 @@ export default {
 </script>
 
 <style>
+.closed {
+  max-height: 3em;
+  overflow: hidden;
+}
+
+.postBody {
+  overflow-wrap: anywhere;
+}
 </style>

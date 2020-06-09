@@ -6,7 +6,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     page: "landing",
-    user: "anon",
+    user: {},
     drop: {}
   },
   mutations: {
@@ -18,6 +18,9 @@ export default new Vuex.Store({
     },
     setDrop(state, drop) {
       state.drop = drop;
+    },
+    iteratePostCount(state) {
+      state.user.post_count++;
     }
   },
   actions: {},

@@ -124,7 +124,9 @@ export default {
         .then(
           function(response) {
             if (response.status == 200) {
-              store.commit("setUser", this.username);
+              this.axios.get("/user/info").then(response => {
+                store.commit("setUser", response.data);
+              });
               store.commit("setPage", "front");
             }
           }.bind(this)
