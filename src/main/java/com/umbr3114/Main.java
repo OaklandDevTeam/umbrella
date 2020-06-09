@@ -82,10 +82,10 @@ public class Main {
         /*
          * comments
          */
-        post("/comments/create", CommentController.saveComments, new JsonResponse());
-        get("/comments/list", CommentController.getComments, new JsonResponse());
-        put("/comments/update", CommentController.updateComments, new JsonResponse());
-        delete("/comments/delete", CommentController.destroyComments, new JsonResponse());
+        post("/posts/<dropname>/<posttitle>/comment", CommentController.saveComments, new JsonResponse());
+        get("/posts/<dropname>/<posttitle>/comments", CommentController.getComments, new JsonResponse());
+        put("/posts/<dropname>/<posttitle>/comment", CommentController.updateComments, new JsonResponse());
+        delete("/posts/<dropname>/<posttitle>/comment", CommentController.destroyComments, new JsonResponse());
 
         /*
          * Application should be running now

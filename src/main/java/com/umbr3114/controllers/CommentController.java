@@ -34,14 +34,16 @@ public class CommentController {
         RequestParamHelper paramHelper = new RequestParamHelper(request);
         String bodyText = paramHelper.valueOf("bodyText");
         String authorId = sessionManager.getCurrentUserId();
-        if((bodyText.isEmpty() || bodyText == null) && (authorId.isEmpty() || authorId == null)){
+        String postId = paramHelper.valueOf("postId");
+        if((bodyText.isEmpty() || bodyText == null) && (authorId.isEmpty() || authorId == null)&& (postId.isEmpty() || postId == null)){
              return "bad";
         }
         commentModel = new CommentModel();
+        commentModel.setPostId(postId);
         commentModel.setAuthorId(authorId);
         commentModel.setBodyText(bodyText);
         mongoCollection.save(commentModel);
-        return "ok";
+        return postId;
     });
 
     public static Route getComments = ((request, response) -> {
