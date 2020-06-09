@@ -80,53 +80,69 @@ public class DropController {
     });
 
     public static Route updateDrop = ((request, response) -> {
-        String drop_Id;
+        String dropId;
         String topic;
         DropModel dropmodel;
         PermissionChecker checker;
-
         RequestParamHelper helper = new RequestParamHelper(request);
-        drop_Id = helper.valueOf("drop_id");
+        JacksonMongoCollection<DropModel> dropCollection;
+
+        dropCollection = new CollectionFactory<DropModel>(ServiceLocator.getService().dbService(), DropModel.class).getCollection();
+        dropId = helper.valueOf("drop_id");
         topic = helper.valueOf("topic");
 
-
-        JacksonMongoCollection<DropModel> update;
-        update = new CollectionFactory<DropModel>(ServiceLocator.getService().dbService(), DropModel.class).getCollection();
-
-
-        if (drop_Id == null){
-            halt(HttpStatus.NOT_FOUND_404, new GeneralResponse(HttpStatus.NOT_FOUND_404, "Drop not found").toJSON());}
+        if (dropId == null){
+            halt(HttpStatus.BAD_REQUEST_400, new GeneralResponse(HttpStatus.BAD_REQUEST_400, "drop_id missing").toJSON());}
         if (topic == null){
-            halt(HttpStatus.NOT_FOUND_404, new GeneralResponse(HttpStatus.NOT_FOUND_404, "Drop not found").toJSON());}
+            halt(HttpStatus.BAD_REQUEST_400, new GeneralResponse(HttpStatus.BAD_REQUEST_400, "updated topic missing").toJSON());}
 
 
-        dropmodel = update.findOne(eq("_id", new ObjectId(drop_Id)));
+        dropmodel = dropCollection.findOne(eq("_id", new ObjectId(dropId)));
         if (dropmodel == null){
           halt(HttpStatus.NOT_FOUND_404, new GeneralResponse(HttpStatus.NOT_FOUND_404,"Drop not found").toJSON());}
 
 
         checker = new PermissionChecker(request, new DropPermissionCheckProvider(dropmodel));
         if(!checker.verify()){
-            halt(HttpStatus.NOT_FOUND_404, new GeneralResponse(HttpStatus.NOT_FOUND_404,"Not authorized").toJSON());}
+            halt(HttpStatus.UNAUTHORIZED_401, new GeneralResponse(HttpStatus.UNAUTHORIZED_401,"unauthorized").toJSON());}
 
 
         dropmodel.topic = topic;
-        update.findOneAndReplace(eq("_id", new ObjectId(drop_Id)), dropmodel);
-        return new GeneralResponse(HttpStatus.OK_200, "okay update it");
+        dropCollection.findOneAndReplace(eq("_id", new ObjectId(dropId)), dropmodel);
+        return new GeneralResponse(HttpStatus.OK_200, "success");
 
 
     });
 
     public static Route deleteDrop = ((request, response) -> {
-        String drop_Id;
+        String dropId;
+        DropModel targetModel;
+        PermissionChecker permissionChecker;
         RequestParamHelper helper = new RequestParamHelper(request);
-        JacksonMongoCollection<DropModel> delete;
-        drop_Id = helper.valueOf("drop_id");
-       delete = new CollectionFactory<DropModel>(ServiceLocator.getService().dbService(), DropModel.class).getCollection();
-       delete.deleteOne(eq("_id", new ObjectId(drop_Id)));
+        JacksonMongoCollection<DropModel> dropCollection;
+        dropId = helper.valueOf("drop_id");
 
-       return "something";
+        if (dropId == null) {
+            halt(HttpStatus.BAD_REQUEST_400, new GeneralResponse(HttpStatus.BAD_REQUEST_400,"missing drop").toJSON());
+        }
 
+       dropCollection = new CollectionFactory<DropModel>(ServiceLocator.getService().dbService(), DropModel.class).getCollection();
+       targetModel = dropCollection.findOne(eq("_id", dropId));
+
+       if (targetModel == null) {
+           halt(HttpStatus.NOT_FOUND_404, new GeneralResponse(HttpStatus.NOT_FOUND_404,"drop doesnt exist").toJSON());
+       }
+
+       permissionChecker = new PermissionChecker(request, new DropPermissionCheckProvider(targetModel));
+
+       if (!permissionChecker.verify()) {
+           halt(HttpStatus.UNAUTHORIZED_401, new GeneralResponse(HttpStatus.UNAUTHORIZED_401,"Not authorized").toJSON());
+       }
+
+       // all checks passed
+       dropCollection.deleteOne(eq("_id", new ObjectId(dropId)));
+
+       return new GeneralResponse(HttpStatus.OK_200, "successful");
     });
 
     public static Route manageModerator = ((request, response) -> {

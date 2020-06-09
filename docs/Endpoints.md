@@ -50,10 +50,6 @@
 }
 ```
 
-* POST `/user/subscribe`
-* GET `/user/subscribed`
-* POST `/user/unsubscribe`
-
 # Drops
 ### POST `/drops/create`
 > Accepts JSON
@@ -71,6 +67,39 @@
     "message":"success/fail message"
 }
 ```
+
+### POST `/drops/delete`
+> Accepts JSON
+```json
+{
+  "drop_id":"<dropId>"
+}
+```
+> Returns JSON
+```json
+{
+    "status":number,
+    "message":"success/fail message"
+}
+```
+
+### PUT `/drops/update`
+> Accepts JSON
+```json
+{
+  "drop_id":"<dropId>",
+  "topic":"<new drop topic>"
+}
+```
+> Returns JSON
+```json
+{
+    "status":number,
+    "message":"success/fail message"
+}
+```
+
+
 
 ### POST `/drops/managemod`
 > Accepts JSON

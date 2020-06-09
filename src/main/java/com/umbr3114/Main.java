@@ -52,8 +52,11 @@ public class Main {
         before("/user/info", new AuthCheck());
         get("/user/info", AuthRoutes.userInfo, new JsonResponse());
 
-        put("/drops/:dbname/update", DropController.updateDrop);
-        delete("/drops/:dropName/delete", DropController.deleteDrop);
+        before("/drops/delete", new AuthCheck());
+        before("/drops/update", new AuthCheck());
+        put("/drops/update", DropController.updateDrop, new JsonResponse());
+        delete("/drops/delete", DropController.deleteDrop, new JsonResponse());
+
         before("/drops/create", new AuthCheck());
         post("/drops/create", DropController.addDrop, new JsonResponse());
         get("/drops/list", DropController.listDrops, new JsonResponse());
