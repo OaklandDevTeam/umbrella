@@ -67,6 +67,7 @@ public class Main {
         //endpoint to show the data for a specific drop
         get("/drops/:dropid", DropController.viewADrop, new JsonResponse());
 
+        get("/search",DropController.search_drops_posts, new JsonResponse());
 
         /*
          * to protect the subscription routes

@@ -15,6 +15,6 @@ public class DropViewModel {
     public String owner_id;
     public String owner_name;
     public long number_posts;
-//    public ObjectId _id;
+
 
 }

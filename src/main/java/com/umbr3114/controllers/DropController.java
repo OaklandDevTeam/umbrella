@@ -1,7 +1,9 @@
 package com.umbr3114.controllers;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.mongodb.MongoWriteException;
-import com.mongodb.client.model.Filters;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.model.*;
 import com.umbr3114.Main;
 import com.umbr3114.ServiceLocator;
 import com.umbr3114.auth.PermissionChecker;
@@ -11,10 +13,7 @@ import com.umbr3114.auth.SparkSessionManager;
 import com.umbr3114.common.GeneralResponse;
 import com.umbr3114.common.RequestParamHelper;
 import com.umbr3114.data.CollectionFactory;
-import com.umbr3114.models.DropListingModel;
-import com.umbr3114.models.DropModel;
-import com.umbr3114.models.DropViewModel;
-import com.umbr3114.models.PostModel;
+import com.umbr3114.models.*;
 import org.bson.types.ObjectId;
 import org.eclipse.jetty.http.HttpStatus;
 import org.mongojack.JacksonMongoCollection;
@@ -25,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.mongodb.client.model.Filters.text;
 import static spark.Spark.halt;
 
 public class DropController {
@@ -327,5 +327,46 @@ public class DropController {
         dropViewModel.owner_name = drop.ownerName;
 
         return dropViewModel;
+    });
+
+    /**
+     * to search for drops or posts
+     */
+    public static Route search_drops_posts = ((request, response) -> {
+
+        String userInput;
+        SearchModel searchResults = new SearchModel();
+        RequestParamHelper params = new RequestParamHelper(request);
+        userInput = params.valueOf("userInput");
+
+        FindIterable<DropModel> iterable;
+        FindIterable<PostModel> iterable2;
+
+        if(userInput ==  null){
+            halt(HttpStatus.FORBIDDEN_403, new GeneralResponse(HttpStatus.FORBIDDEN_403,
+                    "no input").toJSON());
+        }
+        JacksonMongoCollection<DropModel> dropCollection = new CollectionFactory<DropModel>(Main.services.dbService(),
+                DropModel.class).getCollection();
+
+        dropCollection.createIndex(Indexes.text("title"));
+        iterable = dropCollection.find(Filters.text(userInput));
+        if(iterable ==  null){
+            halt(HttpStatus.FORBIDDEN_403, new GeneralResponse(HttpStatus.FORBIDDEN_403,
+                    "no result matches the input").toJSON());
+        }
+        iterable.into(searchResults.dropResults);
+
+        JacksonMongoCollection<PostModel> postCollection = new CollectionFactory<PostModel>
+                (ServiceLocator.getService().dbService(), PostModel.class).getCollection();
+        postCollection.createIndex(Indexes.text("title"));
+        iterable2 = postCollection.find(Filters.text(userInput));
+        if(iterable2 ==  null) {
+            halt(HttpStatus.FORBIDDEN_403, new GeneralResponse(HttpStatus.FORBIDDEN_403,
+                    "no result matches the input").toJSON());
+        }
+        iterable2.into(searchResults.postResults);
+
+        return searchResults;
     });
 }

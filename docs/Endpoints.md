@@ -184,6 +184,20 @@
     },
 ]
 ```
+### GET `/drops/:dropid`      
+> Returns JSON
+```json
+[
+  {
+    "drop_title": "<drop title>",
+    "drop_topic": "<drop topic",
+    "drop_id": "<dropid>",
+    "owner_id": "<userId>",
+    "owner_name": "<username>",
+    "number_posts": integer,
+  },
+]
+```
 
 # Posts
 ### GET `/posts/<droptitle>/list`
@@ -236,6 +250,19 @@ Examples:
 {
 	"post_id":"<idString>"
 }
+```
+### GET `/posts/:postid`      
+> Returns JSON
+```json
+[
+  {
+     "post_id":"<idString>",
+      "title":"<postTitle>",
+      "body":"<postbody>",
+      "author_id":"<authorId>",
+      "authorName":"<authorName>"
+  },
+]
 ```
 
 # General Response
