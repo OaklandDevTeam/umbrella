@@ -5,9 +5,12 @@
         <div class="flex-column">
           <u-label style="font-size: 2em; line-height: 1.5em;">{{post.title}}</u-label>
           <u-label>author: {{post.author}}</u-label>
-
-          <div class="postBody" v-bind:class="{closed: !active}" v-html="post.bodyText"></div>
-
+          <button v-on:click="toggleEdit()">Edit</button>
+          <text-box
+            v-bind:value="post.bodyText"
+            v-bind:editable="false"
+            ref="richtext"
+            />
           <u-flat-button @click.native="active=!active">
             <pre v-if="!active">read more</pre>
             <pre v-if="active">less</pre>
@@ -29,7 +32,11 @@ export default {
   props: {
     post: Object
   },
-  methods: {}
+  methods: {
+    toggleEdit() {
+      this.$refs.richtext.toggleEditable()
+    }
+  }
 };
 </script>
 

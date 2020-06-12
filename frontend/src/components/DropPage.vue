@@ -8,6 +8,7 @@
         <text-box
           class="shadowed slightly-responsive input-textbox"
           placeholder="Enter your post text here!"
+          v-bind:editable="true"
           v-model="newPostContent"
         ></text-box>
         <div class="flex-row">
@@ -113,6 +114,7 @@ export default {
 
 .input-textbox {
   height: 30vh;
+  border-radius: 10px;
   padding: 0.5vh 0.5vw 0.5vh 0.5vw;
 }
 </style>
