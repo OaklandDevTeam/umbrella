@@ -6,6 +6,7 @@ import com.umbr3114.common.JsonResponse;
 import com.umbr3114.controllers.DropController;
 import com.umbr3114.controllers.PostController;
 import com.umbr3114.controllers.SubscriptionController;
+import com.umbr3114.models.PostModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -88,7 +89,6 @@ public class Main {
         before("/posts/create", new AuthCheck());
         post("/posts/create", PostController.savePosts, new JsonResponse());
         get("/posts/:drop/list", PostController.listPosts, new JsonResponse());
-
         /*
          * endpoints to modify/delete posts
          */
