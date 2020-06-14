@@ -1,9 +1,11 @@
 package com.umbr3114.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.bson.codecs.pojo.annotations.BsonIgnore;
+
 import org.bson.types.ObjectId;
 import org.mongojack.MongoCollection;
+
+import java.util.Date;
+
 
 @MongoCollection(name = "posts")
 public class PostModel {
@@ -16,6 +18,7 @@ public class PostModel {
     public String dropId;
     public String idString;
     //public List<CommentModel> comments;
+
 
     public PostModel(String theTitle, String text, String user, String dropId) {
         this.title = theTitle;
@@ -55,4 +58,13 @@ public class PostModel {
     }
 
     public void setIdString() { /*dummy method*/}
+
+    //date time//
+
+    public Date createdDate;
+    public Date editedDate;
+
+
+
+
 }
