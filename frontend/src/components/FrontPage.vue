@@ -64,12 +64,9 @@ export default {
             this.error = "";
             this.refresh();
             this.newDrop = false;
-<<<<<<< HEAD
-=======
           } else {
             this.error =
               "Invalid or already used title (titles cannot contain spaces).";
->>>>>>> 32ae8a91d80d3f5c70480c3be90536bb9a428f3b
           }
         })
         .catch(() => {
@@ -111,9 +108,6 @@ export default {
 .input-textbox {
   height: 30vh;
   padding: 0.5vh 0.5vw 0.5vh 0.5vw;
-<<<<<<< HEAD
   border-radius: 10px;
-=======
->>>>>>> 32ae8a91d80d3f5c70480c3be90536bb9a428f3b
 }
 </style>
