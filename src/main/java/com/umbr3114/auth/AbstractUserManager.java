@@ -26,6 +26,11 @@ public class AbstractUserManager implements UserManager{
         return false;
     }
 
+    @Override
+    public boolean toggleBan(String userIdentity, boolean isBanned) {
+        return false;
+    }
+
     public PasswordHasher getHasher() {
         return hasher;
     }

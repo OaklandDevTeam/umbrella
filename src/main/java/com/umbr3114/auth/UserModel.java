@@ -15,6 +15,7 @@ public class UserModel {
     private String email;
     private String password;
     private boolean isAdmin;
+    private boolean isBanned;
     private Date registrationDate;
 
     public UserModel(String username, String email, String password, boolean admin) {
@@ -66,6 +67,14 @@ public class UserModel {
 
     public void setRegistrationDate(Date registrationDate) {
         this.registrationDate = registrationDate;
+    }
+
+    public boolean isBanned() {
+        return isBanned;
+    }
+
+    public void setBanned(boolean banned) {
+        isBanned = banned;
     }
 
     @JsonIgnore
