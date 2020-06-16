@@ -225,6 +225,71 @@ Returns 403 when unauthorized, 400 when user parameter missing, 400 when the ban
   },
 ]
 ```
+### GET `/search/drops`
+> Accepts JSON
+```json
+{
+    "userInput":"<String>",
+}
+```
+> Returns JSON
+```json
+[
+   {     
+    "title": "<drop title>",
+    "topic": "<drop topic>",
+    "_id": {
+      "timestamp": numbers,
+      "date": numbers
+    },
+    "owner": "<idString>",
+    "ownerName": "<username>",
+    "moderators": <String>
+  }
+]
+```
+### GET `/search/posts`
+> Accepts JSON
+```json
+{
+    "userInput":"<String>",
+}
+```
+> Returns JSON
+```json
+[
+   {     
+"_id": {
+      "timestamp": numbers,
+      "date": numbers
+    },
+    "title": "<post title>",
+    "bodyText": "<body text>",
+    "authorId": "<user id>",
+    "author": "<username>",
+    "dropId": "<drop id>",
+    "idString": "<post id>",
+    "createdDate": numbers,
+    "editedDate": numbers  
+}
+]
+```
+### GET `/search/drops/posts`
+> Accepts JSON
+```json
+{
+    "userInput":"<String>",
+}
+```
+> Returns JSON
+```json
+[
+   {     
+<list of drops>
+<list of posts>
+  }
+]
+```
 
 # Posts
 ### GET `/posts/<droptitle>/list`

@@ -345,7 +345,7 @@ public class DropController {
         }
         JacksonMongoCollection<DropModel> dropCollection = new CollectionFactory<DropModel>(Main.services.dbService(),
                 DropModel.class).getCollection();
-//        dropCollection.createIndex(Indexes.text("title"));
+
         dropIterable = dropCollection.find(Filters.text(userInput));
 
         return  dropIterable;
@@ -369,9 +369,7 @@ public class DropController {
         JacksonMongoCollection<PostModel> postCollection = new CollectionFactory<PostModel>
                 (ServiceLocator.getService().dbService(), PostModel.class).getCollection();
 
-//        postCollection.createIndex(Indexes.text("title"));
         postIterable = postCollection.find(Filters.text(userInput));
-//        postIterable = postCollection.find(elemMatch("title",Filters.eq(userInput)));
         return postIterable;
     });
 
@@ -401,8 +399,7 @@ public class DropController {
         JacksonMongoCollection<PostModel> postCollection = new CollectionFactory<PostModel>
                 (ServiceLocator.getService().dbService(), PostModel.class).getCollection();
 
-//        postIterable = postCollection.find(Filters.text(userInput));
-        postIterable = postCollection.find(Filters.eq("title",userInput));
+        postIterable = postCollection.find(Filters.text(userInput));
         postIterable.into(searchResults.postResults);
 
         return searchResults;
