@@ -212,7 +212,7 @@ public class PostController {
         permissionChecker = new PermissionChecker(request, new PostPermissionCheckProvider(postModel));
         if (!permissionChecker.verify()) {
             halt(HttpStatus.FORBIDDEN_403,
-                    new GeneralResponse(HttpStatus.FORBIDDEN_403, "unauthorized.")
+                    new GeneralResponse(HttpStatus.FORBIDDEN_403, "unauthorized`.")
                             .toJSON());
         }
         //delete the post
