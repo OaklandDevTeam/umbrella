@@ -35,7 +35,7 @@ dependencies {
 
     // This also imports Jackson, Jackson-databind, Jackson-annotations
     // and the mongo driver
-    implementation group: 'org.mongojack', name: 'mongojack', version: '4.0.0'
+    implementation group: 'org.mongojack', name: 'mongojack', version: '4.0.1'
 
     // https://mvnrepository.com/artifact/org.mindrot/jbcrypt
     implementation group: 'org.mindrot', name: 'jbcrypt', version: '0.4'
