@@ -50,6 +50,33 @@
 }
 ```
 
+### POST `/user/banning`
+Bans a user. Supplied "user" can be a userId or username
+> Accepts JSON
+```json
+{
+    "user":"<username/userId>"
+}
+```
+### DELETE `/user/banning`
+un-bans a user. Supplied "user" can be a userId or username
+> Accepts JSON
+```json
+{
+    "user":"<username/userId>"
+}
+```
+
+> Returns JSON
+
+Returns 403 when unauthorized, 400 when user parameter missing, 400 when the ban attempt fails and 200 otherwise
+```json
+{
+    "status":123,
+    "message":"success/fail"
+}
+```
+
 # Drops
 ### POST `/drops/create`
 > Accepts JSON

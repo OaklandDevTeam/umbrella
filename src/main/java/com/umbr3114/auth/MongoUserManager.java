@@ -1,6 +1,8 @@
 package com.umbr3114.auth;
 
 import com.mongodb.MongoWriteException;
+import com.mongodb.client.model.Filters;
+import org.bson.types.ObjectId;
 import org.mongojack.JacksonMongoCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,6 +43,9 @@ public class MongoUserManager extends AbstractUserManager {
             return false;
         }
 
+        if (credentialVerifier.getUserModel().isBanned())
+            return false;
+
         getSessionManager().startSession(credentialVerifier.getUserModel());
         return true;
     }
@@ -66,4 +71,27 @@ public class MongoUserManager extends AbstractUserManager {
         return false;
     }
 
+    @Override
+    public boolean toggleBan(String userIdentity, boolean isBanned) {
+        UserModel userModel;
+
+        if (userIdentity == null)
+            return false;
+
+        if (ObjectId.isValid(userIdentity)) {
+            // attempt with userId
+            userModel = userCollection.findOne(Filters.eq("_id", new ObjectId(userIdentity)));
+        } else {
+            // assume attempt with username
+            userModel = userCollection.findOne(Filters.eq("username", userIdentity));
+        }
+
+        if (userModel == null)
+            return false;
+
+        userModel.setBanned(isBanned);
+        userCollection.findOneAndReplace(Filters.eq("_id", userModel._id), userModel);
+
+        return true;
+    }
 }
