@@ -265,6 +265,70 @@ Examples:
 }
 ```
 
+# Comments
+
+### GET `/comments/list`
+> Accepts JSON
+```json
+{
+  "postId":"idString",
+  "startAfterId": "<optional idString>",
+  "limit": 100 // (optional, max at 100)
+}
+```
+
+> Returns JSON
+```json
+{
+    "post_id":"<dropId>",
+    "count":0000,
+    "last_id":"<id of last comment in listing>",
+    "comments": {
+        // comment models
+      [
+            {
+              "bodyText": "example comment",
+              "authorId": "5ed994e7a0c6ad4a3dfcb549",
+              "date": 1592273929388,
+              "idString": "5ee82c09a9e08325d2e8429a",
+              "post_id": "5ee7e07e0973582c2ebbcb5b"
+            },
+      ]   
+    }
+}
+```
+
+### `POST /comments/create`
+**Note:** This route is auth protected 
+> Accepts JSON
+```json
+{
+	"postId":"<postId>",
+	"bodyText":"comment text"
+}
+```
+
+### `PUT /comment/update`
+**Note:** This route is auth protected 
+> Accepts JSON
+```json
+{
+	"comment_id":"<idString>",
+	"bodyText":"modified comment text"
+	
+}
+```
+
+### `DELETE /comment/destroy`
+**Note:** This route is auth protected 
+> Accepts JSON
+```json
+{
+	"comment_id":"<idString>"
+}
+```
+
+
 # General Response
 ```json
 {

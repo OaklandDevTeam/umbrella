@@ -56,6 +56,10 @@ public class PostController {
         if (title == null || bodyText == null || authorId == null || dropId == null || author == null) {
             halt(HttpStatus.BAD_REQUEST_400, new GeneralResponse(HttpStatus.OK_200, "invalid request").toJSON());
         }
+        postModel = new PostModel();
+        postModel.setAuthorId(authorId);
+        postModel.setBodyText(bodyText);
+        postModel.setTitle(title);
         postModel = new PostModel(title, bodyText, authorId, dropId);
         postModel.author = author;
         mongoCollection.save(postModel);

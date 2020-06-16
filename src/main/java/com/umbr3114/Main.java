@@ -3,6 +3,7 @@ package com.umbr3114;
 import com.umbr3114.auth.AuthCheck;
 import com.umbr3114.auth.AuthRoutes;
 import com.umbr3114.common.JsonResponse;
+import com.umbr3114.controllers.CommentController;
 import com.umbr3114.controllers.DropController;
 import com.umbr3114.controllers.PostController;
 import com.umbr3114.controllers.SubscriptionController;
@@ -93,6 +94,17 @@ public class Main {
 
         //endpoint to show the data for a specific post
         get("/posts/:postid", PostController.viewAPost, new JsonResponse());
+
+        /*
+         * Comment Routes
+         */
+        before("/comments/create", new AuthCheck());
+        before("/comment/update", new AuthCheck());
+        before("/comment/destroy", new AuthCheck());
+        post("/comments/create", CommentController.saveComments, new JsonResponse());
+        put("/comment/update", CommentController.updateComments, new JsonResponse());
+        delete("/comment/destroy", CommentController.destroyComments, new JsonResponse());
+        get("/comments/list", CommentController.getComments, new JsonResponse());
 
         /*
          * Application should be running now
