@@ -122,11 +122,47 @@ public class AuthRoutes {
         sessionManager.invalidateSession();
         return new GeneralResponse(HttpStatus.OK_200, "successful");
     });
+    
+    public static Route manageBanning = ((request, response) -> {
+        Logger log = LoggerFactory.getLogger("AuthRoutes-Banning");
+        SparkSessionManager sessionManager = new SparkSessionManager(request, response);
+        MongoUserManager userManager = createUserManager(sessionManager);
+        RequestParamHelper helper = new RequestParamHelper(request);
+        String userIdentity; // so this could either be a userId or userName;
+        userIdentity = helper.valueOf("user");
+        boolean banResult = false;
 
+        if (!sessionManager.isAdmin()) {
+            halt(HttpStatus.FORBIDDEN_403, new GeneralResponse(HttpStatus.FORBIDDEN_403, "unauthorized").toJSON());
+        }
 
-    public static Route protectedRoute = ((request, response) -> {
-        return "Now authenticated!";
+        if (userIdentity == null) {
+            halt(HttpStatus.BAD_REQUEST_400, new GeneralResponse(HttpStatus.BAD_REQUEST_400, "missing user_id/username").toJSON());
+        }
+
+        switch (request.requestMethod()){
+            case "POST":
+                banResult = userManager.toggleBan(userIdentity, true);
+                break;
+            case "DELETE":
+                banResult = userManager.toggleBan(userIdentity, false);
+                break;
+            default:
+                halt(HttpStatus.BAD_REQUEST_400, new GeneralResponse(HttpStatus.BAD_REQUEST_400, "unsupported request type").toJSON());
+                break;
+        }
+
+        if (!banResult) {
+            halt(HttpStatus.BAD_REQUEST_400, new GeneralResponse(HttpStatus.BAD_REQUEST_400, "ban attempt failed").toJSON());
+        }
+
+        return new GeneralResponse(HttpStatus.OK_200, "success");
     });
+
+    private static MongoUserManager createUserManager(SessionManager sessionManager) {
+        JacksonMongoCollection<UserModel> userCollection = createUserCollection();
+        return new MongoUserManager(userCollection, sessionManager, new BCryptPasswordHasher());
+    }
 
     private static JacksonMongoCollection<UserModel> createUserCollection() {
         MongoDatabase db = ServiceLocator.getService().dbService();

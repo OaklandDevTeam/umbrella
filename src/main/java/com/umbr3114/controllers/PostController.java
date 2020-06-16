@@ -22,7 +22,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Route;
 
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.Clock;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
@@ -53,6 +59,7 @@ public class PostController {
         postModel = new PostModel(title, bodyText, authorId, dropId);
         postModel.author = author;
         mongoCollection.save(postModel);
+        postModel.createdDate = Date.from(Instant.now());
 
         return new GeneralResponse(HttpStatus.OK_200, "added");
     });
@@ -155,6 +162,7 @@ public class PostController {
         String post_Id = params.valueOf("post_id");
         String body_text = params.valueOf("body");
 
+
         postModel = updateCollection.findOne(eq("_id", new ObjectId(post_Id)));
         if (postModel == null) {
             halt(HttpStatus.FORBIDDEN_403,
@@ -176,8 +184,10 @@ public class PostController {
         //modify the body
         postModel.bodyText = body_text;
         //find the post by its id and update the body of the post
+        postModel.editedDate = Date.from(Instant.now());
         updateCollection.findOneAndReplace(eq("_id", new ObjectId(post_Id)), postModel);
         return new GeneralResponse(HttpStatus.OK_200, "modified");
+
     });
     /*
      * to delete posts
@@ -269,5 +279,9 @@ public class PostController {
         }
         return postModel;
     });
+
 }
+
+
+
 

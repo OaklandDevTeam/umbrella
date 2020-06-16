@@ -6,6 +6,7 @@ import com.umbr3114.common.JsonResponse;
 import com.umbr3114.controllers.DropController;
 import com.umbr3114.controllers.PostController;
 import com.umbr3114.controllers.SubscriptionController;
+import com.umbr3114.models.PostModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,15 +34,6 @@ public class Main {
         before("/*", (request, response) -> response.header("Access-Control-Allow-Origin", "*"));
         after("/*", (request, response) -> response.type("application/json"));
 
-
-        /*
-         * Protect any route with this before declaration and an AuthCheck object
-         * just match the route in the before and Route declaration
-         */
-        before("/protectedRoute", new AuthCheck());
-        get("/protectedRoute", AuthRoutes.protectedRoute);
-
-
         /*
          * Auth endpoints
          */
@@ -51,6 +43,9 @@ public class Main {
         get("/logout", AuthRoutes.logoutUser, new JsonResponse());
         before("/user/info", new AuthCheck());
         get("/user/info", AuthRoutes.userInfo, new JsonResponse());
+        before("/user/banning", new AuthCheck());
+        post("/user/banning", AuthRoutes.manageBanning, new JsonResponse());
+        delete("/user/banning", AuthRoutes.manageBanning, new JsonResponse());
 
         before("/drops/delete", new AuthCheck());
         before("/drops/update", new AuthCheck());
@@ -94,7 +89,6 @@ public class Main {
         before("/posts/create", new AuthCheck());
         post("/posts/create", PostController.savePosts, new JsonResponse());
         get("/posts/:drop/list", PostController.listPosts, new JsonResponse());
-
         /*
          * endpoints to modify/delete posts
          */

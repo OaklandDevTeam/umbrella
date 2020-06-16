@@ -9,6 +9,7 @@
           class="shadowed slightly-responsive input-textbox"
           placeholder="Topic"
           v-model="newDropTopic"
+          editable="true"
         ></text-box>
         <div class="flex-row">
           <u-button @click.native="createDrop();">Submit</u-button>
@@ -59,10 +60,13 @@ export default {
           { headers: { "Content-Type": "application/json" } }
         )
         .then(response => {
-          if (response.status == 200) {
+          if (response.status == 200 || response.status == 400) {
             this.error = "";
             this.refresh();
             this.newDrop = false;
+          } else {
+            this.error =
+              "Invalid or already used title (titles cannot contain spaces).";
           }
         })
         .catch(() => {
@@ -104,5 +108,6 @@ export default {
 .input-textbox {
   height: 30vh;
   padding: 0.5vh 0.5vw 0.5vh 0.5vw;
+  border-radius: 10px;
 }
 </style>
