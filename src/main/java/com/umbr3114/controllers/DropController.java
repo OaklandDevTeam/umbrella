@@ -1,7 +1,10 @@
 package com.umbr3114.controllers;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.mongodb.MongoWriteException;
-import com.mongodb.client.model.Filters;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.model.*;
 import com.umbr3114.Main;
 import com.umbr3114.ServiceLocator;
 import com.umbr3114.auth.PermissionChecker;
@@ -11,20 +14,17 @@ import com.umbr3114.auth.SparkSessionManager;
 import com.umbr3114.common.GeneralResponse;
 import com.umbr3114.common.RequestParamHelper;
 import com.umbr3114.data.CollectionFactory;
-import com.umbr3114.models.DropListingModel;
-import com.umbr3114.models.DropModel;
-import com.umbr3114.models.DropViewModel;
-import com.umbr3114.models.PostModel;
+import com.umbr3114.models.*;
 import org.bson.types.ObjectId;
 import org.eclipse.jetty.http.HttpStatus;
 import org.mongojack.JacksonMongoCollection;
 import spark.Route;
-import static com.mongodb.client.model.Filters.eq;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.mongodb.client.model.Filters.*;
 import static spark.Spark.halt;
 
 public class DropController {
@@ -327,5 +327,81 @@ public class DropController {
         dropViewModel.owner_name = drop.ownerName;
 
         return dropViewModel;
+    });
+
+    /**
+     * endpoint to search for drops
+     */
+    public static Route search_drops = ((request, response) -> {
+
+        String userInput;
+        FindIterable<DropModel> dropIterable;
+        RequestParamHelper params = new RequestParamHelper(request);
+
+        userInput = params.valueOf("userInput");
+        if(userInput ==  null){
+            halt(HttpStatus.FORBIDDEN_403, new GeneralResponse(HttpStatus.FORBIDDEN_403,
+                    "no input").toJSON());
+        }
+        JacksonMongoCollection<DropModel> dropCollection = new CollectionFactory<DropModel>(Main.services.dbService(),
+                DropModel.class).getCollection();
+
+        dropIterable = dropCollection.find(Filters.text(userInput));
+
+        return  dropIterable;
+    });
+
+    /**
+     * endpoint to search for posts
+     */
+    @JsonIgnoreProperties (ignoreUnknown = true)
+    public static Route search_posts = ((request, response) -> {
+
+        String userInput;
+        FindIterable<PostModel> postIterable;
+        RequestParamHelper params = new RequestParamHelper(request);
+
+        userInput = params.valueOf("userInput");
+        if(userInput ==  null){
+            halt(HttpStatus.FORBIDDEN_403, new GeneralResponse(HttpStatus.FORBIDDEN_403,
+                    "no input").toJSON());
+        }
+        JacksonMongoCollection<PostModel> postCollection = new CollectionFactory<PostModel>
+                (ServiceLocator.getService().dbService(), PostModel.class).getCollection();
+
+        postIterable = postCollection.find(Filters.text(userInput));
+        return postIterable;
+    });
+
+    /**
+     * to search for both drops and posts
+     */
+    public static Route search_drops_posts = ((request, response) -> {
+
+        String userInput;
+        SearchModel searchResults = new SearchModel();
+        RequestParamHelper params = new RequestParamHelper(request);
+        userInput = params.valueOf("userInput");
+
+        FindIterable<DropModel> dropIterable;
+        FindIterable<PostModel> postIterable;
+
+        if(userInput ==  null){
+            halt(HttpStatus.FORBIDDEN_403, new GeneralResponse(HttpStatus.FORBIDDEN_403,
+                    "no input").toJSON());
+        }
+        JacksonMongoCollection<DropModel> dropCollection = new CollectionFactory<DropModel>(Main.services.dbService(),
+                DropModel.class).getCollection();
+
+        dropIterable = dropCollection.find(Filters.text(userInput));
+        dropIterable.into(searchResults.dropResults);
+
+        JacksonMongoCollection<PostModel> postCollection = new CollectionFactory<PostModel>
+                (ServiceLocator.getService().dbService(), PostModel.class).getCollection();
+
+        postIterable = postCollection.find(Filters.text(userInput));
+        postIterable.into(searchResults.postResults);
+
+        return searchResults;
     });
 }

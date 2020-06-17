@@ -211,6 +211,85 @@ Returns 403 when unauthorized, 400 when user parameter missing, 400 when the ban
     },
 ]
 ```
+### GET `/drops/:dropid`      
+> Returns JSON
+```json
+[
+  {
+    "drop_title": "<drop title>",
+    "drop_topic": "<drop topic",
+    "drop_id": "<dropid>",
+    "owner_id": "<userId>",
+    "owner_name": "<username>",
+    "number_posts": integer,
+  },
+]
+```
+### GET `/search/drops`
+> Accepts JSON
+```json
+{
+    "userInput":"<String>",
+}
+```
+> Returns JSON
+```json
+[
+   {     
+    "title": "<drop title>",
+    "topic": "<drop topic>",
+    "_id": {
+      "timestamp": numbers,
+      "date": numbers
+    },
+    "owner": "<idString>",
+    "ownerName": "<username>",
+    "moderators": <String>
+  }
+]
+```
+### GET `/search/posts`
+> Accepts JSON
+```json
+{
+    "userInput":"<String>",
+}
+```
+> Returns JSON
+```json
+[
+   {     
+"_id": {
+      "timestamp": numbers,
+      "date": numbers
+    },
+    "title": "<post title>",
+    "bodyText": "<body text>",
+    "authorId": "<user id>",
+    "author": "<username>",
+    "dropId": "<drop id>",
+    "idString": "<post id>",
+    "createdDate": numbers,
+    "editedDate": numbers  
+}
+]
+```
+### GET `/search/drops/posts`
+> Accepts JSON
+```json
+{
+    "userInput":"<String>",
+}
+```
+> Returns JSON
+```json
+[
+   {     
+<list of drops>
+<list of posts>
+  }
+]
+```
 
 # Posts
 ### GET `/posts/<droptitle>/list`
@@ -275,6 +354,19 @@ Examples:
 {
 	"post_id":"<idString>"
 }
+```
+### GET `/posts/:postid`      
+> Returns JSON
+```json
+[
+  {
+     "post_id":"<idString>",
+      "title":"<postTitle>",
+      "body":"<postbody>",
+      "author_id":"<authorId>",
+      "authorName":"<authorName>"
+  },
+]
 ```
 
 # Comments
