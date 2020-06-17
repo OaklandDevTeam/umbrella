@@ -1,10 +1,10 @@
 package com.umbr3114.controllers;
 
 import com.mongodb.client.FindIterable;
-import com.mongodb.client.result.DeleteResult;
 import com.umbr3114.ServiceLocator;
 import com.umbr3114.auth.*;
 import com.umbr3114.common.GeneralResponse;
+import com.umbr3114.common.PostScore;
 import com.umbr3114.common.RequestParamHelper;
 import com.umbr3114.data.CollectionFactory;
 import com.umbr3114.models.CommentListingModel;
@@ -17,16 +17,12 @@ import org.bson.types.ObjectId;
 import spark.Route;
 import com.mongodb.client.model.Filters;
 
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import static com.mongodb.client.model.Filters.*;
 import static spark.Spark.halt;
-
-import java.text.SimpleDateFormat;
 
 public class CommentController {
     public static final int listLimit = 100;
@@ -52,6 +48,9 @@ public class CommentController {
         Date date = new java.util.Date(System.currentTimeMillis());
         commentModel.setDate(date);
         mongoCollection.save(commentModel);
+
+        // score the post this comment belongs to, in the background
+        PostScore.asyncScorePostFromIdAndUpdate(commentModel.postId, System.currentTimeMillis());
         return new GeneralResponse(HttpStatus.OK_200, "saved");
     });
 

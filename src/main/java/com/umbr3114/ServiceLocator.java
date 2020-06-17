@@ -11,6 +11,9 @@ import com.umbr3114.errors.DatabaseConnectionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+
 
 public class ServiceLocator {
     private static ServiceLocator instance;
@@ -19,10 +22,12 @@ public class ServiceLocator {
     private MongoClient mongoClient;
     private MongoDatabase dbService;
     private ObjectMapper jsonMapper;
+    private Executor backgroundWorkerPool;
 
     private ServiceLocator(){
         initializeDbService();
         initJsonMapper();
+        initBackgroundWorkerPool();
     }
 
     public static ServiceLocator getService() {
@@ -58,6 +63,10 @@ public class ServiceLocator {
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
+    private void initBackgroundWorkerPool() {
+        this.backgroundWorkerPool = Executors.newFixedThreadPool(2);
+    }
+
     public MongoClient mongoClient() {
         return mongoClient;
     }
@@ -68,5 +77,9 @@ public class ServiceLocator {
 
     public ObjectMapper jsonMapper() {
         return jsonMapper;
+    }
+
+    public Executor getBackgroundWorkerPool() {
+        return backgroundWorkerPool;
     }
 }

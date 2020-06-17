@@ -218,13 +218,25 @@ Returns 403 when unauthorized, 400 when user parameter missing, 400 when the ban
 | Query Param |                                                                                         Description                                                                                         |
 | :---------- | :-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
 | limit       |                                     Maximum number of posts to fetch in this call. ***OPTIONAL:*** there is a default limit of 25 and a maximum of 100                                      |
-| startAfter  | The Post ID that this call will start after. **NOTE** This post will not come in the listing. ***OPTIONAL:*** If this is not specified, an initial list is retrieved starting from the top. |
+| offset  | The offset of posts to fetch in this request ***OPTIONAL:*** If this is not specified, an initial list is retrieved starting from the top. |
+| sort | The sorting method for this post load. |
+
+Sorting methods:
+
+| Method | Description|
+| :---- | :--------------------------------------------------------------------------------------------------------------------------: |
+| new           |                   fetches post sorted by their creationDate - descending                                             |
+| scoreDay      |                            fetches posts sorted by their scores that start to decay within a day                     |
+| scoreThreeDay |               fetches posts sorted by their scores that start to decay within three days                             |
+| scoreWeek     |                           fetches posts sorted by their scores that start to decay within a week                     |
+| scoreHour     | fetches posts sorted by their scores that start to decay within an hour **NOTE: This is the default sorting method** |
+
 
 Examples: 
 * `/posts/<droptitle>/list`
 * `/posts/<droptitle>/list?limit=50`
-* `/posts/<droptitle>/list?startAfter=5ed668f949c2aa25778c8080`
-* `/posts/<droptitle>/list?startAfter=5ed668f949c2aa25778c8080&limit=50`
+* `/posts/<droptitle>/list?offset=20 // skips the first 20 posts`
+* `/posts/<droptitle>/list?offset=20&limit=50`
 
 > Returns JSON
 ```json

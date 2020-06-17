@@ -11,6 +11,6 @@ public class PostListingModel {
 
     public String dropId;
     public int count;
-    public String lastId;
+    public int offset;
     public List<PostModel> posts;
 }

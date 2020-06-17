@@ -91,7 +91,6 @@ public class Main {
         before("/posts/delete", new AuthCheck());
         put("/posts/modify",PostController.modifyPosts,new JsonResponse());
         delete("/posts/delete",PostController.deletePosts,new JsonResponse());
-
         //endpoint to show the data for a specific post
         get("/posts/:postid", PostController.viewAPost, new JsonResponse());
 

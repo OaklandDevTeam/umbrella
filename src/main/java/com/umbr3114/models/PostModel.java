@@ -1,13 +1,8 @@
 package com.umbr3114.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.bson.codecs.pojo.annotations.BsonIgnore;
+
 import org.bson.types.ObjectId;
 import org.mongojack.MongoCollection;
-import java.util.List;
 
 import java.util.Date;
 
@@ -21,6 +16,10 @@ public class PostModel {
     public String author;
     public String dropId;
     public String idString;
+    public double scoreHour;
+    public double scoreDay;
+    public double scoreThreeDay;
+    public double scoreWeek;
 
     public PostModel(String theTitle, String text, String user, String dropId) {
         this.title = theTitle;
