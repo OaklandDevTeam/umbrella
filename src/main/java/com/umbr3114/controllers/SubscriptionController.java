@@ -66,14 +66,14 @@ public class SubscriptionController {
         RequestParamHelper params = new RequestParamHelper(request);
         SessionManager session = new SparkSessionManager(request);
         String userID = session.getCurrentUserId();
-        String dropID =  params.valueOf("dropid");
+        String dropID =  params.valueOf("drop_id");
         DeleteResult result;   //to see how many Drops have been unsubscribed
 
         //to remove the dropId from the subscribed list
         JacksonMongoCollection<SubscriptionModel> removeDropCollection = new CollectionFactory<SubscriptionModel>
                 (ServiceLocator.getService().dbService(),SubscriptionModel.class).getCollection();
 
-        result = removeDropCollection.deleteOne(and(eq("userid",userID),eq("dropid",dropID)));
+        result = removeDropCollection.deleteOne(and(eq("user_id",userID),eq("drop_id",dropID)));
         if(result.getDeletedCount() == 0){
             halt(HttpStatus.NOT_FOUND_404,
                     new GeneralResponse(HttpStatus.NOT_FOUND_404, "drop_id doesn't exist.")
@@ -98,7 +98,7 @@ public class SubscriptionController {
                       new GeneralResponse(HttpStatus.BAD_REQUEST_400, "No subscription record was found.")
                               .toJSON());
           }
-          dropCollection.find(eq("userid",userID)).into(list);
+          dropCollection.find(eq("user_id",userID)).into(list);
 
           return list;
     });

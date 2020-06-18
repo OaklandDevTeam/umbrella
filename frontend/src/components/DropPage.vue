@@ -100,7 +100,7 @@ export default {
     },
     handleUnsubscribe() {
       this.axios.post("/user/unsubscribe", {
-        dropid: this.drop.drop_id
+        drop_id: this.drop.drop_id
       },
       { headers: { "Content-Type": "application/json" } }
       ).then(response => {
@@ -122,7 +122,7 @@ export default {
     userIsSubscribed() {
       var result = false; // forEach takes a function.. haha, so you can't return THIS function from that scope
       store.state.userSubscriptions.forEach(val => {
-        if(val.dropid === this.drop.drop_id) {
+        if(val.drop_id === this.drop.drop_id) {
           result = true;
           return;
         }

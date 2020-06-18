@@ -1,9 +1,8 @@
 <template>
     <div class="user-card">
-        <span>I AM THE FUTURE</span>
         <ul class="subscription-list">
             <li v-for="drop in subscribedDrops" v-bind:key="drop.dropName">
-                <u-flat-button @click.native="handleOpenDrop(drop.dropid)" >{{drop.dropName}}</u-flat-button>
+                <u-flat-button @click.native="handleOpenDrop(drop.drop_id)" >{{drop.drop_name}}</u-flat-button>
             </li>
         </ul>
     </div>
@@ -47,6 +46,8 @@ export default {
 
 <style scoped>
     .subscription-list {
-
+        list-style: none;
+        list-style-position: inside;
+        padding: 0;
     }
 </style>

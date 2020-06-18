@@ -14,6 +14,7 @@ public class SubscriptionModel {
     public String userid;
     @JsonProperty("drop_id")
     public String dropid;
+    @JsonProperty("drop_name")
     public String dropName;
     @Id
     @JsonIgnore
