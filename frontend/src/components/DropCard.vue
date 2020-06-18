@@ -4,7 +4,13 @@
       <div class="flex-row">
         <div class="flex-column">
           <u-label style="font-size: 2em;">{{drop.title}}</u-label>
-          <span style="word-wrap: break-word;" v-html="drop.topic"></span>
+          <!--<span style="word-wrap: break-word;" v-html="drop.topic"></span>-->
+                <text-box
+          v-bind:value="drop.topic"
+          v-model="drop.topic"
+          v-bind:editable="false"
+          ref="richtext"
+      />
         </div>
         <!-- <div class="flex-column" style="margin-left: 75%;"> -->
         <!-- <u-button>Subscribe</u-button> -->
