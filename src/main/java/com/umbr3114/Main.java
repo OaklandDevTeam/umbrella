@@ -109,7 +109,7 @@ public class Main {
         post("/comments/create", CommentController.saveComments, new JsonResponse());
         put("/comment/update", CommentController.updateComments, new JsonResponse());
         delete("/comment/destroy", CommentController.destroyComments, new JsonResponse());
-        get("/comments/list", CommentController.getComments, new JsonResponse());
+        put("/comments/list", CommentController.getComments, new JsonResponse());
 
         /*
          * Application should be running now
