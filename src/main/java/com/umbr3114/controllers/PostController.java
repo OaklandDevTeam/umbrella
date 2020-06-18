@@ -2,6 +2,7 @@ package com.umbr3114.controllers;
 
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Sorts;
 import com.mongodb.client.result.DeleteResult;
 import com.umbr3114.Main;
 import com.umbr3114.ServiceLocator;
@@ -10,11 +11,13 @@ import com.umbr3114.auth.PermissionChecker;
 import com.umbr3114.auth.SessionManager;
 import com.umbr3114.auth.SparkSessionManager;
 import com.umbr3114.common.GeneralResponse;
+import com.umbr3114.common.PostScore;
 import com.umbr3114.common.RequestParamHelper;
 import com.umbr3114.data.CollectionFactory;
 import com.umbr3114.models.DropModel;
 import com.umbr3114.models.PostListingModel;
 import com.umbr3114.models.PostModel;
+import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 import org.eclipse.jetty.http.HttpStatus;
 import org.mongojack.JacksonMongoCollection;
@@ -23,12 +26,8 @@ import org.slf4j.LoggerFactory;
 import spark.Route;
 
 import java.sql.Date;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.Clock;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
@@ -39,6 +38,7 @@ public class PostController {
 
     public static final int DEFAULT_POST_LOAD_LIMIT = 25;
     public static final int POST_LOAD_MAX_LIMIT = 100;
+    public static final String DEFAULT_SORT = "scoreHour";
 
     public static Route savePosts = ((request, response) -> {
         JacksonMongoCollection<PostModel> mongoCollection =
@@ -56,95 +56,121 @@ public class PostController {
         if (title == null || bodyText == null || authorId == null || dropId == null || author == null) {
             halt(HttpStatus.BAD_REQUEST_400, new GeneralResponse(HttpStatus.OK_200, "invalid request").toJSON());
         }
+
+
+        postModel = new PostModel();
+        postModel.setAuthorId(authorId);
+        postModel.setBodyText(bodyText);
+        postModel.setTitle(title);
         postModel = new PostModel(title, bodyText, authorId, dropId);
         postModel.author = author;
-        mongoCollection.save(postModel);
         postModel.createdDate = Date.from(Instant.now());
+
+        PostScore.calculateScoreForPostModel(postModel, System.currentTimeMillis());
+
+        mongoCollection.save(postModel);
 
         return new GeneralResponse(HttpStatus.OK_200, "added");
     });
 
     public static Route listPosts = ((request, response) -> {
-        String dropName = request.params("drop");
-        String listAfterId = request.queryParamOrDefault("startAfter", "*");
-        String limitRaw = request.queryParamOrDefault("limit", "");
+        String dropId = request.params("drop");
+        String offsetString = request.queryParamOrDefault("offset", "0");
+        String limitString = request.queryParamOrDefault("limit", Integer.toString(DEFAULT_POST_LOAD_LIMIT));
+        String sortBy = request.queryParamOrDefault("sort", DEFAULT_SORT);
         PostListingModel listingModel;
         List<PostModel> postModels;
         int limit;
+        int offset;
 
         // sanity check inputs
-        if (dropName == null) {
+        if (dropId == null) {
             halt(HttpStatus.NOT_FOUND_404, new GeneralResponse(HttpStatus.NOT_FOUND_404,
                     "how did you get here?").toJSON());
         }
 
-        if (limitRaw.isEmpty()) {
+        try{
+            limit = Integer.parseInt(limitString);
+        } catch (NumberFormatException e) {
             limit = DEFAULT_POST_LOAD_LIMIT;
-        } else {
-            try {
-                limit = Integer.parseInt(limitRaw);
-            } catch (NumberFormatException e) {
-                limit = DEFAULT_POST_LOAD_LIMIT;
-            }
         }
 
-        // input validate limit
-        if (limit > POST_LOAD_MAX_LIMIT) {
+        try {
+            offset = Integer.parseInt(offsetString);
+        } catch (NumberFormatException e) {
+            offset = 0;
+        }
+
+        if (limit > POST_LOAD_MAX_LIMIT || limit < 0) {
             limit = POST_LOAD_MAX_LIMIT;
-        } else if (limit < 0) {
-            limit = 0;
         }
 
-        postModels = loadPosts(dropName, listAfterId, limit);
+        if (!ObjectId.isValid(dropId)) { // in the case that a drop title was passed to lookup
+            dropId = lookupDropId(dropId);
+        }
+
+        if (dropId == null) {
+            halt(HttpStatus.NOT_FOUND_404, new GeneralResponse(HttpStatus.NOT_FOUND_404,
+                    "drop does not exist").toJSON());
+        }
+
+        postModels = loadPosts(dropId, offset, limit, sortBy);
 
         // package results
         listingModel = new PostListingModel();
         listingModel.count = postModels.size();
-
-        if (postModels.size() > 1) {
-            listingModel.lastId = postModels.get(postModels.size() - 1)._id.toString();
-            listingModel.dropId = postModels.get(0).dropId;
-        }
-
+        listingModel.offset = offset;
+        listingModel.dropId = dropId;
         listingModel.posts = postModels;
 
         return listingModel;
     });
 
-    private static List<PostModel> loadPosts(String dropTitle, String afterId, int limit) {
+    private static List<PostModel> loadPosts(String dropId, int skip, int limit, String sortBy) {
         Logger log = LoggerFactory.getLogger("PostLoader");
         JacksonMongoCollection<PostModel> collection = new CollectionFactory<PostModel>(Main.services.dbService(), PostModel.class)
                 .getCollection();
-        JacksonMongoCollection<DropModel> dropCollection = new CollectionFactory<DropModel>(Main.services.dbService(), DropModel.class).getCollection();
-        DropModel drop;
-        String dropId;
-
         FindIterable<PostModel> iterable;
         List<PostModel> models = new ArrayList<>();
 
-        // retrieve drop ID
-        drop = dropCollection.findOne(eq("title", dropTitle));
-        if (drop == null) {
-            log.info("Drop doesn't exist, returning blank list");
-            return models;
-        }
-        dropId = drop._id.toString();
+        iterable = collection.find(Filters.eq("dropId", dropId));
 
-        // run query to get listing
-        if (afterId.equals("*")) {
-            iterable = collection.find(eq("dropId", dropId));
-        } else {
-            try {
-                // this query uses the "gt" filter to pull in id's greater than the "afterId"
-                iterable = collection.find(Filters.and(eq("dropId", dropId), Filters.gt("_id", new ObjectId(afterId))));
-            } catch (IllegalArgumentException e) {
-                return models;
-            }
+        // handle sort option
+        switch (sortBy) {
+            case "new":
+                iterable.sort(Sorts.descending("createdDate"));
+                break;
+            case "scoreDay":
+            case "scoreThreeDay":
+            case "scoreWeek":
+            case "scoreHour":
+                iterable.sort(Sorts.descending(sortBy));
+                break;
+            default:
+                iterable.sort(Sorts.descending(DEFAULT_SORT));
         }
+        iterable.skip(skip);
         iterable.limit(limit);
         iterable.into(models);
-
         return models;
+    }
+
+    private static String lookupDropId(String dropName) {
+        JacksonMongoCollection<DropModel> dropCollection;
+        DropModel model;
+
+        dropCollection = new CollectionFactory<DropModel>(
+                ServiceLocator.getService().dbService(),
+                DropModel.class
+        ).getCollection();
+
+        model = dropCollection.findOne(Filters.eq("title", dropName));
+
+        if (model == null) {
+            return null;
+        }
+
+        return model._id.toString();
     }
 
     /*
@@ -208,7 +234,7 @@ public class PostController {
         permissionChecker = new PermissionChecker(request, new PostPermissionCheckProvider(postModel));
         if (!permissionChecker.verify()) {
             halt(HttpStatus.FORBIDDEN_403,
-                    new GeneralResponse(HttpStatus.FORBIDDEN_403, "unauthorized.")
+                    new GeneralResponse(HttpStatus.FORBIDDEN_403, "unauthorized`.")
                             .toJSON());
         }
         //delete the post
@@ -281,7 +307,3 @@ public class PostController {
     });
 
 }
-
-
-
-

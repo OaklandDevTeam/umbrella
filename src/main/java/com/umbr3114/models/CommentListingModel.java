@@ -1,16 +1,14 @@
 package com.umbr3114.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-
 import java.util.List;
 
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class PostListingModel {
+public class CommentListingModel {
 
-    public String dropId;
+    public String postId;
     public int count;
-    public int offset;
-    public List<PostModel> posts;
+    public String lastId;
+    public List<CommentModel> comments;
 }

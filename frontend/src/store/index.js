@@ -7,7 +7,8 @@ export default new Vuex.Store({
   state: {
     page: "landing",
     user: {},
-    drop: {}
+    drop: {},
+    userSubscriptions: [],
   },
   mutations: {
     setPage(state, page) {
@@ -21,8 +22,22 @@ export default new Vuex.Store({
     },
     iteratePostCount(state) {
       state.user.post_count++;
+    },
+    setUserSubscriptions(state, dataArray) {
+      state.userSubscriptions = dataArray;
+    },
+    appendUserSubscription(state, drop) {
+      state.userSubscriptions.push({
+        drop_id: drop.drop_id,
+        drop_name: drop.title
+      })
+    },
+    removeUserSubscription(state, drop) {
+      var idx
+      idx = state.userSubscriptions.findIndex(val => val.drop_id == drop.drop_id);
+      state.userSubscriptions.splice(idx, 1)
     }
   },
   actions: {},
-  modules: {},
+  modules: {}
 });

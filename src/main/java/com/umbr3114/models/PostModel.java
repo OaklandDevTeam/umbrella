@@ -9,7 +9,6 @@ import java.util.Date;
 
 @MongoCollection(name = "posts")
 public class PostModel {
-
     public ObjectId _id;
     public String title;
     public String bodyText;
@@ -17,8 +16,10 @@ public class PostModel {
     public String author;
     public String dropId;
     public String idString;
-    //public List<CommentModel> comments;
-
+    public double scoreHour;
+    public double scoreDay;
+    public double scoreThreeDay;
+    public double scoreWeek;
 
     public PostModel(String theTitle, String text, String user, String dropId) {
         this.title = theTitle;
@@ -68,3 +69,4 @@ public class PostModel {
 
 
 }
+

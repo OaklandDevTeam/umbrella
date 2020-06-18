@@ -3,6 +3,7 @@ package com.umbr3114;
 import com.umbr3114.auth.AuthCheck;
 import com.umbr3114.auth.AuthRoutes;
 import com.umbr3114.common.JsonResponse;
+import com.umbr3114.controllers.CommentController;
 import com.umbr3114.controllers.DropController;
 import com.umbr3114.controllers.PostController;
 import com.umbr3114.controllers.SubscriptionController;
@@ -62,6 +63,12 @@ public class Main {
         //endpoint to show the data for a specific drop
         get("/drops/:dropid", DropController.viewADrop, new JsonResponse());
 
+        /*
+         * endpoints to search for drops, posts or both
+         */
+        get("/search/drops",DropController.search_drops, new JsonResponse());
+        get("/search/posts",DropController.search_posts, new JsonResponse());
+        get("/search/drops/posts",DropController.search_drops_posts, new JsonResponse());
 
         /*
          * to protect the subscription routes
@@ -90,9 +97,19 @@ public class Main {
         before("/posts/delete", new AuthCheck());
         put("/posts/modify",PostController.modifyPosts,new JsonResponse());
         delete("/posts/delete",PostController.deletePosts,new JsonResponse());
-
         //endpoint to show the data for a specific post
         get("/posts/:postid", PostController.viewAPost, new JsonResponse());
+
+        /*
+         * Comment Routes
+         */
+        before("/comments/create", new AuthCheck());
+        before("/comment/update", new AuthCheck());
+        before("/comment/destroy", new AuthCheck());
+        post("/comments/create", CommentController.saveComments, new JsonResponse());
+        put("/comment/update", CommentController.updateComments, new JsonResponse());
+        delete("/comment/destroy", CommentController.destroyComments, new JsonResponse());
+        put("/comments/list", CommentController.getComments, new JsonResponse());
 
         /*
          * Application should be running now

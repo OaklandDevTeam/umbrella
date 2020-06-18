@@ -211,6 +211,85 @@ Returns 403 when unauthorized, 400 when user parameter missing, 400 when the ban
     },
 ]
 ```
+### GET `/drops/:dropid`      
+> Returns JSON
+```json
+[
+  {
+    "drop_title": "<drop title>",
+    "drop_topic": "<drop topic",
+    "drop_id": "<dropid>",
+    "owner_id": "<userId>",
+    "owner_name": "<username>",
+    "number_posts": integer,
+  },
+]
+```
+### GET `/search/drops`
+> Accepts JSON
+```json
+{
+    "userInput":"<String>",
+}
+```
+> Returns JSON
+```json
+[
+   {     
+    "title": "<drop title>",
+    "topic": "<drop topic>",
+    "_id": {
+      "timestamp": numbers,
+      "date": numbers
+    },
+    "owner": "<idString>",
+    "ownerName": "<username>",
+    "moderators": <String>
+  }
+]
+```
+### GET `/search/posts`
+> Accepts JSON
+```json
+{
+    "userInput":"<String>",
+}
+```
+> Returns JSON
+```json
+[
+   {     
+"_id": {
+      "timestamp": numbers,
+      "date": numbers
+    },
+    "title": "<post title>",
+    "bodyText": "<body text>",
+    "authorId": "<user id>",
+    "author": "<username>",
+    "dropId": "<drop id>",
+    "idString": "<post id>",
+    "createdDate": numbers,
+    "editedDate": numbers  
+}
+]
+```
+### GET `/search/drops/posts`
+> Accepts JSON
+```json
+{
+    "userInput":"<String>",
+}
+```
+> Returns JSON
+```json
+[
+   {     
+<list of drops>
+<list of posts>
+  }
+]
+```
 
 # Posts
 ### GET `/posts/<droptitle>/list`
@@ -218,13 +297,25 @@ Returns 403 when unauthorized, 400 when user parameter missing, 400 when the ban
 | Query Param |                                                                                         Description                                                                                         |
 | :---------- | :-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
 | limit       |                                     Maximum number of posts to fetch in this call. ***OPTIONAL:*** there is a default limit of 25 and a maximum of 100                                      |
-| startAfter  | The Post ID that this call will start after. **NOTE** This post will not come in the listing. ***OPTIONAL:*** If this is not specified, an initial list is retrieved starting from the top. |
+| offset  | The offset of posts to fetch in this request ***OPTIONAL:*** If this is not specified, an initial list is retrieved starting from the top. |
+| sort | The sorting method for this post load. |
+
+Sorting methods:
+
+| Method | Description|
+| :---- | :--------------------------------------------------------------------------------------------------------------------------: |
+| new           |                   fetches post sorted by their creationDate - descending                                             |
+| scoreDay      |                            fetches posts sorted by their scores that start to decay within a day                     |
+| scoreThreeDay |               fetches posts sorted by their scores that start to decay within three days                             |
+| scoreWeek     |                           fetches posts sorted by their scores that start to decay within a week                     |
+| scoreHour     | fetches posts sorted by their scores that start to decay within an hour **NOTE: This is the default sorting method** |
+
 
 Examples: 
 * `/posts/<droptitle>/list`
 * `/posts/<droptitle>/list?limit=50`
-* `/posts/<droptitle>/list?startAfter=5ed668f949c2aa25778c8080`
-* `/posts/<droptitle>/list?startAfter=5ed668f949c2aa25778c8080&limit=50`
+* `/posts/<droptitle>/list?offset=20 // skips the first 20 posts`
+* `/posts/<droptitle>/list?offset=20&limit=50`
 
 > Returns JSON
 ```json
@@ -264,6 +355,83 @@ Examples:
 	"post_id":"<idString>"
 }
 ```
+### GET `/posts/:postid`      
+> Returns JSON
+```json
+[
+  {
+     "post_id":"<idString>",
+      "title":"<postTitle>",
+      "body":"<postbody>",
+      "author_id":"<authorId>",
+      "authorName":"<authorName>"
+  },
+]
+```
+
+# Comments
+
+### GET `/comments/list`
+> Accepts JSON
+```json
+{
+  "postId":"idString",
+  "startAfterId": "<optional idString>",
+  "limit": 100 // (optional, max at 100)
+}
+```
+
+> Returns JSON
+```json
+{
+    "post_id":"<dropId>",
+    "count":0000,
+    "last_id":"<id of last comment in listing>",
+    "comments": {
+        // comment models
+      [
+            {
+              "bodyText": "example comment",
+              "authorId": "5ed994e7a0c6ad4a3dfcb549",
+              "date": 1592273929388,
+              "idString": "5ee82c09a9e08325d2e8429a",
+              "post_id": "5ee7e07e0973582c2ebbcb5b"
+            },
+      ]   
+    }
+}
+```
+
+### `POST /comments/create`
+**Note:** This route is auth protected 
+> Accepts JSON
+```json
+{
+	"postId":"<postId>",
+	"bodyText":"comment text"
+}
+```
+
+### `PUT /comment/update`
+**Note:** This route is auth protected 
+> Accepts JSON
+```json
+{
+	"comment_id":"<idString>",
+	"bodyText":"modified comment text"
+	
+}
+```
+
+### `DELETE /comment/destroy`
+**Note:** This route is auth protected 
+> Accepts JSON
+```json
+{
+	"comment_id":"<idString>"
+}
+```
+
 
 # General Response
 ```json
