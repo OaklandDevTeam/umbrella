@@ -11,6 +11,7 @@ import org.mongojack.MongoCollection;
 public class SubscriptionModel {
     public String userid;
     public String dropid;
+    public String dropName;
     @Id
     @JsonIgnore
     public ObjectId _id;

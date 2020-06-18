@@ -8,13 +8,15 @@
         <u-label style="display: inline; font-size: 2em; display:flex;">
           <img style="height: 1em" src="../assets/fresh.svg" />Fresh
         </u-label>
+        <!-- Fresh posts -->
         <u-label>PLACEHOLDER</u-label>
       </div>
       <div style="margin: 2vh;">
         <u-label style="display: inline; font-size: 2em; display:flex;">
           <img style="height: 1em" src="../assets/favorites.svg" />Favorites
         </u-label>
-        <u-label>PLACEHOLDER</u-label>
+        <!-- User card -->
+        <favorite-drops></favorite-drops>
       </div>
     </u-card>
   </div>

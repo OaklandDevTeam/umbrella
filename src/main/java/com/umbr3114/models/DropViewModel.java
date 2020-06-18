@@ -9,12 +9,12 @@ import org.mongojack.ObjectId;
 @MongoCollection(name = "dropView")
 public class DropViewModel {
 
-    public String drop_title;
-    public String drop_topic;
-    public String drop_id;
-    public String owner_id;
-    public String owner_name;
-    public long number_posts;
+    public String title;
+    public String topic;
+    public String dropId;
+    public String owner;
+    public String ownerName;
+    public long numberPosts;
 
 
 }

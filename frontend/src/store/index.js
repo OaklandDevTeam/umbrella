@@ -7,7 +7,8 @@ export default new Vuex.Store({
   state: {
     page: "landing",
     user: {},
-    drop: {}
+    drop: {},
+    userSubscriptions: [],
   },
   mutations: {
     setPage(state, page) {
@@ -21,6 +22,15 @@ export default new Vuex.Store({
     },
     iteratePostCount(state) {
       state.user.post_count++;
+    },
+    setUserSubscriptions(state, dataArray) {
+      state.userSubscriptions = dataArray;
+    },
+    appendUserSubscription(state, dropId, dropname) {
+      state.userSubscriptions.push({
+        dropid: dropId,
+        dropName: dropname
+      })
     }
   },
   actions: {},

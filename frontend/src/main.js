@@ -21,6 +21,7 @@ import DebugPage from "./components/DebugPage";
 import DropPage from "./components/DropPage.vue";
 import PostCard from "./components/PostCard.vue";
 import Modal from "./components/Modal.vue";
+import FavoriteDropsSidebarComponent from "./components/FavoriteDropsCard.vue";
 
 Vue.component('u-logo', Logo);
 Vue.component('u-button', Button);
@@ -40,6 +41,7 @@ Vue.component('debug-page', DebugPage)
 Vue.component('u-post-card', PostCard);
 Vue.component('u-modal', Modal);
 Vue.component('text-box', TextBox);
+Vue.component('favorite-drops', FavoriteDropsSidebarComponent)
 
 Vue.component('landing-page', LandingPage);
 Vue.component('front-page', FrontPage);

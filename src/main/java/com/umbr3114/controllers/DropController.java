@@ -1,7 +1,6 @@
 package com.umbr3114.controllers;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.mongodb.MongoWriteException;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.model.*;
@@ -319,12 +318,12 @@ public class DropController {
                     "drop doesn't exist").toJSON());
         }
         dropViewModel = new DropViewModel();
-        dropViewModel.number_posts = numPosts;
-        dropViewModel.drop_title = drop.title;
-        dropViewModel.drop_topic = drop.topic;
-        dropViewModel.drop_id = dropId;
-        dropViewModel.owner_id = drop.owner;
-        dropViewModel.owner_name = drop.ownerName;
+        dropViewModel.numberPosts = numPosts;
+        dropViewModel.title = drop.title;
+        dropViewModel.topic = drop.topic;
+        dropViewModel.dropId = dropId;
+        dropViewModel.owner = drop.owner;
+        dropViewModel.ownerName = drop.ownerName;
 
         return dropViewModel;
     });

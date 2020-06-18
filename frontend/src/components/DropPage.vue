@@ -23,6 +23,8 @@
       <div class="flex-row">
         <u-button @click.native="goBack()">Go Back</u-button>
         <u-button @click.native="newPost = true">newPost</u-button>
+        <u-button @click.native="handleSubscribe()">Subscribe</u-button>
+        <u-button>Unsubscribe</u-button>
       </div>
     </u-card>
     <u-post-card
@@ -83,6 +85,18 @@ export default {
           this.error = "error creating post";
         })
         .bind(this);
+    },
+    handleSubscribe() {
+      this.axios.post("/user/subscribe", {
+        drop_id: this.drop.dropId,
+        drop_name: this.drop.title
+      },
+      { headers: { "Content-Type": "application/json" } }
+      ).then(response => {
+        if(response.status === 200) {
+          store.commit("appendUserSubscription", this.drop.dropId, this.drop.title)
+        }
+      });
     }
   },
   created: function() {
