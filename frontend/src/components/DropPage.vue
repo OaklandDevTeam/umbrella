@@ -22,7 +22,7 @@
       <div v-html="drop.topic"></div>
       <div class="flex-row">
         <u-button @click.native="goBack()">Go Back</u-button>
-        <u-button @click.native="newPost = true">newPost</u-button>
+        <u-button @click.native="newPost = true">New Post</u-button>
         <u-button v-if="!userIsSubscribed" @click.native="handleSubscribe()">Subscribe</u-button>
         <u-button v-else @click.native="handleUnsubscribe()">Unsubscribe</u-button>
       </div>
@@ -87,27 +87,35 @@ export default {
         .bind(this);
     },
     handleSubscribe() {
-      this.axios.post("/user/subscribe", {
-        drop_id: this.drop.drop_id,
-        drop_name: this.drop.title
-      },
-      { headers: { "Content-Type": "application/json" } }
-      ).then(response => {
-        if(response.status === 200) {
-          store.commit("appendUserSubscription", this.drop)
-        }
-      });
+      this.axios
+        .post(
+          "/user/subscribe",
+          {
+            drop_id: this.drop.drop_id,
+            drop_name: this.drop.title
+          },
+          { headers: { "Content-Type": "application/json" } }
+        )
+        .then(response => {
+          if (response.status === 200) {
+            store.commit("appendUserSubscription", this.drop);
+          }
+        });
     },
     handleUnsubscribe() {
-      this.axios.post("/user/unsubscribe", {
-        drop_id: this.drop.drop_id
-      },
-      { headers: { "Content-Type": "application/json" } }
-      ).then(response => {
-        if(response.status === 200) {
-          store.commit("removeUserSubscription", this.drop)
-        }
-      });
+      this.axios
+        .post(
+          "/user/unsubscribe",
+          {
+            drop_id: this.drop.drop_id
+          },
+          { headers: { "Content-Type": "application/json" } }
+        )
+        .then(response => {
+          if (response.status === 200) {
+            store.commit("removeUserSubscription", this.drop);
+          }
+        });
     }
   },
   created: function() {
@@ -122,7 +130,7 @@ export default {
     userIsSubscribed() {
       var result = false; // forEach takes a function.. haha, so you can't return THIS function from that scope
       store.state.userSubscriptions.forEach(val => {
-        if(val.drop_id === this.drop.drop_id) {
+        if (val.drop_id === this.drop.drop_id) {
           result = true;
           return;
         }
