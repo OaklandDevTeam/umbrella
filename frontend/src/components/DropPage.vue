@@ -19,7 +19,12 @@
     </u-modal>
     <u-card>
       <u-label style="font-size: 2.5em; line-height: 1.5em;">{{drop.title}}</u-label>
-      <div v-html="drop.topic"></div>
+                      <text-box
+          v-bind:value="drop.topic"
+          v-model="drop.topic"
+          v-bind:editable="false"
+          ref="richtext"
+      />
       <div class="flex-row">
         <u-button @click.native="goBack()">Go Back</u-button>
         <u-button @click.native="newPost = true">New Post</u-button>
