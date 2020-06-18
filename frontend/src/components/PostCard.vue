@@ -15,14 +15,21 @@
       >{{editing ? "Done" : "Edit"}}</u-flat-button>
       <u-flat-button @click.native="active=false">close</u-flat-button>
 
-      <u-text-field ref="commentText" v-model="commentText" placeholder="Say Something!"></u-text-field>
+      <u-text-field
+        style="width: 55%"
+        ref="commentText"
+        v-model="commentText"
+        placeholder="Say Something!"
+      ></u-text-field>
       <u-button @click.native="postComment()">Post</u-button>
-      <div>
+      <div class="comment-div">
         <u-label
           v-for="comment in comments.comments.slice().reverse()"
           v-bind:key="comment.idString"
+          class="comment"
         >{{comment.bodyText}}</u-label>
       </div>
+      <u-label style="margin: none; font-size: 0.65em;">∨</u-label>
     </u-modal>
     <u-card>
       <div class="flex-row">
@@ -108,6 +115,18 @@ export default {
 .closed {
   max-height: 3em;
   overflow: hidden;
+}
+
+.comment {
+  margin: 10px;
+}
+
+.comment-div {
+  max-height: 25vh;
+  overflow-y: auto;
+}
+::-webkit-scrollbar {
+  display: none;
 }
 
 .postBody {
