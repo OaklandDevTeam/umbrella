@@ -1,5 +1,6 @@
 package com.umbr3114.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.mongojack.MongoCollection;
 import org.mongojack.ObjectId;
 
@@ -11,6 +12,7 @@ public class DropViewModel {
 
     public String title;
     public String topic;
+    @JsonProperty("drop_id")
     public String dropId;
     public String owner;
     public String ownerName;

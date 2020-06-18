@@ -23,8 +23,8 @@
       <div class="flex-row">
         <u-button @click.native="goBack()">Go Back</u-button>
         <u-button @click.native="newPost = true">newPost</u-button>
-        <u-button @click.native="handleSubscribe()">Subscribe</u-button>
-        <u-button>Unsubscribe</u-button>
+        <u-button v-if="!userIsSubscribed" @click.native="handleSubscribe()">Subscribe</u-button>
+        <u-button v-else @click.native="handleUnsubscribe()">Unsubscribe</u-button>
       </div>
     </u-card>
     <u-post-card
@@ -88,13 +88,24 @@ export default {
     },
     handleSubscribe() {
       this.axios.post("/user/subscribe", {
-        drop_id: this.drop.dropId,
+        drop_id: this.drop.drop_id,
         drop_name: this.drop.title
       },
       { headers: { "Content-Type": "application/json" } }
       ).then(response => {
         if(response.status === 200) {
-          store.commit("appendUserSubscription", this.drop.dropId, this.drop.title)
+          store.commit("appendUserSubscription", this.drop)
+        }
+      });
+    },
+    handleUnsubscribe() {
+      this.axios.post("/user/unsubscribe", {
+        dropid: this.drop.drop_id
+      },
+      { headers: { "Content-Type": "application/json" } }
+      ).then(response => {
+        if(response.status === 200) {
+          store.commit("removeUserSubscription", this.drop)
         }
       });
     }
@@ -107,6 +118,16 @@ export default {
   computed: {
     drop() {
       return store.state.drop;
+    },
+    userIsSubscribed() {
+      var result = false; // forEach takes a function.. haha, so you can't return THIS function from that scope
+      store.state.userSubscriptions.forEach(val => {
+        if(val.dropid === this.drop.drop_id) {
+          result = true;
+          return;
+        }
+      });
+      return result;
     }
   }
 };

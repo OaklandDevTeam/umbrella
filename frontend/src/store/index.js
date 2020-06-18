@@ -26,11 +26,16 @@ export default new Vuex.Store({
     setUserSubscriptions(state, dataArray) {
       state.userSubscriptions = dataArray;
     },
-    appendUserSubscription(state, dropId, dropname) {
+    appendUserSubscription(state, drop) {
       state.userSubscriptions.push({
-        dropid: dropId,
-        dropName: dropname
+        dropid: drop.drop_id,
+        dropName: drop.title
       })
+    },
+    removeUserSubscription(state, drop) {
+      var idx
+      idx = state.userSubscriptions.findIndex(val => val.dropid == drop.drop_id);
+      state.userSubscriptions.splice(idx, 1)
     }
   },
   actions: {},
