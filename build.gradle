@@ -19,7 +19,7 @@ jar {
 }
 
 processResources {
-//    dependsOn(":frontend:buildWebpack")
+    dependsOn(":frontend:buildWebpack")
     from(file("${project.projectDir}/frontend/build/frontend/"))
     from(file("${project.projectDir}/dbconnection.properties"))
 }
