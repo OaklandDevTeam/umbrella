@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@vue/cli": "^4.4.4",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "core-js": "^3.6.4",
     "tiptap": "^1.27.1",
     "tiptap-extensions": "^1.27.1",
